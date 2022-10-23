@@ -1,0 +1,69 @@
+import DescriptionJob from '../DescriptionJob/DescriptionJob'
+
+import React, {useState} from 'react';
+import { Text, View ,StyleSheet} from 'react-native';
+import SegmentedControl from '@react-native-segmented-control/segmented-control';
+
+function SettingsScreen() {
+  return (
+    <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+      <Text>Settings!</Text>
+    </View>
+  );
+}
+
+export default function DescriptionScreen() {
+  const [customStyleIndex, setCustomStyleIndex] = useState(0);
+  const handleCustomIndexSelect = (index) => {
+    //handle tab selection for custom Tab Selection SegmentedControlTab
+    setCustomStyleIndex(index);
+  };
+  return (
+      // <Tab.Navigator
+      //   screenOptions={{
+      //     tabBarLabelStyle: { fontSize: 12,  },
+      //     tabBarStyle: { backgroundColor: '#FAFAFA' },
+      //     tabBarContentContainerStyle:{},
+      //   }}
+      // >
+      //   <Tab.Screen name="Description" component={DescriptionJob} />
+      //   <Tab.Screen name="Settings" component={SettingsScreen} />
+      // </Tab.Navigator>
+      <View>
+        <SegmentedControl
+          values={['Description', 'Company']}
+          selectedIndex={customStyleIndex}
+          onChange={(event) => handleCustomIndexSelect(event.nativeEvent.selectedSegmentIndex)}
+          onTabPress={handleCustomIndexSelect}
+          borderRadius={20}
+          // width={3}
+          marginHorizontal={50}
+          tabsContainerStyle={{ height: 30, backgroundColor: '#eeeef0'}}
+          tabStyle={{
+            // backgroundColor: '#F2F2F2',
+            borderWidth: 0,
+            borderColor: 'transparent',
+          }}
+          activeTabStyle={{ backgroundColor: 'white', marginTop: 2, padding:10 }}
+          tabTextStyle={{ color: '#444444', fontWeight: 'bold' }}
+          activeTabTextStyle={{ color: '#888888' }}
+        />
+        {customStyleIndex === 0 && (
+          <View style={styles.boxdescription}>
+          <DescriptionJob/>
+          </View>
+        )}
+        {customStyleIndex === 1 && (
+          <View style={styles.boxdescription}>
+          <SettingsScreen/>
+          </View>
+        )}
+      </View>
+  );
+}
+
+const styles = StyleSheet.create({
+  boxdescription:{
+    height: '100%',
+  }
+})
