@@ -1,33 +1,26 @@
 import { View, Text, Button,StatusBar, SafeAreaView } from 'react-native';
 import React,{useContext}  from 'react';
-import SignupScreen from '../screens/SignupScreen';
-import SigninScreen from '../screens/SigninScreen';
-import ConfirmEmailScreen from '../screens/ConfirmEmailScreen';
-import ForgotPasswordScreen from '../screens/ForgotPasswordScreen';
-import NewPasswordScreen from '../screens/NewPasswordScreen';
 import HomeScreen from '../screens/HomeScreen';
 import ApplyFormScreen from '../screens/ApplyFormScreen';
 import JobDescription from '../screens/JobDescription';
 import ApplicationStatus from '../navigation/ApplicationStatus';
-import ApplicationsScreen from '../screens/ApplicationsScreen';
-import ApplicationStages from '../screens/ApplicationStages';
 import SaveJobs from '../navigation/SaveJob'
-import SavedJobs from '../screens/SavedJobs'
 import Notification from '../navigation/Notification';
+import Login from '../navigation/Login'
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import { Provider as AuthProvider } from '../context/AuthContext';
-import {Context as AuthContext} from '../context/AuthContext';
 import { setNavigator } from '../navigationRef';
-import {getStatusBarHeight} from 'react-native-status-bar-height';
-import Constants from 'expo-constants';
 
 import { AntDesign } from '@expo/vector-icons'; 
 import { FontAwesome5 } from '@expo/vector-icons'; 
 import { MaterialIcons } from '@expo/vector-icons'; 
 import { Feather } from '@expo/vector-icons'; 
 
+import { Provider as AuthProvider } from '../context/AuthContext';
+import {Context as AuthContext} from '../context/AuthContext';
+import { Provider } from 'react-redux';
+import {store} from '../redux/store'
 
 const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -86,11 +79,7 @@ const Navigator = () => {
     return (
       //
         <Stack.Navigator screenOptions={{}}>
-          {/* <Stack.Screen name="SignIn" component={SigninScreen} />
-          <Stack.Screen name="SignUp" component={SignupScreen} />
-          <Stack.Screen name="ConfirmEmail" component={ConfirmEmailScreen} />
-          <Stack.Screen name="ForgotPassword" component={ForgotPasswordScreen} />
-          <Stack.Screen name="NewPassword" component={NewPasswordScreen} /> */}
+          <Stack.Screen name="Login" component={Login} options={{headerShown: false}}/>
           <Stack.Screen name="MainNavigator" component={MainNavigator} options={{headerShown: false}}/>
           <Stack.Screen name="JobDetails" component={JobDescription} options={{headerShown: false}}/>
           <Stack.Screen name="Apply" component={ApplyFormScreen} options={{headerShown: false}}/>
@@ -101,10 +90,12 @@ const Navigator = () => {
 
 export default function Navigation() {
     return (
-      <AuthProvider>
-        <NavigationContainer ref= {( navigator ) => { setNavigator(navigator) }} >
-            <Navigator />
-        </NavigationContainer>
-      </AuthProvider>
+      <Provider store={store}>
+        <AuthProvider>
+          <NavigationContainer ref= {( navigator ) => { setNavigator(navigator) }} >
+              <Navigator />
+          </NavigationContainer>
+        </AuthProvider>
+      </Provider>
       );
 } 

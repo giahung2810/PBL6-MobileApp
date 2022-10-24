@@ -7,23 +7,29 @@ import Space from '../components/Space'
 import SocialSignInButton from '../components/SocialSignInButton'
 import {useForm } from 'react-hook-form'
 import {Context as AuthContext} from '../context/AuthContext';
+import { useDispatch } from 'react-redux'
 // import { NavigationEvents } from "react-navigation";
+import { useNavigation } from '@react-navigation/native';
+import { loginUser } from '../redux/apiRequest'
 
 
 
 const SigninScreen = ({navigation}) => {
     const { control, handleSubmit, formState: {errors}, } = useForm();
     const { state, signin, clearErrorMessage } = useContext(AuthContext);
-
     const {height} = useWindowDimensions();
+
+    const dispatch = useDispatch();
+    const navigate = useNavigate();
 
     const onSignin = (data) => {
         // console.log(data.username);
         // navigation.navigate('Home')
-        username = data.username;
-        password = data.password;
+        // username = data.username;
+        // password = data.password;
         // data.password == 'hung' || data.username == 'hung' ? navigation.navigate('Home') : console.log(data);
-        signin({username, password});
+        // signin({username, password});
+        loginUser(data,dispatch, navigate);
         // console.log(state.token);
     }
     const onForgot = () => {
@@ -66,7 +72,7 @@ const SigninScreen = ({navigation}) => {
 
         <CustomButton 
             text= "Sign In" 
-            onPress={handleSubmit(signin)} 
+            onPress={handleSubmit(onSignin)} 
             type="PRIMARY"
         />
         <CustomButton 
