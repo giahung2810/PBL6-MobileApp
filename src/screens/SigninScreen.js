@@ -14,13 +14,15 @@ import { loginUser } from '../redux/apiRequest'
 
 
 
-const SigninScreen = ({navigation}) => {
+const SigninScreen = () => {
+    const EMAIL_REGEX =
+  /^[a-zA-Z0-9.!#$%&’*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/;
     const { control, handleSubmit, formState: {errors}, } = useForm();
     const { state, signin, clearErrorMessage } = useContext(AuthContext);
     const {height} = useWindowDimensions();
 
     const dispatch = useDispatch();
-    const navigate = useNavigate();
+    const navigation = useNavigation();
 
     const onSignin = (data) => {
         // console.log(data.username);
@@ -29,7 +31,7 @@ const SigninScreen = ({navigation}) => {
         // password = data.password;
         // data.password == 'hung' || data.username == 'hung' ? navigation.navigate('Home') : console.log(data);
         // signin({username, password});
-        loginUser(data,dispatch, navigate);
+        loginUser(data,dispatch, navigation);
         // console.log(state.token);
     }
     const onForgot = () => {
@@ -39,7 +41,7 @@ const SigninScreen = ({navigation}) => {
         navigation.navigate('SignUp')
     }
   return (
-    <ScrollView showsVerticalScrollIndicator= {false}>
+    <ScrollView showsVerticalScrollIndicator= {false} style={{flex:1, backgroundColor: '#fff'}}>
     <View style={styles.root}>
         <Image style={[styles.logo, {height: height * 0.3}]} source={Logo} resizeMode='contain' />
 
@@ -50,12 +52,15 @@ const SigninScreen = ({navigation}) => {
         {/* <NavigationEvents onWillBlur={clearErrorMessage} /> */}
 
         <CustomInput 
-            placeholder = "Username" 
-            name= 'username' 
+            placeholder = "Email" 
+            name= 'email' 
             control={control}
-            rules= {{required: 'Username is required'}}
+            rules= {{
+                required: 'Email is required',
+                pattern: {value: EMAIL_REGEX, message: 'Email is invalid'}
+            }}
         />
-        <CustomInput 
+        <CustomInput  
             placeholder = "Password" 
             name= 'password' 
             control={control} 

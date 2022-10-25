@@ -7,13 +7,13 @@ import ApplicationStatus from '../navigation/ApplicationStatus';
 import SaveJobs from '../navigation/SaveJob'
 import Notification from '../navigation/Notification';
 import Login from '../navigation/Login'
+
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { setNavigator } from '../navigationRef';
 
 import { AntDesign } from '@expo/vector-icons'; 
-import { FontAwesome5 } from '@expo/vector-icons'; 
 import { MaterialIcons } from '@expo/vector-icons'; 
 import { Feather } from '@expo/vector-icons'; 
 
@@ -83,7 +83,6 @@ const Navigator = () => {
           <Stack.Screen name="MainNavigator" component={MainNavigator} options={{headerShown: false}}/>
           <Stack.Screen name="JobDetails" component={JobDescription} options={{headerShown: false}}/>
           <Stack.Screen name="Apply" component={ApplyFormScreen} options={{headerShown: false}}/>
-          {/* <Stack.Screen name="ApplicationStages" component={ApplicationStages} /> */}
         </Stack.Navigator>
     );
 }

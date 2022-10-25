@@ -10,7 +10,7 @@ const Stack = createNativeStackNavigator();
 const Login = () => {
     return (
       //
-        <Stack.Navigator screenOptions={{}}>
+        <Stack.Navigator screenOptions={{headerShown: false}}>
             <Stack.Screen name="SignIn" component={SigninScreen} />
             <Stack.Screen name="SignUp" component={SignupScreen} />
             <Stack.Screen name="ConfirmEmail" component={ConfirmEmailScreen} />

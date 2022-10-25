@@ -1,27 +1,39 @@
-import { View,Text, Image, StyleSheet, ScrollView } from 'react-native'
+import { View,Text, Button, StyleSheet, ScrollView } from 'react-native'
 import React, {useState} from 'react'
 import CustomInput from '../components/CustomInput'
 import CustomButton from '../components/CustomButton'
 import Space from '../components/Space'
 import SocialSignInButton from '../components/SocialSignInButton'
 import {useForm } from 'react-hook-form'
+import { useDispatch } from 'react-redux'
+import { useNavigation } from '@react-navigation/native';
+import { registerUser } from '../redux/apiRequest'
+import DateofBirth from '../components/DatatimePicker/DateofBirth'
+// import 'react-day-picker/dist/style.css';
 
 const EMAIL_REGEX =
   /^[a-zA-Z0-9.!#$%&’*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/;
 
-const SignupScreen = ({navigation}) => {
-
+const SignupScreen = () => {
+    const dispatch = useDispatch();
+    const navigation = useNavigation();
     const { control, handleSubmit, watch } = useForm();
     const prd = watch('password')
+    const [Gender,setGender] = useState(false);
+    const [error, setError] = useState();
 
-    const onRegister = () => {
-        navigation.navigate('ConfirmEmail');
-    }
-    const onTermOfUse = () => {
-        console.warn('TermOfUse ')
-    }
-    const onPrivacy = () => {
-        console.warn('Privacy ')
+    const [date_of_birth, setDate_of_birth] = useState('');
+
+    const onRegister = (data) => {
+        // navigation.navigate('ConfirmEmail');
+        // registerUser(data, dispatch, navigation);
+        const newdata = {
+            ...data,
+            gender: Gender,
+            date_of_birth: date_of_birth
+        }
+        const response = registerUser(newdata, dispatch, navigation);
+        setError(response);
     }
     const onSignin = () => {
         navigation.navigate('SignIn');
@@ -31,7 +43,7 @@ const SignupScreen = ({navigation}) => {
     <View style={styles.root}>
         <Text style={[styles.title]}>Create an account</Text>
 
-        <CustomInput 
+        {/* <CustomInput 
             name='username'
             control={control}
             placeholder = "Username" 
@@ -46,7 +58,7 @@ const SignupScreen = ({navigation}) => {
                     message: 'Username should be at least 24 characters long'
                 }
             }}
-        />
+        /> */}
         <CustomInput 
             name='email'
             control={control}
@@ -70,31 +82,38 @@ const SignupScreen = ({navigation}) => {
             }}
         />
         <CustomInput 
-            name='password_repeat'
+            name='password2'
             control={control}
-            placeholder = "Repeat Password" 
+            placeholder = "Repeat Password"
             secureTextEntry
             rules= {{
                 validate: value => value === prd || 'Password is not match'
             }}
         />
+        {/* <CustomInput 
+            name='date_of_birth'
+            control={control}
+            placeholder = "Day of birth"
+        /> */}
+        <View>
+            <DateofBirth setDate_of_birth={setDate_of_birth} />
+        </View>
 
+        <CustomInput 
+            name='gender'
+            control={control}
+            placeholder = "Gender"
+            setValue={setGender}
+        />
 
+            
         <CustomButton 
             text= "Register" 
             onPress={handleSubmit(onRegister)} 
             type="PRIMARY"
         />
-        <Text style={styles.text}>
-            By registering, you confirm that you accept our 
-            <Text style= {styles.link} onPress={onTermOfUse}>Terms of Use </Text> 
-             and 
-            <Text style= {styles.link} onPress={onPrivacy}> Privacy Policy.</Text> 
-        </Text>
+        {/* {error ? <Text>{error.errors.email[0]}</Text> : null} */}
 
-        <Space />
-        <SocialSignInButton/>
-        <Space />
 
         <CustomButton 
             text= "Have an account? Sign in" 

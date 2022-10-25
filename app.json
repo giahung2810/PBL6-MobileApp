@@ -15,7 +15,8 @@
       },
       "softwareKeyboardLayoutMode" : "pan"
 
-    }
+    },
+    "userInterfaceStyle": "automatic"
   },
   "name": "FindJob"
 }
