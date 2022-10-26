@@ -1,4 +1,6 @@
-import apiJob from '../api/apiJob'
+import {createAxios as apiJWT} from '../api/apiJob'
+import {instance as apiJob} from '../api/apiJob'
+
 import { loginFailed, loginStart, loginSuccess, registerFailed, registerStart, registerSuccess } from './authSlice'
 
 export const loginUser = async (user, dispatch, navigation) => {
@@ -10,8 +12,8 @@ export const loginUser = async (user, dispatch, navigation) => {
         dispatch(loginSuccess(res.data));
         navigation.navigate("MainNavigator");
     } catch(err){
-        dispatch(loginFailed());
-        console.log(error.response.data);
+        dispatch(loginFailed(err.response.data));
+        console.log(err);
     }
 };
 
@@ -35,9 +37,6 @@ export const registerUser = async (user, dispatch, navigation) => {
             initial: false,
           });
     } catch (error) {
-        dispatch(registerFailed());
-        console.log(error.response.data);
-
-        return (error.response.data);
+        dispatch(registerFailed(error.response.data));
     }
 }

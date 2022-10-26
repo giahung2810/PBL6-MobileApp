@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {View, Text, StyleSheet, TouchableOpacity, ScrollView, SafeAreaView } from 'react-native';
 import DatImage from '../../assets/dat.jpg'
 import { Avatar } from 'react-native-paper'
@@ -7,9 +7,19 @@ import RecommendList from '../components/box_job/RecommendList'
 import Title from '../components/Title'
 import RecentList from '../components/recent_job/RecentList';
 import PopularList from '../components/Popular_job/PopularList'
+import { useSelector } from 'react-redux';
+import { useNavigation } from '@react-navigation/native';
 
 const HomeScreen = () => {
   const [term, setTerm] = useState('');
+  const navigation = useNavigation();
+  const user = useSelector((state) => state.auth.login.currentUser);
+  console.log(user?.username);
+  useEffect(() => {
+    if(!user){
+      navigation.navigate('Login');
+    }
+  })
   return (      
     <>
     <ScrollView style={{flex: 1, backgroundColor: '#fff'}}>
@@ -17,8 +27,8 @@ const HomeScreen = () => {
     <View style={styles.boxContainer}>
       <View style={styles.boxInfor}>
         <View style={styles.boxName}>
-          <Text style={styles.helloText}>Hello</Text>
-          <Text style={styles.nameText}>GIA HWNG</Text>
+          <Text style={styles.helloText}>Hello,</Text>
+          <Text style={styles.nameText}>{user?.username}</Text>
         </View>
         <View>
           <TouchableOpacity>

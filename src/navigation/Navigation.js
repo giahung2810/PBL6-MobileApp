@@ -20,7 +20,8 @@ import { Feather } from '@expo/vector-icons';
 import { Provider as AuthProvider } from '../context/AuthContext';
 import {Context as AuthContext} from '../context/AuthContext';
 import { Provider } from 'react-redux';
-import {store} from '../redux/store'
+import {store, persistor} from '../redux/store'
+import { PersistGate } from 'redux-persist/lib/integration/react';
 
 const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -90,11 +91,13 @@ const Navigator = () => {
 export default function Navigation() {
     return (
       <Provider store={store}>
-        <AuthProvider>
-          <NavigationContainer ref= {( navigator ) => { setNavigator(navigator) }} >
-              <Navigator />
-          </NavigationContainer>
-        </AuthProvider>
+        <PersistGate loading={null} persistor={persistor} >
+          <AuthProvider>
+            <NavigationContainer ref= {( navigator ) => { setNavigator(navigator) }} >
+                <Navigator />
+            </NavigationContainer>
+          </AuthProvider>
+        </PersistGate>
       </Provider>
       );
 } 

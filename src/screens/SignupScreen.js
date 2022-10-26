@@ -32,8 +32,9 @@ const SignupScreen = () => {
             gender: Gender,
             date_of_birth: date_of_birth
         }
-        const response = registerUser(newdata, dispatch, navigation);
+        registerUser(newdata, dispatch, navigation);
         setError(response);
+        // console.log(response.errors);
     }
     const onSignin = () => {
         navigation.navigate('SignIn');

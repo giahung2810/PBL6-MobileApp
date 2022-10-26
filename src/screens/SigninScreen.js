@@ -1,4 +1,4 @@
-import { View, Image, StyleSheet, useWindowDimensions, ScrollView , TextInput} from 'react-native'
+import { View, Image, StyleSheet, useWindowDimensions, ScrollView , Text} from 'react-native'
 import React, {useState, useContext} from 'react'
 import Logo from '../../assets/logo_1.png'
 import CustomInput from '../components/CustomInput'
@@ -11,7 +11,8 @@ import { useDispatch } from 'react-redux'
 // import { NavigationEvents } from "react-navigation";
 import { useNavigation } from '@react-navigation/native';
 import { loginUser } from '../redux/apiRequest'
-
+import { store } from '../redux/store'
+import { useSelector } from 'react-redux';
 
 
 const SigninScreen = () => {
@@ -20,10 +21,9 @@ const SigninScreen = () => {
     const { control, handleSubmit, formState: {errors}, } = useForm();
     const { state, signin, clearErrorMessage } = useContext(AuthContext);
     const {height} = useWindowDimensions();
-
     const dispatch = useDispatch();
     const navigation = useNavigation();
-
+    const user = useSelector((state) => state.auth.login.message);
     const onSignin = (data) => {
         // console.log(data.username);
         // navigation.navigate('Home')
@@ -31,8 +31,8 @@ const SigninScreen = () => {
         // password = data.password;
         // data.password == 'hung' || data.username == 'hung' ? navigation.navigate('Home') : console.log(data);
         // signin({username, password});
+        
         loginUser(data,dispatch, navigation);
-        // console.log(state.token);
     }
     const onForgot = () => {
         navigation.navigate('ForgotPassword')
@@ -68,13 +68,14 @@ const SigninScreen = () => {
             rules= {{
                 required: 'Password is required', 
                 minLength: {
-                    value: 4,
-                    message: 'Password must be minimum 4 characters long',
+                    value: 6,
+                    message: 'Password must be minimum 6 characters long',
                 }
             }}
         />
         
-
+        {user == null ? null
+        : <Text style={styles.error}>{user.detail}</Text> }
         <CustomButton 
             text= "Sign In" 
             onPress={handleSubmit(onSignin)} 
@@ -113,6 +114,11 @@ const styles = StyleSheet.create({
         width: '80%',
         maxWidth: 300,
         maxHeight: 300,
+    },
+    error:{
+        fontFamily: 'Urbanist-Light',
+        fontSize:14,
+        color: 'red'
     }
 })
 
