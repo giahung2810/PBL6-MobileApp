@@ -17,12 +17,15 @@ import { setNavigator } from '../navigationRef';
 import { AntDesign } from '@expo/vector-icons'; 
 import { MaterialIcons } from '@expo/vector-icons'; 
 import { Feather } from '@expo/vector-icons'; 
+import { Ionicons } from '@expo/vector-icons'; 
+
 
 import { Provider as AuthProvider } from '../context/AuthContext';
 import {Context as AuthContext} from '../context/AuthContext';
 import { Provider } from 'react-redux';
 import {store, persistor} from '../redux/store'
 import { PersistGate } from 'redux-persist/lib/integration/react';
+import SearchScreen from '../screens/SearchScreen';
 
 const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -62,7 +65,7 @@ const MainNavigator = () => {
             <Tab.Screen name="Settings" component={SettingsScreen} 
                     options={{
                       tabBarIcon: ({color}) => {
-                        return <AntDesign name="setting" size={24} color={color} />
+                        return <Ionicons name="person" size={24} color={color} />
                       }
                     }} 
             />
@@ -73,11 +76,11 @@ const Navigator = () => {
     return (
       //
         <Stack.Navigator screenOptions={{}}>
-          {/* <Stack.Screen name="Login" component={Login} options={{headerShown: false}}/> */}
           <Stack.Screen name="MainNavigator" component={MainNavigator} options={{headerShown: false}}/>
           <Stack.Screen name="JobDetails" component={JobDescription} options={{headerShown: false}}/>
           <Stack.Screen name="Apply" component={ApplyFormScreen} options={{headerShown: false}}/>
           <Stack.Screen name="Login" component={Login} options={{headerShown: false}}/>
+          <Stack.Screen name="Search" component={SearchScreen} options={{headerShown: false}}/>
         </Stack.Navigator>
     );
 }

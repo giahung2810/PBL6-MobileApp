@@ -1,6 +1,6 @@
 import React, {useState, useEffect, useLayoutEffect, useFocusEffect, useCallback} from 'react';
 import {View, Text, StyleSheet, TouchableOpacity, ScrollView, SafeAreaView } from 'react-native';
-import SearchBar from "../components/SearchBar";
+import SearchBar from "../components/Search/SearchBar";
 import Topbar from '../components/topbar/Topbar'
 import ApplicationCard from '../components/ApplicationCard/ApplicationCard'
 

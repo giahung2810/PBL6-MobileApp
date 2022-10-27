@@ -1,6 +1,6 @@
 import React, {useState, useEffect, useLayoutEffect} from 'react';
 import {View, Text, StyleSheet, TouchableOpacity, ScrollView, SafeAreaView } from 'react-native';
-import SearchBar from "../components/SearchBar";
+import SearchBar from "../components/Search/SearchBar";
 import Topbar from '../components/topbar/Topbar'
 import JobCard from '../components/JobsCard/JobCard'
 import Modal from 'react-native-modal';

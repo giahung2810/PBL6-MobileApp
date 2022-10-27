@@ -2,7 +2,7 @@ import React, {useEffect, useState} from 'react';
 import {View, Text, StyleSheet, TouchableOpacity, ScrollView, SafeAreaView } from 'react-native';
 import DatImage from '../../assets/dat.jpg'
 import { Avatar } from 'react-native-paper'
-import SearchBar from "../components/SearchBar";
+import SearchBar from "../components/Search/SearchBar";
 import RecommendList from '../components/box_job/RecommendList'
 import Title from '../components/Title'
 import RecentList from '../components/recent_job/RecentList';

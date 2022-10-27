@@ -10,7 +10,10 @@ export const loginUser = async (user, dispatch, navigation) => {
         const res = await apiJob.post('/auth/login' ,user);
         console.log(res.data);
         dispatch(loginSuccess(res.data));
-        navigation.navigate("MainNavigator");
+        navigation.navigate("MainNavigator", { 
+            screen: 'Home',
+            initial: false,
+          });
     } catch(err){
         dispatch(loginFailed(err.response.data));
         console.log(err);
@@ -44,7 +47,7 @@ export const registerUser = async (user, dispatch, navigation) => {
 export const logoutUser = async ( dispatch, navigation, accesstoken, axiosJWT) => {
     dispatch(logoutStart());
     try{
-        await axiosJWT.post('/logout');
+        // await axiosJWT.post('/logout');
         dispatch(logoutSuccess());
         navigation.navigate('Login')
     } catch (error) {
