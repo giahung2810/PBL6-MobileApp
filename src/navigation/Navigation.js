@@ -7,6 +7,7 @@ import ApplicationStatus from '../navigation/ApplicationStatus';
 import SaveJobs from '../navigation/SaveJob'
 import Notification from '../navigation/Notification';
 import Login from '../navigation/Login'
+import SettingsScreen from '../screens/SettingsScreen';
 
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
@@ -25,15 +26,7 @@ import { PersistGate } from 'redux-persist/lib/integration/react';
 
 const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
-const SettingsScreen = () => {
-  const {signout} = useContext(AuthContext);
-    return (
-      <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-        <Text>Logout</Text>
-        <Button title="Logout" onPress = {signout} />
-      </View>
-    );
-  }
+
 const MainNavigator = () => {
     return (
         <Tab.Navigator screenOptions={{headerShown: false, tabBarShowLabel: false}}>
@@ -80,10 +73,11 @@ const Navigator = () => {
     return (
       //
         <Stack.Navigator screenOptions={{}}>
-          <Stack.Screen name="Login" component={Login} options={{headerShown: false}}/>
+          {/* <Stack.Screen name="Login" component={Login} options={{headerShown: false}}/> */}
           <Stack.Screen name="MainNavigator" component={MainNavigator} options={{headerShown: false}}/>
           <Stack.Screen name="JobDetails" component={JobDescription} options={{headerShown: false}}/>
           <Stack.Screen name="Apply" component={ApplyFormScreen} options={{headerShown: false}}/>
+          <Stack.Screen name="Login" component={Login} options={{headerShown: false}}/>
         </Stack.Navigator>
     );
 }

@@ -28,13 +28,13 @@ export const createAxios = (user, dispatch, loginSuccess) => {
             if (decodedToken.exp < date.getTime() / 1000) {
                 const data = await refreshToken(user?.tokens.refresh);
                 console.log('data', data);
-                const refreshUser = {
-                    ...user,
-                    accessToken: data.accessToken,
-                    refreshToken: data.refreshToken,
-                };
-                dispatch(loginSuccess(refreshUser));
-                config.headers['Authorization'] = 'Bearer ' + data.accessToken;
+                // const refreshUser = {
+                //     ...user,
+                //     accessToken: data.accessToken,
+                //     refreshToken: data.refreshToken,
+                // };
+                // dispatch(loginSuccess(refreshUser));
+                // config.headers['Authorization'] = 'Bearer ' + data.accessToken;
             }
             return config;
         },

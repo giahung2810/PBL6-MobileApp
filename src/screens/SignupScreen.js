@@ -9,7 +9,8 @@ import { useDispatch } from 'react-redux'
 import { useNavigation } from '@react-navigation/native';
 import { registerUser } from '../redux/apiRequest'
 import DateofBirth from '../components/DatatimePicker/DateofBirth'
-// import 'react-day-picker/dist/style.css';
+import { useSelector } from 'react-redux';
+import AppLoader from '../components/Loading/AppLoader'
 
 const EMAIL_REGEX =
   /^[a-zA-Z0-9.!#$%&’*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/;
@@ -21,7 +22,7 @@ const SignupScreen = () => {
     const prd = watch('password')
     const [Gender,setGender] = useState(false);
     const [error, setError] = useState();
-
+    const isFetching = useSelector((state) => state.auth.register.isFetching);
     const [date_of_birth, setDate_of_birth] = useState('');
 
     const onRegister = (data) => {
@@ -33,13 +34,13 @@ const SignupScreen = () => {
             date_of_birth: date_of_birth
         }
         registerUser(newdata, dispatch, navigation);
-        setError(response);
         // console.log(response.errors);
     }
     const onSignin = () => {
         navigation.navigate('SignIn');
     }
   return (
+    <>
     <ScrollView showsVerticalScrollIndicator= {false}>
     <View style={styles.root}>
         <Text style={[styles.title]}>Create an account</Text>
@@ -124,6 +125,8 @@ const SignupScreen = () => {
 
     </View>
     </ScrollView>
+    {isFetching ? <AppLoader /> : null}
+    </>
   )
 }
 

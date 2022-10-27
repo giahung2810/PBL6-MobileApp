@@ -13,6 +13,7 @@ import { useNavigation } from '@react-navigation/native';
 import { loginUser } from '../redux/apiRequest'
 import { store } from '../redux/store'
 import { useSelector } from 'react-redux';
+import AppLoader from '../components/Loading/AppLoader'
 
 
 const SigninScreen = () => {
@@ -24,6 +25,7 @@ const SigninScreen = () => {
     const dispatch = useDispatch();
     const navigation = useNavigation();
     const user = useSelector((state) => state.auth.login.message);
+    const isFetching = useSelector((state) => state.auth.login.isFetching);
     const onSignin = (data) => {
         // console.log(data.username);
         // navigation.navigate('Home')
@@ -41,6 +43,7 @@ const SigninScreen = () => {
         navigation.navigate('SignUp')
     }
   return (
+    <>
     <ScrollView showsVerticalScrollIndicator= {false} style={{flex:1, backgroundColor: '#fff'}}>
     <View style={styles.root}>
         <Image style={[styles.logo, {height: height * 0.3}]} source={Logo} resizeMode='contain' />
@@ -101,6 +104,8 @@ const SigninScreen = () => {
 
     </View>
     </ScrollView>
+    {isFetching ? <AppLoader /> : null}
+    </>
   )
 }
 

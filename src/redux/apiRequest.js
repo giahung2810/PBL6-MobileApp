@@ -1,7 +1,7 @@
 import {createAxios as apiJWT} from '../api/apiJob'
 import {instance as apiJob} from '../api/apiJob'
 
-import { loginFailed, loginStart, loginSuccess, registerFailed, registerStart, registerSuccess } from './authSlice'
+import { loginFailed, loginStart, loginSuccess, registerFailed, registerStart, registerSuccess, logoutFailed, logoutSuccess, logoutStart} from './authSlice'
 
 export const loginUser = async (user, dispatch, navigation) => {
     dispatch(loginStart());
@@ -38,5 +38,16 @@ export const registerUser = async (user, dispatch, navigation) => {
           });
     } catch (error) {
         dispatch(registerFailed(error.response.data));
+    }
+};
+
+export const logoutUser = async ( dispatch, navigation, accesstoken, axiosJWT) => {
+    dispatch(logoutStart());
+    try{
+        await axiosJWT.post('/logout');
+        dispatch(logoutSuccess());
+        navigation.navigate('Login')
+    } catch (error) {
+        dispatch(logoutFailed());
     }
 }

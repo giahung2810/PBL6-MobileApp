@@ -1,4 +1,4 @@
-import {configureStore, combineReducers} from "@reduxjs/toolkit"
+import {configureStore, createStore , combineReducers} from "@reduxjs/toolkit"
 import authReducer from "./authSlice"
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
@@ -12,6 +12,7 @@ import {
     PURGE,
     REGISTER,
   } from 'redux-persist'
+
 
 const persistConfig = {
     key: 'root',
