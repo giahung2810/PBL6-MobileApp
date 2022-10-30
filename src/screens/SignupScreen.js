@@ -1,7 +1,7 @@
 import { View,Text, Button, StyleSheet, ScrollView } from 'react-native'
 import React, {useState} from 'react'
 import CustomInput from '../components/CustomInput'
-import CustomButton from '../components/CustomButton'
+import CustomButton from '../components/Button/CustomButton'
 import Space from '../components/Space'
 import SocialSignInButton from '../components/SocialSignInButton'
 import {useForm } from 'react-hook-form'

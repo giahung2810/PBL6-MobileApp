@@ -4,7 +4,7 @@ import Logo from '../../../assets/logo.png'
 import HighlightDetail from '../highlight_job/HighlightDetail'
 import { Fontisto } from '@expo/vector-icons'; 
 import { MaterialIcons } from '@expo/vector-icons'; 
-import ButtomApply from '../ButtonApply';
+import ButtomApply from '../Button/ButtonApply';
 
 const RecommendJob = () => {
     const [favorite, setFavorite] = useState(false);

@@ -11,21 +11,17 @@ import {
   Platform,
   ScrollView
 } from 'react-native';
-import {Keyboard} from 'react-native'
-import Company from '../../assets/company.jpg'
-import { Avatar } from 'react-native-paper'
 import Modal from 'react-native-modal';
 import { TextInput as PaperTextInput } from "react-native-paper";
-import { navigate } from '../navigationRef';
 
 // Import Document Picker
 // import DocumentPicker from 'react-native-document-picker';
 import * as DocumentPicker from 'expo-document-picker';
-import ChooseFileCV from '../components/ChooseFileCV';
+import ChooseFileCV from '../components/FileUpload/ChooseFileCV';
 import FileCV from '../components/FileCV'
 import HeaderCompanyDescription from '../components/HeaderCompanyDescription'
 import ApplyJobSuccessModal from '../components/Modal/ApplyjobSuccessModal'
-import ButtomApply from '../components/ButtonApply';
+import ButtomApply from '../components/Button/ButtonApply';
 
 const ApplyFormScreen = ({navigation}) => {
   const [singleFile, setSingleFile] = useState(null);

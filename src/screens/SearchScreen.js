@@ -1,4 +1,4 @@
-import { SafeAreaView, StyleSheet, TouchableOpacity, View } from 'react-native'
+import { SafeAreaView, StyleSheet, TouchableOpacity, View,Platform,StatusBar  } from 'react-native'
 import React, {useState} from 'react'
 import SearchBar from '../components/Search/SearchBar'
 import { AntDesign } from '@expo/vector-icons'; 
@@ -7,8 +7,8 @@ import AppLoader2 from '../components/Loading/Apploader2';
 const SearchScreen = ({navigation}) => {
     const [isFocus,setIsFocus] = useState(false);
     return (
-    <>
-        <SafeAreaView style={{backgroundColor: '#fff', flex: 1}}>
+    // <>
+        <SafeAreaView style={[{backgroundColor: '#fff', flex: 1}, styles.container]}>
             <View style={styles.header}>
                  <TouchableOpacity onPress={() => navigation.goBack()} style={styles.icon}>
                     <AntDesign name="arrowleft" size={24} color="black" />
@@ -21,14 +21,15 @@ const SearchScreen = ({navigation}) => {
                 <AppLoader2/>
             </View>: null}
         </SafeAreaView>
-        {/* <AppLoader2/> */}
-    </>
     )
 }
 
 export default SearchScreen
 
 const styles = StyleSheet.create({
+    container:{
+        paddingTop: Platform.OS === "android" ? StatusBar.currentHeight : 0
+    },
     header:{
         flexDirection: 'row',
         width: '100%',

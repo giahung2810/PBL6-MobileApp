@@ -5,7 +5,7 @@ import { AntDesign } from '@expo/vector-icons';
 import JobDetailsCard from '../components/JobDetailHeaderCard/JobDetailsCard'
 import Space from '../components/Space'
 import Tag from '../components/Tag/Tag'
-import ButtomApply from '../components/ButtonApply';
+import ButtomApply from '../components/Button/ButtonApply';
 
 const ApplicationStages = ({navigation}) => {
 

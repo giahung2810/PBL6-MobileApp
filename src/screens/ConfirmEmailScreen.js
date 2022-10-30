@@ -1,7 +1,7 @@
 import React, {useState} from 'react';
 import {View, Text, StyleSheet, ScrollView} from 'react-native';
 import CustomInput from '../components/CustomInput';
-import CustomButton from '../components/CustomButton';
+import CustomButton from '../components/Button/CustomButton';
 import {useForm } from 'react-hook-form'
 
 

@@ -4,7 +4,7 @@ import { View, Text, StyleSheet, TouchableOpacity, Image } from 'react-native';
 import DescriptionScreen from '../components/DescriptionScreen/DescriptionScreen';
 import { MaterialIcons } from '@expo/vector-icons'; 
 import HeaderCompanyDescription from '../components/HeaderCompanyDescription'
-import ButtomApply from '../components/ButtonApply';
+import ButtomApply from '../components/Button/ButtonApply';
 // import { navigate } from '../../navigationRef';
 
 const JobDescription = ({navigation}) => {

@@ -7,7 +7,8 @@ import ApplicationStatus from '../navigation/ApplicationStatus';
 import SaveJobs from '../navigation/SaveJob'
 import Notification from '../navigation/Notification';
 import Login from '../navigation/Login'
-import SettingsScreen from '../screens/SettingsScreen';
+import SearchScreen from '../screens/SearchScreen';
+import Profile from '../navigation/Profile'
 
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
@@ -25,25 +26,27 @@ import {Context as AuthContext} from '../context/AuthContext';
 import { Provider } from 'react-redux';
 import {store, persistor} from '../redux/store'
 import { PersistGate } from 'redux-persist/lib/integration/react';
-import SearchScreen from '../screens/SearchScreen';
+
 
 const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
 
 const MainNavigator = () => {
     return (
-        <Tab.Navigator screenOptions={{headerShown: false, tabBarShowLabel: false}}>
+        <Tab.Navigator screenOptions={{ tabBarShowLabel: false}}>
             <Tab.Screen name="Home" component={HomeScreen} 
                     options={{
                       tabBarIcon: ({color}) => {
                         return <AntDesign name="home" size={24} color={color} />
-                      }
+                      },
+                      headerShown: false
                     }} />
             <Tab.Screen name="SaveJobs" component={SaveJobs}   
                     options={{
                       tabBarIcon: ({color}) => {
                         return <MaterialIcons name="bookmark-border" size={26} color={color} />
-                      }
+                      },
+                      headerShown: false
                     }}
             />
             <Tab.Screen name="Application" component={ApplicationStatus}  
@@ -59,15 +62,17 @@ const MainNavigator = () => {
                       tabBarIcon: ({color}) => {
                         return <Feather name="bell" size={24} color={color} />
                       },
-                      tabBarBadge: 3
+                      tabBarBadge: 3,
+                      headerShown: false
                     }}
             />
-            <Tab.Screen name="Settings" component={SettingsScreen} 
+            <Tab.Screen name="Profile" component={Profile} 
                     options={{
                       tabBarIcon: ({color}) => {
                         return <Ionicons name="person" size={24} color={color} />
-                      }
-                    }} 
+                      },
+                      headerShown: false
+                    }}
             />
         </Tab.Navigator>
     );

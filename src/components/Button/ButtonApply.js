@@ -21,9 +21,10 @@ const ButtomApply = ({onPress, text}) => {
 const styles = StyleSheet.create({
   container: {
     backgroundColor: '#246BFD', 
-    // paddingHorizontal
+    // marginHorizontal: 18,
     width: '100%',
-    height: '100%',
+    // height: '100%',
+    paddingVertical: 18,
     justifyContent: 'center',
     alignItems: 'center',
     borderRadius: 16

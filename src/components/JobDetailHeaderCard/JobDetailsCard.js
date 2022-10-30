@@ -48,15 +48,15 @@ const styles = StyleSheet.create({
         borderColor: '#E0E0E0',
         padding: 18,
 
-        shadowColor: "#000",
-        shadowOffset: {
-            width: 0,
-            height: 1,
-        },
-        shadowOpacity: 0.2,
-        shadowRadius: 1.65,
+        // shadowColor: "#000",
+        // shadowOffset: {
+        //     width: 0,
+        //     height: 1,
+        // },
+        // shadowOpacity: 0.2,
+        // shadowRadius: 1.65,
 
-        elevation: 3,
+        // elevation: 3,
     },
     image: {
         width: 92,

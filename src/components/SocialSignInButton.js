@@ -1,6 +1,6 @@
 import { View, Text } from 'react-native'
 import React from 'react'
-import CustomButton from './CustomButton'
+import CustomButton from './Button/CustomButton'
 // import * as Google from 'expo-auth-session/providers/google';
 // import * as WebBrowser from 'expo-web-browser';
 
