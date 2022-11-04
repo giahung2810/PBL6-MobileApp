@@ -40,7 +40,7 @@ export default function DescriptionScreen() {
           marginHorizontal={50}
           tabsContainerStyle={{ height: 30, backgroundColor: '#eeeef0'}}
           tabStyle={{
-            // backgroundColor: '#F2F2F2',
+            backgroundColor: '#fff',
             borderWidth: 0,
             borderColor: 'transparent',
           }}

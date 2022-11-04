@@ -28,12 +28,12 @@ const SavedJobs = ({navigation}) => {
                 // onTermSubmit = {() => searchApi(term)}
                 />
                 <View style={{height: 8}} />
-                <JobCard onPress={() => setModalVisible(!modalVisible)}/>
-                <JobCard onPress={() => setModalVisible(!modalVisible)}/>
-                <JobCard onPress={() => setModalVisible(!modalVisible)}/>
-                <JobCard onPress={() => setModalVisible(!modalVisible)}/>
-                <JobCard onPress={() => setModalVisible(!modalVisible)}/>
-                <JobCard onPress={() => setModalVisible(!modalVisible)}/>
+                <JobCard onPress={() => setModalVisible(!modalVisible)} favorite={true}/>
+                <JobCard onPress={() => setModalVisible(!modalVisible)} favorite={true}/>
+                {/* <JobCard onPress={() => setModalVisible(!modalVisible)} favorite={true}/>
+                <JobCard onPress={() => setModalVisible(!modalVisible)} favorite={true}/>
+                <JobCard onPress={() => setModalVisible(!modalVisible)} favorite={true}/>
+                <JobCard onPress={() => setModalVisible(!modalVisible)} favorite={true}/> */}
             </View>
             <Modal
                 testID={'modal'}

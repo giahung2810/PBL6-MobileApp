@@ -1,7 +1,6 @@
 import React, {useState} from 'react';
 import { View, Image, Text , StyleSheet, TouchableOpacity } from 'react-native';
 import Logo from '../../../assets/logo.png'
-import HighlightDetail from '../highlight_job/HighlightDetail'
 import { Fontisto } from '@expo/vector-icons'; 
 import { MaterialIcons } from '@expo/vector-icons'; 
 import ButtomApply from '../Button/ButtonApply';

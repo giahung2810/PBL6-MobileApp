@@ -11,10 +11,7 @@ const NotificationScreen = ({navigation}) => {
           headerTitle:'',
           headerLeft : () => (
             <View style= {{ flexDirection: 'row' , alignItems: 'center'}}>
-                <TouchableOpacity onPress={() => navigation.goBack()}>
-                    <AntDesign name="arrowleft" size={24} color="black" />
-                </TouchableOpacity>
-                <Topbar headerTitle='Notification' icon = {false}/>
+                <Topbar headerTitle='Notification' />
             </View> 
           ),
         }) 

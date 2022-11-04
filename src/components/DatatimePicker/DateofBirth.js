@@ -36,7 +36,7 @@ const styleSheet = StyleSheet.create({
   MainContainer: {
     // padding: 6,
     alignItems: 'center',
-    backgroundColor: 'white',
+    backgroundColor: '#FAFAFA',
     borderRadius:20,
     width: 370,
 

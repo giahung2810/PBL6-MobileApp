@@ -9,7 +9,7 @@ import { AntDesign } from '@expo/vector-icons';
 import { SelectGender } from './SelectPicker/SelectGender';
 
 const CustomInput = function ({
-  control, name, rules = {}, placeholder, secureTextEntry, setValue, editable = true, register
+  control, name, rules = {}, placeholder, secureTextEntry = false, setValue, editable = true, register
 }) {
   const [isFocus, setIsFocus] = useState(false);
 
@@ -24,7 +24,7 @@ const CustomInput = function ({
             style={[
               styles.container,
               { borderColor: error ? 'red' : isFocus ? 'blue' : '#e8e8e8' },
-              { backgroundColor: editable ? '#fff' : '#f2f0f0'},
+              { backgroundColor: editable ? '#FAFAFA' : '#f2f0f0'},
             ]}>
             {name === 'email' ?
               <MaterialIcons name="email" size={20} color={isFocus ? 'blue' : '#e8e8e8'} /> :

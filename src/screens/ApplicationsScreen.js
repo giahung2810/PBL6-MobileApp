@@ -15,6 +15,7 @@ const ApplicationsScreen = ({navigation}) => {
               <Topbar headerTitle='Applications'/>
             </View> 
           ),
+          headerTopInsetEnabled: false
         }) 
       }, []);
   return (      

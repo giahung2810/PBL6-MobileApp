@@ -20,7 +20,10 @@ import { MaterialIcons } from '@expo/vector-icons';
 import { Feather } from '@expo/vector-icons'; 
 import { Ionicons } from '@expo/vector-icons'; 
 
-
+import {
+  SafeAreaProvider,
+  useSafeAreaInsets,
+} from 'react-native-safe-area-context';
 import { Provider as AuthProvider } from '../context/AuthContext';
 import {Context as AuthContext} from '../context/AuthContext';
 import { Provider } from 'react-redux';
@@ -82,7 +85,7 @@ const Navigator = () => {
       //
         <Stack.Navigator screenOptions={{}}>
           <Stack.Screen name="MainNavigator" component={MainNavigator} options={{headerShown: false}}/>
-          <Stack.Screen name="JobDetails" component={JobDescription} options={{headerShown: false}}/>
+          <Stack.Screen name="JobDetails" component={JobDescription} />
           <Stack.Screen name="Apply" component={ApplyFormScreen} options={{headerShown: false}}/>
           <Stack.Screen name="Login" component={Login} options={{headerShown: false}}/>
           <Stack.Screen name="Search" component={SearchScreen} options={{headerShown: false}}/>
@@ -95,9 +98,11 @@ export default function Navigation() {
       <Provider store={store}>
         <PersistGate loading={null} persistor={persistor} >
           <AuthProvider>
-            <NavigationContainer ref= {( navigator ) => { setNavigator(navigator) }} >
-                <Navigator />
-            </NavigationContainer>
+            <SafeAreaProvider>
+              <NavigationContainer ref= {( navigator ) => { setNavigator(navigator) }} >
+                  <Navigator />
+              </NavigationContainer>
+            </SafeAreaProvider>
           </AuthProvider>
         </PersistGate>
       </Provider>

@@ -1,6 +1,8 @@
 import { View, Image, StyleSheet, useWindowDimensions, ScrollView , Text} from 'react-native'
 import React, {useState, useContext} from 'react'
 import Logo from '../../assets/logo_1.png'
+import LogoApp from '../../assets/LogoApp.png'
+
 import CustomInput from '../components/CustomInput'
 import CustomButton from '../components/Button/CustomButton'
 import Space from '../components/Space'
@@ -46,14 +48,14 @@ const SigninScreen = () => {
     <>
     <ScrollView showsVerticalScrollIndicator= {false} style={{flex:1, backgroundColor: '#fff'}}>
     <View style={styles.root}>
-        <Image style={[styles.logo, {height: height * 0.3}]} source={Logo} resizeMode='contain' />
-
+        {/* <Image style={[styles.logo, {height: height * 0.3}]} source={Logo} resizeMode='contain' /> */}
+        <Image style={[styles.logo, {height: height * 0.2}]} source={LogoApp}  resizeMode='contain'/>
         {/* <CustomInput placeholder = "Username" value= {username} setValue={setUsername}/>
         <CustomInput placeholder = "Password" value= {password} setValue={setPassword} secureTextEntry/>
          */}
 
         {/* <NavigationEvents onWillBlur={clearErrorMessage} /> */}
-
+        <Text style={styles.text}>Login to Your Account</Text>
         <CustomInput 
             placeholder = "Email" 
             name= 'email' 
@@ -67,7 +69,7 @@ const SigninScreen = () => {
             placeholder = "Password" 
             name= 'password' 
             control={control} 
-            secureTextEntry
+            secureTextEntry = {true}
             rules= {{
                 required: 'Password is required', 
                 minLength: {
@@ -79,7 +81,9 @@ const SigninScreen = () => {
         
         {user == null ? null
         : <Text style={styles.error}>{user.detail}</Text> }
-        <CustomButton 
+        <View style={{height:16}}/>
+
+        <CustomButton   
             text= "Sign In" 
             onPress={handleSubmit(onSignin)} 
             type="PRIMARY"
@@ -90,15 +94,13 @@ const SigninScreen = () => {
             type="TERTIARY"
         />
 
-        <Space />
 
         <SocialSignInButton/>
 
-        <Space />
 
         <CustomButton 
             text= "Don't have an account?" 
-            onPress={onSignup} 
+            onPress={onSignup}
             type="TERTIARY"
         />
 
@@ -117,13 +119,20 @@ const styles = StyleSheet.create({
     },
     logo : {
         width: '80%',
-        maxWidth: 300,
+        maxWidth: 110,
         maxHeight: 300,
+        marginTop:50
     },
     error:{
         fontFamily: 'Urbanist-Light',
         fontSize:14,
         color: 'red'
+    },
+    text:{
+        fontFamily: 'Urbanist-Bold',
+        fontSize: 32,
+        marginTop: 16,
+        marginBottom:32
     }
 })
 

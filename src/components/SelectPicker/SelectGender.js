@@ -8,7 +8,10 @@ export const SelectGender = ({setValue}) => {
                 { label: 'Female', value: 'female' },
                 { label: 'Other', value: 'other' },
             ]}
-            // placeholder= 'Male'
+            placeholder={{
+                label: 'Gender',
+                value: null,
+            }}
             textInputProps={{ fontSize: 16,
         }}
         />

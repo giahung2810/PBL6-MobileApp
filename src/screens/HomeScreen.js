@@ -6,9 +6,9 @@ import SearchBar from "../components/Search/SearchBar";
 import RecommendList from '../components/box_job/RecommendList'
 import Title from '../components/Title'
 import RecentList from '../components/recent_job/RecentList';
-import PopularList from '../components/Popular_job/PopularList'
 import { useSelector } from 'react-redux';
 import { useNavigation } from '@react-navigation/native';
+import DynamicHEaderSearch from '../components/Animation/DynamicHeaderSearchbar'
 
 const HomeScreen = () => {
   const [term, setTerm] = useState('');
@@ -22,20 +22,10 @@ const HomeScreen = () => {
   })
   return (      
     <>
+    <DynamicHEaderSearch username={user?.username}>
     <ScrollView style={{flex: 1, backgroundColor: '#fff'}}>
-      <View style={styles.boxHeader}></View>
+      {/* <View style={styles.boxHeader}></View> */}
     <View style={styles.boxContainer}>
-      <View style={styles.boxInfor}>
-        <View style={styles.boxName}>
-          <Text style={styles.helloText}>Hello,</Text>
-          <Text style={styles.nameText}>{user?.username}</Text>
-        </View>
-        <View>
-          <TouchableOpacity>
-            <Avatar.Image style={styles.Image} size={60} source={require('../../assets/dat.jpg')} />
-          </TouchableOpacity>
-        </View>
-      </View>
       <SearchBar 
         term= {term} 
         onTermChange = {setTerm}
@@ -51,6 +41,7 @@ const HomeScreen = () => {
       <RecentList />
     </View>
     </ScrollView>
+    </DynamicHEaderSearch>
     </>
   );
 };
@@ -71,8 +62,8 @@ const styles = StyleSheet.create({
   boxContainer: {
     height: '100%', 
     // backgroundColor: '#FFF',
-    marginTop:58,
-    marginHorizontal: 24
+    marginHorizontal: 24,
+    marginTop: 8
   },
   boxInfor: {
     flexDirection: "row",

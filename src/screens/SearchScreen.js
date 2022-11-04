@@ -34,6 +34,7 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         width: '100%',
         // justifyContent: 'space-around'
+        alignItems: 'center',
     },
     icon:{
         marginHorizontal: 16,

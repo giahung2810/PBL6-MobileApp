@@ -8,13 +8,14 @@ import Space from '../Space';
 import { FontAwesome } from '@expo/vector-icons'; 
 
 
-const JobCard = ({onPress}) => {
-    const [favorite, setFavorite] = useState(false);
+const JobCard = ({onPress, favorite = false}) => {
+    const [favorites, setFavorite] = useState(favorite);
     const agregarFavoritos = () => {
-        setFavorite(!favorite);
+        setFavorite(!favorites);
       };
+    console.log(favorites)
     return (
-        <TouchableOpacity style={styles.container} >
+        <TouchableOpacity style={styles.container} onPress={() => navigate('JobDetails')}>
             <View style={styles.container_child1}>
                 <Image style={styles.image} source={Logo}  resizeMode='contain'/>
                 <View style={styles.boxDetail}>
@@ -22,8 +23,8 @@ const JobCard = ({onPress}) => {
                     <Text style={styles.company}>Pessi LLC</Text>   
                 </View>
                 <TouchableOpacity onPress={() => agregarFavoritos()}>
-                    {   favorite ? 
-                        <TouchableOpacity onPress={() => {onPress(); agregarFavoritos()}} >
+                    {   favorites ? 
+                        <TouchableOpacity onPress={() => {onPress? onPress(): null; agregarFavoritos()}} >
                             <FontAwesome name="bookmark" size={28} color="blue" />
                         </TouchableOpacity>
                             : <FontAwesome name="bookmark-o" size={28} color="black" />

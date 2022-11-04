@@ -9,8 +9,8 @@ const Notify = () => {
     const navigation = useNavigation();
     return (
     <TouchableOpacity  style={[styles.container]} 
-        onPress={() => {navigation.navigate('Application', { 
-            screen: 'ApplicationStages',
+        onPress={() => {navigation.navigate('Notification', { 
+            screen: 'NotificationAboutJob',
             initial: false,
         })}}
     >

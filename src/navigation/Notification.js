@@ -1,6 +1,7 @@
 import NotificationScreen from '../screens/NotificationScreen'
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import {getStatusBarHeight} from 'react-native-status-bar-height';
+import NotificationAboutJob from '../screens/NotificationAboutJob';
 
 const Stack = createNativeStackNavigator();
 const Notification = () => {
@@ -12,7 +13,13 @@ const Notification = () => {
             component={NotificationScreen} 
             options={{
             }}
-        />
+          />
+          <Stack.Screen name="NotificationAboutJob"
+            component={NotificationAboutJob}
+            options={{
+
+            }}
+          />
         </Stack.Navigator>
     );
 }

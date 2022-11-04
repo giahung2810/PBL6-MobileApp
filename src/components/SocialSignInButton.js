@@ -1,6 +1,6 @@
-import { View, Text } from 'react-native'
+import { View, Text, StyleSheet } from 'react-native'
 import React from 'react'
-import CustomButton from './Button/CustomButton'
+import SocialMediaButton from './Button/SocialMediaButton'
 // import * as Google from 'expo-auth-session/providers/google';
 // import * as WebBrowser from 'expo-web-browser';
 
@@ -48,27 +48,26 @@ const SocialSignInButton = () => {
     }
     return (
     <>
-        <CustomButton 
-            text= "Sign In with Facebook" 
-            onPress={onSigninFB} 
-            bgColor= '#E7EAF4'
-            fgColor= '#4765A9'
-
-        />
-        <CustomButton 
-            text= "Sign In with Google" 
-            onPress={onSigninGG} 
-            bgColor='#FAE9EA'
-            fgColor='#DD4D44'
-        />
-        <CustomButton 
-            text= "Sign In with Apple" 
-            onPress={onSigninAP} 
-            bgColor= '#e3e3e3'
-            fgColor='#363636'
-        />
+        <View style={{flexDirection: 'row', alignItems: 'center', justifyContent: 'center', marginBottom: 20}}>
+        <View style={{flex: 1, height: 1, backgroundColor: '#EEEEEE'}} />
+        <View>
+            <Text style={{textAlign: 'center', paddingHorizontal: 20, color: '#757575', fontFamily: 'Urbanist-SemiBold', fontSize: 18}}>
+                or continue with
+            </Text>
+        </View>
+        <View style={{flex: 1, height: 1, backgroundColor: '#EEEEEE'}} />
+        </View>
+        <View style={styles.container}>
+            <SocialMediaButton type="facebook" />
+            <SocialMediaButton type="goole" />
+            <SocialMediaButton type="apple" />
+        </View>
     </>
   )
 }
-
+const styles = StyleSheet.create({
+    container: {
+        flexDirection: 'row',
+    }
+})
 export default SocialSignInButton

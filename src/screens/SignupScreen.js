@@ -1,4 +1,4 @@
-import { View,Text, Button, StyleSheet, ScrollView } from 'react-native'
+import { View,Text, Button, StyleSheet, ScrollView, Image,useWindowDimensions } from 'react-native'
 import React, {useState} from 'react'
 import CustomInput from '../components/CustomInput'
 import CustomButton from '../components/Button/CustomButton'
@@ -11,6 +11,7 @@ import { registerUser } from '../redux/apiRequest'
 import DateofBirth from '../components/DatatimePicker/DateofBirth'
 import { useSelector } from 'react-redux';
 import AppLoader from '../components/Loading/AppLoader'
+import LogoApp from '../../assets/LogoApp.png'
 
 const EMAIL_REGEX =
   /^[a-zA-Z0-9.!#$%&’*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/;
@@ -24,6 +25,7 @@ const SignupScreen = () => {
     const [error, setError] = useState();
     const isFetching = useSelector((state) => state.auth.register.isFetching);
     const [date_of_birth, setDate_of_birth] = useState('');
+    const {height} = useWindowDimensions();
 
     const onRegister = (data) => {
         // navigation.navigate('ConfirmEmail');
@@ -41,10 +43,12 @@ const SignupScreen = () => {
     }
   return (
     <>
-    <ScrollView showsVerticalScrollIndicator= {false}>
+    <ScrollView showsVerticalScrollIndicator= {false} style={{flex: 1, backgroundColor: '#fff'}}>
     <View style={styles.root}>
-        <Text style={[styles.title]}>Create an account</Text>
-
+        <View style={{alignItems: 'center', width: '100%'}}>
+            <Image style={[styles.logo, {height: height * 0.16}]} source={LogoApp}  resizeMode='contain'/>
+            <Text style={[styles.title]}>Create an account</Text>
+        </View>
         {/* <CustomInput 
             name='username'
             control={control}
@@ -61,6 +65,7 @@ const SignupScreen = () => {
                 }
             }}
         /> */}
+        <Text style={styles.field}>Email</Text>
         <CustomInput 
             name='email'
             control={control}
@@ -70,6 +75,7 @@ const SignupScreen = () => {
                 pattern: {value: EMAIL_REGEX, message: 'Email is invalid'}
             }}
         />
+        <Text style={styles.field}>Password</Text>
         <CustomInput 
             name='password'
             control={control}
@@ -98,9 +104,10 @@ const SignupScreen = () => {
             placeholder = "Day of birth"
         /> */}
         <View>
+            <Text style={styles.field}>Date of Birth</Text>
             <DateofBirth setDate_of_birth={setDate_of_birth} />
         </View>
-
+        <Text style={styles.field}>Gender</Text>
         <CustomInput 
             name='gender'
             control={control}
@@ -132,7 +139,7 @@ const SignupScreen = () => {
 
 const styles = StyleSheet.create({
     root: {
-        alignItems: 'center',
+        // alignItems: 'center',
         paddingHorizontal:20,
         paddingTop: 20
     },
@@ -144,11 +151,22 @@ const styles = StyleSheet.create({
         color: '#FDB075'
     },
     title: {
-        fontSize: 24,
-        fontWeight: 'bold',
-        color: '#3B71F3',
-        margin: 10,
-        paddingVertical: 30
+        fontFamily: 'Urbanist-Bold',
+        fontSize: 32,
+        marginTop: 16,
+        marginBottom:32
+    },
+    logo : {
+        width: '80%',
+        maxWidth: 110,
+        maxHeight: 300,
+        marginTop:50
+    },
+    field:{
+        color: '#a8a8a8',
+        fontFamily: 'Urbanist-Medium',
+        fontSize: 12,
+        marginVertical:4
     }
 })
 

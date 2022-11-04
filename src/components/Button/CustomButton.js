@@ -26,11 +26,11 @@ const styles = StyleSheet.create({
   container: {
     width: '100%',
 
-    padding: 15,
+    padding: 18,
     marginVertical: 5,
 
     alignItems: 'center',
-    borderRadius: 5,
+    borderRadius: 100,
   },
 
   container_PRIMARY: {
@@ -45,7 +45,9 @@ const styles = StyleSheet.create({
   container_TERTIARY: {},
 
   text: {
-    fontWeight: 'bold',
+    // fontWeight: 'bold',
+    fontFamily: 'Urbanist-Bold',
+    fontSize: 16,
     color: 'white',
   },
 
@@ -53,8 +55,8 @@ const styles = StyleSheet.create({
     color: '#3B71F3',
   },
 
-  text_TERTIARY: {
-    color: 'gray',
+  text_TERTIARY: { 
+    color: '#246BFD',
   },
 });
 

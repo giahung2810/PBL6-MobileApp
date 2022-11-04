@@ -38,12 +38,12 @@ const styles = StyleSheet.create({
         backgroundColor: '#FFF',
         height: 50,
         borderRadius: 12,
-        marginTop: 16,
+        // marginTop: 16,
         borderWidth: 1,
         // marginHorizontal: 10,
         flexDirection: 'row',
         // alignItems: 'center',
-        marginBottom: 8,
+        // marginBottom: 8,
 
         shadowColor: "#000",
         shadowOffset: {

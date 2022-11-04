@@ -1,53 +1,92 @@
 // import * as React from 'react';
-import React, {useState} from 'react';
-import { View, Text, StyleSheet, TouchableOpacity, Image } from 'react-native';
+import React, {useState, useRef, useLayoutEffect} from 'react';
+import { View, Text, StyleSheet, TouchableOpacity, Image,ScrollView, Animated } from 'react-native';
 import DescriptionScreen from '../components/DescriptionScreen/DescriptionScreen';
 import { MaterialIcons } from '@expo/vector-icons'; 
 import HeaderCompanyDescription from '../components/HeaderCompanyDescription'
 import ButtomApply from '../components/Button/ButtonApply';
+import DynamicHeader from '../components/Animation/DynamicHeaderDecription';
+import Topbar from '../components/topbar/Topbar'
+import { AntDesign } from '@expo/vector-icons'; 
+import { FontAwesome } from '@expo/vector-icons'; 
+import JobDetailsCard from '../components/JobDetailHeaderCard/JobDetailsCard'
+import { Feather } from '@expo/vector-icons'; 
+
 // import { navigate } from '../../navigationRef';
 
 const JobDescription = ({navigation}) => {
   const [favorite, setFavorite] = useState(false);
-    const agregarFavoritos = () => {
-        setFavorite(!favorite);
-      };
-  const [modalVisible, setModalVisible] = useState(false);
+  const agregarFavoritos = () => {
+      setFavorite(!favorite);
+    };
+  useLayoutEffect(() => { 
+    navigation.setOptions({ 
+      headerTitle: '',
+      headerLeft : () => (
+        <View style= {{ flexDirection: 'row' , alignItems: 'center'}}>
+            <TouchableOpacity onPress={() => navigation.goBack()}>
+                <AntDesign name="arrowleft" size={24} color="black" />
+            </TouchableOpacity>
+            <Topbar headerTitle='' icon = {false}/>
+        </View> 
+      ), 
+      headerRight: () => (
+        <View style={{flexDirection: 'row' , alignItems: 'center'}}>
+          <TouchableOpacity onPress={() => agregarFavoritos()} style={{ paddingVertical:4, paddingHorizontal:8  }}>
+              {   favorite ? 
+                  <TouchableOpacity onPress={() => { agregarFavoritos()}} >
+                      <FontAwesome name="bookmark" size={28} color="blue" />
+                  </TouchableOpacity>
+                      : <FontAwesome name="bookmark-o" size={28} color="black" />
+              }
+          </TouchableOpacity>
+          <TouchableOpacity onPress={() => console.log("SEND")} style={{ paddingVertical:4, paddingHorizontal:8 }}>
+            <Feather name="send" size={24} color="black" />
+          </TouchableOpacity>
+        </View> 
+      ),
+    }) 
+  }, [favorite]);
     return (      
-      <>
-      {/* <ScrollView style={styles.detail}> */}
-        <HeaderCompanyDescription/>
-        <View style={styles.space}/>
-        <DescriptionScreen />
-      {/* </ScrollView> */}
-      <View style={styles.buttonbottom}>
-        <TouchableOpacity style={styles.boxButton_save}  onPress={() => agregarFavoritos()}>
-            {   favorite ? 
-              <Text style={styles.buttonText_save}>SAVE</Text> :
-              <Text style={styles.buttonText_save}>SAVE</Text> 
-            }         
-            {   favorite ? 
-                  <MaterialIcons name="favorite" size={26} color="blue" style={styles.icon}/> 
-                  : <MaterialIcons name="favorite-outline" size={26} color="black" style={styles.icon}/>
-            }
-        </TouchableOpacity>
-        {/* <TouchableOpacity style={styles.boxButton_apply}  onPress={() => navigation.navigate('Apply')}>
-            <Text style={styles.buttonText_apply}>APPLY NOW</Text>
-        </TouchableOpacity> */}
-        <View style={styles.boxButton_apply}>
-          <ButtomApply onPress={() => navigation.navigate('Apply')} text='Apply'/>
+      <View style={{flex: 1, backgroundColor: '#fff'}}>
+        {/* <DynamicHeader animHeaderValue={scrollOffsetY} /> */}
+                {/* <HeaderCompanyDescription/>  */}
+
+        <ScrollView style={styles.detail} >
+        {/* <HeaderCompanyDescription/> */}
+        <View style={{marginVertical:8}}>
+          <JobDetailsCard />
         </View>
+        {/* <View style={styles.space}/> */}
+          <DescriptionScreen />
+        </ScrollView>
+        <View style={styles.buttonbottom}>
+          {/* <TouchableOpacity style={styles.boxButton_save}  onPress={() => agregarFavoritos()}>
+              {   favorite ? 
+                <Text style={styles.buttonText_save}>SAVE</Text> :
+                <Text style={styles.buttonText_save}>SAVE</Text> 
+              }         
+              {   favorite ? 
+                    <MaterialIcons name="favorite" size={26} color="blue" style={styles.icon}/> 
+                    : <MaterialIcons name="favorite-outline" size={26} color="black" style={styles.icon}/>
+              }
+          </TouchableOpacity> */}
+          <View style={styles.boxButton_apply}>
+            <ButtomApply onPress={() => navigation.navigate('Apply')} text='Apply'/>
+          </View>
+        </View>
+      
       </View>
-      </>
     );
   };
 export default  JobDescription;
   
 const styles = StyleSheet.create({
-  // detail:{
-  //   height: 990,
-
-  // },
+  detail:{
+    height: 990,
+    flex:1,
+    paddingHorizontal:12
+  },
   image:{
     width: '100%',
     height: 200,
@@ -103,7 +142,7 @@ const styles = StyleSheet.create({
   },
   space: {
     height: 55,
-    backgroundColor: '#eeeef0'
+    backgroundColor: '#fff'
   },
   boxButton_apply:{
     // backgroundColor: '#0085FF',
@@ -119,12 +158,13 @@ const styles = StyleSheet.create({
   buttonbottom:{
     // height: 80
     width: '100%',
-    position: 'absolute',
-    bottom: 40,
+    // position: 'absolute',
+    // bottom: 40,
     zIndex:4,
     flexDirection: 'row',
     justifyContent: 'space-between',
-    marginLeft: 12
+    // marginLeft: 12,
+    marginBottom: 20
   },
   boxButton_save:{
     padding: 12,
