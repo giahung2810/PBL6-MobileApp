@@ -5,7 +5,6 @@ import { useNavigation } from "@react-navigation/native";
 
 const SearchBar= ({term, onTermChange, onTermSubmit,autoFocus, isFocus, setFocus}) => {
     const navigation = useNavigation();
-    console.log(typeof(setFocus))
     return (
         <View style = {[styles.backgroundStyle, {borderColor: isFocus ? 'blue' : '#e8e8e8'},]}>
             <Feather name="search" style = {[styles.iconStyle,{color: isFocus ? 'blue' : '#e8e8e8'}]}/>

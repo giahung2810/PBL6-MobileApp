@@ -1,5 +1,7 @@
 import {configureStore, createStore , combineReducers} from "@reduxjs/toolkit"
 import authReducer from "./authSlice"
+import jobReducer from "./jobSlice"
+import companyReducer from "./companySlice"
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 import {
@@ -21,6 +23,8 @@ const persistConfig = {
 }
 const rootReducer = combineReducers({
     auth:  authReducer,
+    job: jobReducer,
+    company: companyReducer,
 })
 const persistedReducer = persistReducer(persistConfig, rootReducer)
 

@@ -17,7 +17,7 @@ export const instance =  axios.create({
     baseURL: 'https://api.quangdinh.me'
 });
 
-export const createAxios = (user, dispatch, loginSuccess) => {
+export const createAxios = (user, dispatch, loginUpdate) => {
     const newInstance = axios.create({ 
         baseURL: 'https://api.quangdinh.me'
     });
@@ -28,13 +28,10 @@ export const createAxios = (user, dispatch, loginSuccess) => {
             if (decodedToken.exp < date.getTime() / 1000) {
                 const data = await refreshToken(user?.tokens.refresh);
                 console.log('data', data);
-                // const refreshUser = {
-                //     ...user,
-                //     accessToken: data.accessToken,
-                //     refreshToken: data.refreshToken,
-                // };
-                // dispatch(loginSuccess(refreshUser));
-                // config.headers['Authorization'] = 'Bearer ' + data.accessToken;
+                const refreshUser = data.access;
+                dispatch(loginUpdate(refreshUser));
+                console.log('refreshUser',refreshUser);
+                config.headers['Authorization'] = 'Bearer ' + data.access;
             }
             return config;
         },

@@ -1,16 +1,16 @@
 import JobCard from '../JobsCard/JobCard'
 import React, {useState} from 'react';
-import { View, Image, Text , StyleSheet, TouchableOpacity } from 'react-native';
+import { View, Image, Text , StyleSheet, TouchableOpacity, FlatList } from 'react-native';
 import Title from '../Title'
 import RecentJob from './RecentJob';
-const RecentList = () => {
+
+const RecentList = ({list}) => {
     return (
         <View style={styles.container}>
             <Title title='Rencent Job List' />
-            <View style={styles.list}>
-                <RecentJob /> 
-                <RecentJob />
-            </View>
+            {list.map((item, index) => (
+                <RecentJob item={item} key={item.id}/>
+            ))}
         </View>
     );
 };
@@ -18,10 +18,8 @@ const RecentList = () => {
 const styles = StyleSheet.create({
     container: {
         width: '100%',
+        marginBottom: 60,
     },
-    list: {
-        // flexDirection:'row'
-    }
 });
 
 export default RecentList;

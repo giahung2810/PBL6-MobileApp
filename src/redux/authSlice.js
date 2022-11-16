@@ -30,6 +30,12 @@ const authSlice = createSlice({
             state.login.error = false;
             state.login.message = null;
         },
+        loginUpdate: (state, action) => {
+            state.login.isFetching = false;
+            state.login.currentUser.tokens.access = action.payload;
+            state.login.error = false;
+            state.login.message = null;
+        },
         loginFailed: (state, action) => {
             state.login.isFetching = false;
             state.login.error = true;
@@ -67,6 +73,7 @@ const authSlice = createSlice({
 export const {
     loginStart,
     loginSuccess,
+    loginUpdate,
     loginFailed,
     registerStart,
     registerSuccess,

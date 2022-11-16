@@ -3,20 +3,33 @@ import { View, Image, Text , StyleSheet, TouchableOpacity } from 'react-native';
 import Logo from '../../../assets/logo.png'
 import { Fontisto } from '@expo/vector-icons'; 
 import { MaterialIcons } from '@expo/vector-icons'; 
-import { navigate } from '../../navigationRef';
 import { FontAwesome } from '@expo/vector-icons'; 
 import Tag from '../Tag/Tag'
 import AddressCompany from '../Address/AddressCompany'
 import SalaryJob from '../Salary/SalaryJob'
-const RecentJob = ({navigation}) => {
+import { useNavigation } from '@react-navigation/native';
+import moment from 'moment';
+
+const RecentJob = ({item}) => {
+    const navigation = useNavigation();
     const [favorite, setFavorite] = useState(false);
     const agregarFavoritos = () => {
         setFavorite(!favorite);
       };
+    const formatDate = (data) => {
+        var m = moment(); // Initial moment object
+        // Create the new date
+        var myDate = new Date(data);
+        var newDate = moment(myDate);
+        // Inject it into the initial moment object
+        m.set(newDate.toObject());
+        return m.fromNow();
+    };
     return (
-        <TouchableOpacity style={styles.container}  onPress={() => navigate('JobDetails')}>
+        <TouchableOpacity style={styles.container}  onPress={() => navigation.navigate('JobDetails',{item})}>
             <View style={styles.container_child1}>
-                <Image style={styles.image} source={Logo}  resizeMode='contain'/>
+                {/* company image */}
+                <Image style={styles.image} source={{uri: item.company.image}}  resizeMode='contain'/> 
                 
                 <TouchableOpacity onPress={() => agregarFavoritos()} style={{ borderWidth:1, borderColor: '#F3F3F3', alignItems: 'center' , justifyContent: 'center', borderRadius: 60/2, height: 38, width: 38}}>
                     {   favorite ? 
@@ -26,33 +39,37 @@ const RecentJob = ({navigation}) => {
                 </TouchableOpacity>
             </View> 
                 <View style={styles.boxDetail}>
-                    <Text style={styles.title}>BackEnd Senior</Text>    
+                    <Text style={styles.title}>{item.name}</Text>    
                 </View>
                 <View style={styles.boxDetail}>
-                    <Text style={styles.text}>We are looking for a Illustrator Director who would work close with our team at https://kulga.co/ to continue the website design</Text>    
+                    <Text style={styles.text}>{item.description}</Text>    
                 </View>
-                <View style={styles.tag}>
-                    <Tag tag = {{
-                        text: 'Employment Type', 
-                        color:'#757575', 
-                        borderColor:'#757575', 
-                        borderWidth:1, 
-                        fontSize:10}} 
-                    />
-                    <Tag tag = {{
-                        text: 'Work Type', 
-                        color:'#757575', 
-                        borderColor:'#757575', 
-                        borderWidth:1 , 
-                        fontSize:10 }} 
-                    />
-                </View>
+                
+                    {item.skills.map((skill, index) => (
+                        <View style={styles.tag} key={skill.id}>
+                        <Tag tag = {{
+                            text: skill.name, 
+                            color:'#757575', 
+                            borderColor:'#757575', 
+                            borderWidth:1, 
+                            fontSize:10}} 
+                        />
+                        <Tag tag = {{
+                            text: skill.level_name, 
+                            color:'#757575', 
+                            borderColor:'#757575', 
+                            borderWidth:1, 
+                            fontSize:10}} 
+                        />
+                        </View>
+                    ))}
+                
                 <View style={styles.detaiInfor}>
-                    <AddressCompany/>
-                    <SalaryJob/>
+                    <AddressCompany address={item.company.company_location}/>
+                    <SalaryJob salary={item.salary}/>
                 </View>
             <View style={styles.container_child2}>
-                <Text style={styles.timePost}>15 Minute Ago</Text>
+                <Text style={styles.timePost}>{formatDate(item.updated_at)}</Text>
             </View>
         </TouchableOpacity>
     );
@@ -133,7 +150,8 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         marginLeft:20,
         marginVertical: 8,
-        justifyContent: 'space-around'
+        justifyContent: 'space-between',
+        marginRight:12
     }
 });
 

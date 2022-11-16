@@ -1,18 +1,10 @@
 import DescriptionJob from '../DescriptionJob/DescriptionJob'
-
+import CompanyJob from '../companyJob/CompanyJob'
 import React, {useState} from 'react';
 import { Text, View ,StyleSheet} from 'react-native';
 import SegmentedControl from '@react-native-segmented-control/segmented-control';
 
-function SettingsScreen() {
-  return (
-    <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-      <Text>Settings!</Text>
-    </View>
-  );
-}
-
-export default function DescriptionScreen() {
+export default function DescriptionScreen({item}) {
   const [customStyleIndex, setCustomStyleIndex] = useState(0);
   const handleCustomIndexSelect = (index) => {
     //handle tab selection for custom Tab Selection SegmentedControlTab
@@ -50,12 +42,12 @@ export default function DescriptionScreen() {
         />
         {customStyleIndex === 0 && (
           <View style={styles.boxdescription}>
-          <DescriptionJob/>
+            <DescriptionJob item = {item}/>
           </View>
         )}
         {customStyleIndex === 1 && (
           <View style={styles.boxdescription}>
-          <SettingsScreen/>
+            <CompanyJob item = {item}/>
           </View>
         )}
       </View>

@@ -11,10 +11,15 @@ import { AntDesign } from '@expo/vector-icons';
 import { FontAwesome } from '@expo/vector-icons'; 
 import JobDetailsCard from '../components/JobDetailHeaderCard/JobDetailsCard'
 import { Feather } from '@expo/vector-icons'; 
+import { useNavigation } from '@react-navigation/native';
+import {KeyboardAvoidingView , Platform, TouchableWithoutFeedback, Keyboard  } from 'react-native';
+import TextComment from '../components/Comment/TextComment';
 
 // import { navigate } from '../../navigationRef';
 
-const JobDescription = ({navigation}) => {
+const JobDescription = ({route}) => {
+  const item = route.params.item;
+  const navigation = useNavigation();
   const [favorite, setFavorite] = useState(false);
   const agregarFavoritos = () => {
       setFavorite(!favorite);
@@ -49,33 +54,22 @@ const JobDescription = ({navigation}) => {
   }, [favorite]);
     return (      
       <View style={{flex: 1, backgroundColor: '#fff'}}>
-        {/* <DynamicHeader animHeaderValue={scrollOffsetY} /> */}
-                {/* <HeaderCompanyDescription/>  */}
-
+        <KeyboardAvoidingView
+          behavior={Platform.OS === "ios" ? "padding" : "height"}
+          style={{flex: 1, paddingBottom: 10}}
+        >
         <ScrollView style={styles.detail} >
-        {/* <HeaderCompanyDescription/> */}
         <View style={{marginVertical:8}}>
-          <JobDetailsCard />
+          <JobDetailsCard item = {item}/>
         </View>
-        {/* <View style={styles.space}/> */}
-          <DescriptionScreen />
+          <DescriptionScreen item = {item}/>
         </ScrollView>
         <View style={styles.buttonbottom}>
-          {/* <TouchableOpacity style={styles.boxButton_save}  onPress={() => agregarFavoritos()}>
-              {   favorite ? 
-                <Text style={styles.buttonText_save}>SAVE</Text> :
-                <Text style={styles.buttonText_save}>SAVE</Text> 
-              }         
-              {   favorite ? 
-                    <MaterialIcons name="favorite" size={26} color="blue" style={styles.icon}/> 
-                    : <MaterialIcons name="favorite-outline" size={26} color="black" style={styles.icon}/>
-              }
-          </TouchableOpacity> */}
           <View style={styles.boxButton_apply}>
             <ButtomApply onPress={() => navigation.navigate('Apply')} text='Apply'/>
           </View>
         </View>
-      
+        </KeyboardAvoidingView>
       </View>
     );
   };
@@ -152,8 +146,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center', 
     // borderRadius: 20,
     flex:2,
-    marginRight: 24,
-    marginLeft: 16
+    marginHorizontal: 16
   },
   buttonbottom:{
     // height: 80

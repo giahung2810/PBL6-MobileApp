@@ -2,11 +2,11 @@ import { StyleSheet, Text, View } from 'react-native'
 import React from 'react'
 import { Foundation } from '@expo/vector-icons'; 
 
-const SalaryJob = () => {
+const SalaryJob = ({salary}) => {
   return (
-    <View style={{justifyContent: 'center', alignItems: 'center', flexDirection:'row',}}>
+    <View style={{justifyContent: 'center', alignItems: 'center', flexDirection:'row'}}>
         <Foundation name="dollar" size={24} color="#7F879E" style={styles.icon} />
-        <Text style={styles.salary_Month}><Text style={styles.salary_Price}>50K</Text>/Month</Text>
+        <Text style={styles.salary_Month}><Text style={styles.salary_Price}>{salary}</Text>/Month</Text>
     </View>
   )
 }

@@ -9,6 +9,7 @@ import Notification from '../navigation/Notification';
 import Login from '../navigation/Login'
 import SearchScreen from '../screens/SearchScreen';
 import Profile from '../navigation/Profile'
+import CompanyScreen from '../screens/CompanyScreen'
 
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
@@ -89,6 +90,7 @@ const Navigator = () => {
           <Stack.Screen name="Apply" component={ApplyFormScreen} options={{headerShown: false}}/>
           <Stack.Screen name="Login" component={Login} options={{headerShown: false}}/>
           <Stack.Screen name="Search" component={SearchScreen} options={{headerShown: false}}/>
+          <Stack.Screen name="Company" component={CompanyScreen} options={{headerShown: false}}/>
         </Stack.Navigator>
     );
 }

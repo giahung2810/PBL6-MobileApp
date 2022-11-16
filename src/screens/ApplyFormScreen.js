@@ -239,13 +239,15 @@ const styles = StyleSheet.create({
   buttonbottom:{
     height: 60,
     width: '95%',
-    position: 'absolute',
-    bottom: 20,
+    // position: 'absolute',
+    // bottom: 20,
     // top:200,
     zIndex:3,
     flexDirection: 'row',
     justifyContent: 'space-between',
-    marginHorizontal: 8
+    marginHorizontal: 8, 
+    marginBottom:20,
+    marginTop: 20
   },
 });
  

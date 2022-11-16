@@ -6,43 +6,46 @@ import SearchBar from "../components/Search/SearchBar";
 import RecommendList from '../components/box_job/RecommendList'
 import Title from '../components/Title'
 import RecentList from '../components/recent_job/RecentList';
+import ListCompany from '../components/PopularCompany/ListCompany';
+
 import { useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux'
 import { useNavigation } from '@react-navigation/native';
 import DynamicHEaderSearch from '../components/Animation/DynamicHeaderSearchbar'
+import { getJobs } from '../redux/jobRequest';
+import { getTopCompanys } from '../redux/companyRequest';
 
 const HomeScreen = () => {
   const [term, setTerm] = useState('');
   const navigation = useNavigation();
+  const dispatch = useDispatch();
   const user = useSelector((state) => state.auth.login.currentUser);
-  console.log(user?.username);
+  const list_jobs = useSelector((state) => state.job.job.allJobs);
+  const list_companys = useSelector((state) => state.company.company.allCompanys);
   useEffect(() => {
-    if(!user){
+    if(user === null){
       navigation.navigate('Login');
+    } else {
+      getJobs(dispatch);
+      getTopCompanys(dispatch);
     }
-  })
+  }, [user]);
   return (      
-    <>
+    <View style={{flex: 1, backgroundColor: '#fff'}}>
     <DynamicHEaderSearch username={user?.username}>
-    <ScrollView style={{flex: 1, backgroundColor: '#fff'}}>
-      {/* <View style={styles.boxHeader}></View> */}
-    <View style={styles.boxContainer}>
-      <SearchBar 
-        term= {term} 
-        onTermChange = {setTerm}
-        // onTermSubmit = {() => searchApi(term)}
-      />
-      {/* <Title title='Recomendation'/> */}
-        {/* <RecommendList />  */}
-      {/* <Title title='Recent Job List'/> */}
-      <RecentList />
-      <RecentList />
-      <RecentList />
-      <RecentList />
-      <RecentList />
-    </View>
-    </ScrollView>
+      <View style={{flex: 1, backgroundColor: '#fff'}}>
+        <View style={styles.boxContainer}>
+          <SearchBar 
+            term= {term} 
+            onTermChange = {setTerm}
+            // onTermSubmit = {() => searchApi(term)}
+          />
+          <ListCompany list={list_companys}/>
+          <RecentList list={list_jobs? list_jobs.results : []}/>
+        </View>
+      </View>
     </DynamicHEaderSearch>
-    </>
+    </View>
   );
 };
 
@@ -63,7 +66,8 @@ const styles = StyleSheet.create({
     height: '100%', 
     // backgroundColor: '#FFF',
     marginHorizontal: 24,
-    marginTop: 8
+    marginTop: 8, 
+    flex: 1,
   },
   boxInfor: {
     flexDirection: "row",

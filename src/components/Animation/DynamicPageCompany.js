@@ -1,48 +1,16 @@
-// Expo SDK41
-// expo-blur: ~9.0.3
 import React, { useRef } from 'react';
-import {
-  Animated,
-  Image,
-  ImageBackground,
-  ScrollView,
-  StatusBar,
-  StyleSheet,
-  Text,
-  View,
-  Platform
-} from 'react-native';
+import {Animated,Image,ImageBackground,ScrollView,StatusBar,StyleSheet,Text,View, TouchableOpacity} from 'react-native';
 import { Feather } from '@expo/vector-icons';
-import {
-  SafeAreaProvider,
-  useSafeAreaInsets,
-} from 'react-native-safe-area-context';
+import {SafeAreaProvider,useSafeAreaInsets,} from 'react-native-safe-area-context';
 import { BlurView } from 'expo-blur';
-import { Avatar } from 'react-native-paper'
-import SearchBar from '../Search/SearchBar';
+import InforCompany from '../InforMainCompany/InforCompany';
+import Banner from '../../../assets/background_Company.jpg'
+import Logo from '../../../assets/logo.png'
+import { useNavigation } from '@react-navigation/native';
+import { Rating, AirbnbRating } from 'react-native-ratings';
 
-function generateTweets(limit) {
-  return new Array(limit).fill(0).map((_, index) => {
-    const repetitions = Math.floor(Math.random() * 3) + 1;
-
-    return {
-      key: index.toString(),
-      text: 'Lorem ipsum dolor amet '.repeat(repetitions),
-      author: 'Arnaud',
-      tag: 'eveningkid',
-    };
-  });
-}
-
-const TWEETS = generateTweets(30);
-const HEADER_HEIGHT_EXPANDED = 60;
-const HEADER_HEIGHT_NARROWED = 132;
-
-const PROFILE_PICTURE_URI =
-  'https://pbs.twimg.com/profile_images/975388677642715136/7Hw2MgQ2_400x400.jpg';
-
-const PROFILE_BANNER_URI =
-  'https://pbs.twimg.com/profile_banners/3296259169/1438473955/1500x500';
+const HEADER_HEIGHT_EXPANDED = 90;
+const HEADER_HEIGHT_NARROWED = 100;
 
 const AnimatedImageBackground = Animated.createAnimatedComponent(
   ImageBackground
@@ -50,23 +18,41 @@ const AnimatedImageBackground = Animated.createAnimatedComponent(
 
 const AnimatedBlurView = Animated.createAnimatedComponent(BlurView);
 
-export default function WrappedApp({children, username}) {
+export default function DynamicPageCompany({children, company}) {
   // Keeps notches away
   return (
     <SafeAreaProvider>
-      <App username={username}>{children}</App>
+      <App company={company}>{children}</App>
     </SafeAreaProvider>
   );
 }
 
-function App({children, username}) {
+function App({children, company}) {
   const insets = useSafeAreaInsets();
   const scrollY = useRef(new Animated.Value(0)).current;
-
+  const navigation = useNavigation();
   return (
     <View style={styles.container}>
-      {Platform.OS === 'ios' ? <StatusBar barStyle="light-content" />: null}
-      {/* <StatusBar barStyle="light-content" /> */}
+      <StatusBar barStyle="light-content" />
+
+      {/* Back button */}
+      <TouchableOpacity
+        style={{
+          zIndex: 6,
+          position: 'absolute',
+          top: insets.top + 10,
+          left: 20,
+          backgroundColor: 'rgba(0, 0, 0, 0.6)',
+          height: 30,
+          width: 30,
+          borderRadius: 15,
+          alignItems: 'center',
+          justifyContent: 'center',
+        }}
+        onPress={() => {navigation.goBack()}}
+      >
+        <Feather name="chevron-left" color="white" size={26} />
+      </TouchableOpacity>
 
       {/* Refresh arrow */}
       <Animated.View
@@ -95,10 +81,10 @@ function App({children, username}) {
         <Feather name="arrow-down" color="white" size={25} />
       </Animated.View>
 
-      {/* Name + tweets count */}
+      {/* Name + Comment count */}
       <Animated.View
         style={{
-          zIndex: 1,
+          zIndex: 2,
           position: 'absolute',
           top: insets.top + 6,
           left: 0,
@@ -119,34 +105,21 @@ function App({children, username}) {
           ],
         }}
       >
-        {/* <Text style={[styles.text, styles.username]}>Arnaud</Text>
+        <Text style={[styles.text, styles.username]}>{company.company_name}</Text>
 
         <Text style={[styles.text, styles.tweetsCount]}>
-          379 tweets
-        </Text> */}
-        <View 
-          style={{
-            paddingHorizontal: 24,
-            width: '100%',
-          }}
-        >
-          <SearchBar/>
-        </View>
+          {company.reviews.length} Comment
+        </Text>
       </Animated.View>
 
       {/* Banner */}
       <AnimatedImageBackground
-        // source={{
-        //   uri: PROFILE_BANNER_URI,
-        // }}
+        source={company.image} //image
         style={{
           position: 'absolute',
-          backgroundColor: '#0085FF',
           left: 0,
           right: 0,
           height: HEADER_HEIGHT_EXPANDED + HEADER_HEIGHT_NARROWED,
-          borderBottomLeftRadius:30,
-          borderBottomRightRadius:30,
           transform: [
             {
               scale: scrollY.interpolate({
@@ -171,25 +144,10 @@ function App({children, username}) {
             }),
           }}
         />
-        <Animated.View 
-          style={{
-            flexDirection: 'row' ,
-            alignItems: 'center', 
-            justifyContent: 'center',
-            marginTop:72,
-          }}
-        >
-          <View style={styles.boxName}>
-            <Text style={styles.helloText}>Hello,</Text>
-            <Text style={styles.nameText}>{username}</Text>
-          </View>
-          <Avatar.Image style={styles.Image} size={60} source={require('../../../assets/dat.jpg')} />
-        </Animated.View>
       </AnimatedImageBackground>
 
       {/* Tweets/profile */}
       <Animated.ScrollView
-        nestedScrollEnabled={true}
         showsVerticalScrollIndicator={false}
         onScroll={Animated.event(
           [
@@ -207,7 +165,52 @@ function App({children, username}) {
           paddingTop: HEADER_HEIGHT_EXPANDED,
         }}
       >
-        {children}
+        <View
+          style={[styles.container, { backgroundColor: '#fff' }]}
+        >
+          <View
+            style={[
+              styles.container,
+              {
+                paddingHorizontal: 20,
+              },
+            ]}
+          >
+            <Animated.Image
+              source={company.image}
+              style={{
+                width: 85,
+                height: 85,
+                borderRadius: 40,
+                borderWidth: 1,
+                borderColor: 'rgba(238, 238, 238, 0.5)',
+                marginTop: -30,
+                transform: [
+                  {
+                    scale: scrollY.interpolate({
+                      inputRange: [0, HEADER_HEIGHT_EXPANDED],
+                      outputRange: [1, 0.6],
+                      extrapolate: 'clamp',
+                    }),
+                  },
+                  {
+                    translateY: scrollY.interpolate({
+                      inputRange: [0, HEADER_HEIGHT_EXPANDED],
+                      outputRange: [0, 16],
+                      extrapolate: 'clamp',
+                    }),
+                  },
+                ],
+              }}
+            />
+
+            <InforCompany type = {false} company={company}/>
+          </View>
+              <View style = {{marginTop:24}}/>
+          <View style={[styles.container, {paddingHorizontal:20}]}>
+            {children}
+          </View>
+        </View>
       </Animated.ScrollView>
     </View>
   );
@@ -216,10 +219,9 @@ function App({children, username}) {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#fff',
   },
   text: {
-    color: 'white',
+    color: 'black',
   },
   username: {
     fontSize: 18,
@@ -236,22 +238,4 @@ const styles = StyleSheet.create({
     borderTopWidth: StyleSheet.hairlineWidth,
     borderTopColor: 'rgba(255, 255, 255, 0.25)',
   },
-  boxInfor: {
-    flexDirection: "row",
-    justifyContent: "space-around",
-  },
-  boxName: {
-    marginRight: 120,
-  },
-  helloText: {
-    fontSize: 26,
-    fontWeight: 'bold',
-    color: "white",
-  },
-  nameText: {
-    fontSize: 30,
-    fontWeight: 'bold',
-    color: "white",
-  },
 });
-1
