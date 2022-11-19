@@ -18,6 +18,12 @@ const authSlice = createSlice({
         logout: {
             isFetching: false,
             error: false,
+        },
+        checkToken: {
+            isFetching: false,
+            error: false,
+            check: false,
+            message:null  
         }
     },
     reducers: {
@@ -66,6 +72,12 @@ const authSlice = createSlice({
             state.register.isFetching = false;
             state.register.error = true;
             state.register.message = action.payload;
+        },
+        checkTokenStart: (state) => {
+            state.checkToken.isFetching = true;
+        },
+        checkTokenSuccess: (state, payload) => {
+            state.checkToken.isFetching = false;
         }
     }
 });

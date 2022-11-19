@@ -7,8 +7,8 @@ import CommentBoxCompany from './CommentBoxCompany';
 const CommentList = ({list, type, company}) => {
   return (
         <View>
-            {list.map((item, index) => (
-                <Comment item={item} index={index} key={item.id} type={type}/>
+            {list.map((item,) => (
+                <Comment item={item} key={item.id} type={type}/>
             ))}
             {type === 'job' 
             ? <TextComment type={type}/>

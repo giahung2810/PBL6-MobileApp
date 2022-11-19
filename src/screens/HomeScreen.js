@@ -14,6 +14,8 @@ import { useNavigation } from '@react-navigation/native';
 import DynamicHEaderSearch from '../components/Animation/DynamicHeaderSearchbar'
 import { getJobs } from '../redux/jobRequest';
 import { getTopCompanys } from '../redux/companyRequest';
+import { checkToken } from '../redux/apiRequest';
+import AppLoader from '../components/Loading/AppLoader';
 
 const HomeScreen = () => {
   const [term, setTerm] = useState('');
@@ -21,31 +23,38 @@ const HomeScreen = () => {
   const dispatch = useDispatch();
   const user = useSelector((state) => state.auth.login.currentUser);
   const list_jobs = useSelector((state) => state.job.job.allJobs);
-  const list_companys = useSelector((state) => state.company.company.allCompanys);
+  const job_isFetching = useSelector((state) => state.job.job.isFetching);
+  const company_isFetching = useSelector((state) => state.company.companys.isFetching);
+  const list_companys = useSelector((state) => state.company.companys.allCompanys);
   useEffect(() => {
     if(user === null){
       navigation.navigate('Login');
     } else {
+      checkToken(dispatch, navigation, user.tokens.refresh);
       getJobs(dispatch);
       getTopCompanys(dispatch);
     }
   }, [user]);
-  return (      
+  return (     
+    <>
     <View style={{flex: 1, backgroundColor: '#fff'}}>
-    <DynamicHEaderSearch username={user?.username}>
-      <View style={{flex: 1, backgroundColor: '#fff'}}>
-        <View style={styles.boxContainer}>
-          <SearchBar 
-            term= {term} 
-            onTermChange = {setTerm}
-            // onTermSubmit = {() => searchApi(term)}
-          />
-          <ListCompany list={list_companys}/>
-          <RecentList list={list_jobs? list_jobs.results : []}/>
+      <DynamicHEaderSearch username={user?.username}>
+        <View style={{flex: 1, backgroundColor: '#fff'}}>
+          <View style={styles.boxContainer}>
+            <SearchBar 
+              term= {term} 
+              onTermChange = {setTerm}
+              // onTermSubmit = {() => searchApi(term)}
+            />
+            <ListCompany list={list_companys}/>
+            <RecentList list={list_jobs? list_jobs.results : []}/>
+          </View>
         </View>
-      </View>
-    </DynamicHEaderSearch>
+      </DynamicHEaderSearch>
+      {/* {job_isFetching || company_isFetching ? <AppLoader2 /> : null} */}
     </View>
+    {job_isFetching || company_isFetching ? <AppLoader /> : null}
+    </> 
   );
 };
 

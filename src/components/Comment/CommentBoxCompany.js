@@ -58,7 +58,8 @@ const styles = StyleSheet.create({
     paddingHorizontal: 15,
     marginVertical: 5,
     marginTop:24,
-    paddingVertical: 15
+    paddingVertical: 15,
+    marginBottom: 100
   },
   input: {
     fontFamily: 'Urbanist-Light',

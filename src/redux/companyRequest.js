@@ -1,7 +1,7 @@
 import {createAxios as apiJWT} from '../api/apiJob'
 import {instance as apiJob} from '../api/apiJob'
 
-import { getCompanysStart, getCompanysSuccess, getCompanysFailed} from './companySlice'
+import { getCompanysStart, getCompanysSuccess, getCompanysFailed, postReviewStart, postReviewSuccess, postReviewFailed, getCompanyStart, getCompanySuccess, getCompanyFailed} from './companySlice'
 
 export const getTopCompanys = async (dispatch) => {
     dispatch(getCompanysStart());
@@ -14,15 +14,35 @@ export const getTopCompanys = async (dispatch) => {
         console.log(err);
     }
 };
+export const getCompany = async (dispatch, id) => {
+    dispatch(getCompanyStart());
+    try{
+        const res = await apiJob.get('/companies/companies/' + id);
+        dispatch(getCompanySuccess(res.data));
+        // console.log(res.data);
+    } catch(err){
+        dispatch(getCompanyFailed(err));
+        console.log(err);
+    }
+};
 
 export const post_Review_Company = async (dispatch, post_Review, api, accessToken) => {
-    console.log(post_Review)
+    dispatch(postReviewStart());
     try{
-        const res = await api.post('/reviews/reviews', post_Review , {
+        const res = await api.post('/reviews/reviews/create', post_Review , {
             headers: {Authorization : `Bearer ${accessToken}`}
         });
+        dispatch(getCompanyStart());
+        const res1 = await apiJob.get('/companies/companies/' + post_Review.company);
+        dispatch(getCompanySuccess(res1.data));
+
+        const res2 = await apiJob.get('/companies/companies/top_company');
+        dispatch(getCompanysSuccess(res2.data));
+
+        dispatch(postReviewSuccess());
         // console.log(res);z
     } catch(err){
+        dispatch(postReviewFailed(err));
         console.log(err);
     }
 }

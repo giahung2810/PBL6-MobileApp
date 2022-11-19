@@ -7,13 +7,13 @@ import { useDispatch } from 'react-redux';
 import { useSelector } from 'react-redux';
 import { createAxios } from '../../api/apiJob';
 import { loginUpdate } from '../../redux/authSlice';
+import useDecodeTokens from '../../hooks/useDecodeToken'
 
 const ReviewCompany = ({fun, company}) => {
     const [rating, setRating] = useState(1);
     const [comment, setComment] = useState('');
     const user = useSelector((state) => state.auth.login.currentUser);
     const ratingCompleted = (rating) => {
-        console.log(rating);
         setRating(rating);
     }
     const dispatch = useDispatch();
@@ -42,23 +42,18 @@ const ReviewCompany = ({fun, company}) => {
                 const post_Review= {
                     rating : rating,
                     comment : comment,
-                    company: {
-                        company_name: company.company_name,
-                        company_location: company.company_location,
-                    },
-                    user: {
-                        username: user.username,
-                        email: user.email
-                    },
+                    company: company.id,
+                    user: useDecodeTokens(user.tokens.access).user_id,
                 }
                 const api = createAxios(user, dispatch , loginUpdate);
                 post_Review_Company(
-                    dispatch , 
+                    dispatch,
                     post_Review,
                     api,
-                    accessToken = user.tokens.access
-                )
-            }} 
+                    user.tokens.access
+                );
+                fun();
+            }}
         >
             <Text style={{color: 'black', fontWeight: '700', fontSize: 16}}>Comment</Text>
         </TouchableOpacity>

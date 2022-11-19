@@ -54,3 +54,14 @@ export const logoutUser = async ( dispatch, navigation, accesstoken, axiosJWT) =
         dispatch(logoutFailed());
     }
 }
+export const checkToken = async ( dispatch, navigation, refresh) => {
+    const token = {
+        refresh: refresh
+    }
+    try {
+        const res = await apiJob.post('/auth/token/refresh', token);
+    } catch (error) {
+        console.log(error.response.data);
+        navigation.navigate('Login');
+    }
+}
