@@ -3,7 +3,6 @@
 import React, { useRef } from 'react';
 import {
   Animated,
-  Image,
   ImageBackground,
   ScrollView,
   StatusBar,
@@ -20,6 +19,7 @@ import {
 import { BlurView } from 'expo-blur';
 import { Avatar } from 'react-native-paper'
 import SearchBar from '../Search/SearchBar';
+import {useTransformImg} from '../../hooks/useTransformIMG'
 
 function generateTweets(limit) {
   return new Array(limit).fill(0).map((_, index) => {
@@ -62,10 +62,11 @@ export default function WrappedApp({children, username}) {
 function App({children, username}) {
   const insets = useSafeAreaInsets();
   const scrollY = useRef(new Animated.Value(0)).current;
+  const img = useTransformImg("https://api.quangdinh.me/media/logo_FSOFT_d%E1%BB%8Dc.webp");
 
   return (
     <View style={styles.container}>
-      {Platform.OS === 'ios' ? <StatusBar barStyle="light-content" />: null}
+      {Platform.OS === 'ios' ? <StatusBar barStyle="light" />: null}
       {/* <StatusBar barStyle="light-content" /> */}
 
       {/* Refresh arrow */}

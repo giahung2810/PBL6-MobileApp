@@ -10,32 +10,61 @@ import ListCompany from '../components/PopularCompany/ListCompany';
 
 import { useSelector } from 'react-redux';
 import { useDispatch } from 'react-redux'
-import { useNavigation } from '@react-navigation/native';
+import { useFocusEffect, useNavigation } from '@react-navigation/native';
 import DynamicHEaderSearch from '../components/Animation/DynamicHeaderSearchbar'
-import { getJobs } from '../redux/jobRequest';
+import { getJobs, get_Jobs_Favorites } from '../redux/jobRequest';
 import { getTopCompanys } from '../redux/companyRequest';
 import { checkToken } from '../redux/apiRequest';
 import AppLoader from '../components/Loading/AppLoader';
+import useDecodeTokens from '../hooks/useDecodeToken'
 
 const HomeScreen = () => {
   const [term, setTerm] = useState('');
   const navigation = useNavigation();
   const dispatch = useDispatch();
   const user = useSelector((state) => state.auth.login.currentUser);
-  const list_jobs = useSelector((state) => state.job.job.allJobs);
+  const id = useDecodeTokens(user.tokens.access).user_id;
+
+  // const list_jobs = useSelector((state) => state.job.job.allJobs);
   const job_isFetching = useSelector((state) => state.job.job.isFetching);
   const company_isFetching = useSelector((state) => state.company.companys.isFetching);
-  const list_companys = useSelector((state) => state.company.companys.allCompanys);
+  // const list_companys = useSelector((state) => state.company.companys.allCompanys);
+  const [list_companys, setList_companys] = useState();
+  const [list_jobs, setList_jobs] = useState();
+  const getCompanysAPi = async () => {
+    const result = await getTopCompanys(dispatch);
+    setList_companys(result);
+  };
+  const getJobsAPi = async () => {
+    // const result = await getJobs(dispatch);
+    const result = await get_Jobs_Favorites(dispatch ,id);
+    setList_jobs(result);
+  }
   useEffect(() => {
     if(user === null){
       navigation.navigate('Login');
     } else {
       checkToken(dispatch, navigation, user.tokens.refresh);
-      getJobs(dispatch);
-      getTopCompanys(dispatch);
     }
   }, [user]);
-  return (     
+  useEffect(() => {
+    const unsubscribe = navigation.addListener('focus', () => {
+      // do something
+      getCompanysAPi();
+      // console.log('list_companys useEffect', list_companys);
+      getJobsAPi();
+    });
+    return unsubscribe;
+  },[navigation]);
+  useFocusEffect(
+    React.useCallback(() => {
+      getJobsAPi();
+        return () => {
+
+        };
+    }, [])
+);
+  return (   
     <>
     <View style={{flex: 1, backgroundColor: '#fff'}}>
       <DynamicHEaderSearch username={user?.username}>
@@ -47,7 +76,7 @@ const HomeScreen = () => {
               // onTermSubmit = {() => searchApi(term)}
             />
             <ListCompany list={list_companys}/>
-            <RecentList list={list_jobs? list_jobs.results : []}/>
+            <RecentList list={list_jobs ? list_jobs : []} setList_jobs={setList_jobs}/>
           </View>
         </View>
       </DynamicHEaderSearch>

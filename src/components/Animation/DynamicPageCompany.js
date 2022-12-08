@@ -8,7 +8,7 @@ import Banner from '../../../assets/background_Company.jpg'
 import Logo from '../../../assets/logo.png'
 import { useNavigation } from '@react-navigation/native';
 import { Rating, AirbnbRating } from 'react-native-ratings';
-
+import {api} from '../../api/apiJob'
 const HEADER_HEIGHT_EXPANDED = 90;
 const HEADER_HEIGHT_NARROWED = 100;
 
@@ -33,7 +33,7 @@ function App({children, company}) {
   const navigation = useNavigation();
   return (
     <View style={styles.container}>
-      <StatusBar barStyle="light-content" />
+      {/* <StatusBar barStyle="light-content" /> */}
 
       {/* Back button */}
       <TouchableOpacity
@@ -114,7 +114,7 @@ function App({children, company}) {
 
       {/* Banner */}
       <AnimatedImageBackground
-        source={company.image} //image
+        source={{uri:company.image}} //image
         style={{
           position: 'absolute',
           left: 0,
@@ -177,7 +177,7 @@ function App({children, company}) {
             ]}
           >
             <Animated.Image
-              source={company.image}
+              source={{uri: company.image}}
               style={{
                 width: 85,
                 height: 85,

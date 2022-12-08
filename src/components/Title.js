@@ -1,12 +1,12 @@
 import { View, Text, StyleSheet, TouchableOpacity } from 'react-native'
 import React from 'react'
 
-const Title = ({title}) => {
+const Title = ({title, onPress}) => {
   return (
     <View style={styles.container}>
       <Text style={styles.title}>{title}</Text>
       <TouchableOpacity>
-        <Text style={styles.link}>View all</Text>
+        <Text style={styles.link} onPress={onPress}>View all</Text>
       </TouchableOpacity>
     </View>
   )

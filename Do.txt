@@ -1,0 +1,11 @@
+++ Seeker Profile - 50%
+	++ PUT Education: OK
+	++ POST Education: chưa có API để có ID Seeker
+	++ PUT Expirence: OK
+	++ POST Expirence: chưa có API để có ID Seeker
+	++ PUT Skill: OK
+	++ POST Skill: chưa có API để có ID Seeker
+++ Post Aplly - done 90% - còn thắc mắc Location, update UI
+++ View Job Apply	- done 80% - còn UI
+++ Test api	
+++ Comment job : OK - 99%

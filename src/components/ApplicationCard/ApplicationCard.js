@@ -4,20 +4,39 @@ import Logo from '../../../assets/logo.png'
 import Tag from '../Tag/Tag'
 import { AntDesign } from '@expo/vector-icons'; 
 import { navigate } from '../../navigationRef';
-
-const ApplicationCard = () => {
+import { getJobbyID } from '../../redux/jobRequest';
+import {api} from '../../api/apiJob';
+const ApplicationCard = ({item}) => {
+    // console.log('ApplicationCard',item)
+    const [job, setJob] = useState();
+    const getJobAPi = async () => {
+      const result = await getJobbyID(item.job);
+      setJob(result);
+    };
+    useEffect(() => { 
+        getJobAPi();
+    }, [item.job]);
     return (
-        <TouchableOpacity style={styles.container} onPress={() => { navigate('ApplicationStages')}}>
+        <TouchableOpacity style={styles.container} onPress={() => { navigate('ApplicationStages', {item: item, job: job})}}>
             <View style={styles.container_child1}>
-                <Image style={styles.image} source={Logo}  resizeMode='contain'/>
+                <Image style={styles.image} source={{uri:api + job?.job.company.image}}  resizeMode='contain'/>
                 <View style={styles.boxDetail}>
-                    <Text style={styles.title}>BackEnd Senior</Text> 
-                    <Text style={styles.company}>Pessi LLC</Text>   
+                    <Text numberOfLines={1} style={styles.title}>{job?.job.name}</Text> 
+                    <Text style={styles.company}>{job?.job.company.company_name}</Text>   
                 </View>
                 <AntDesign name="right" size={20} color="rgba(33, 33, 33, 1)" />
             </View> 
             <View style={styles.container_child2}>
-                <Tag tag = {{text: 'Application Sent', backgroundColor:'rgba(36, 107, 253, 0.08)', color:'#246BFD'}} />
+                {item.status === "apply" ?
+                    <Tag tag = {{text: 'Application Sent', backgroundColor:'rgba(36, 107, 253, 0.08)', color:'#246BFD'}} />
+                : item.status === "test" ?
+                    <Tag tag = {{text: 'Wating you do exam', backgroundColor:'rgba(250, 204, 21, 0.12)', color:'#FACC15'}} />
+                : item.status === "set_schedule" ?
+                    <Tag tag = {{text: 'Wating company set schedule', backgroundColor:'rgba(255,182,193, 0.4)', color:'rgb(255,20,147)'}} />
+                : item.status === "interview_pending" ?
+                    <Tag tag = {{text: 'Chose schedule to interview', backgroundColor:'rgba(255,140,0,0.3)', color:'rgb(255,69,0)'}} />
+                :null
+                }
             </View>
             {/* <View style={styles.container_child3}>
 

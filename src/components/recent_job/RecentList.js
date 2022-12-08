@@ -4,12 +4,16 @@ import { View, Image, Text , StyleSheet, TouchableOpacity, FlatList } from 'reac
 import Title from '../Title'
 import RecentJob from './RecentJob';
 
-const RecentList = ({list}) => {
+const RecentList = ({list, setList_jobs}) => {
     return (
         <View style={styles.container}>
             <Title title='Rencent Job List' />
             {list.map((item, index) => (
-                <RecentJob item={item} key={item.id}/>
+                <RecentJob 
+                    item={item} 
+                    key={item.job.id} 
+                    setList_jobs={setList_jobs}
+                />
             ))}
         </View>
     );

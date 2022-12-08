@@ -42,7 +42,7 @@ const Comment = ({item, type}) => {
                     },
                     ]}
                 >
-                    {item.author}{' '}
+                    {item.user.username}{' '}
                     <Text
                     style={{
                         color: 'gray',
@@ -69,10 +69,11 @@ const Comment = ({item, type}) => {
                     startingValue={item.rating}   // initial value
                     style={{marginLeft: 16}}
                     imageSize={16}
+                    readonly={true}
                 />}
             </View>
             <Text style={[styles.comment, { fontSize: 15 }]}>
-                {item.comment}
+                {item.comment? item.comment : item.comment_body}
             </Text>
             
         </View>

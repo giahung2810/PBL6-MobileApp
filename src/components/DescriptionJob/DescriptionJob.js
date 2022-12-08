@@ -3,27 +3,14 @@ import { useState } from 'react';
 import { View, Image, Text , StyleSheet, ScrollView, TouchableOpacity } from 'react-native';
 import CommentList from '../Comment/CommentList';
 
-function generateTweets(limit) {
-    return new Array(limit).fill(0).map((_, index) => {
-      const repetitions = Math.floor(Math.random() * 5) + 1;
-  
-      return {
-        key: index.toString(),
-        text: 'Review nhảm, xoá giùm! '.repeat(repetitions),
-        author: 'An.MuoiBon',
-        tag: 'eveningkid',
-        rating: repetitions
-      };
-    });
-}
-  
-const TWEETS = generateTweets(5);
 const Description = ({item}) => {
+    const job = item.job;
+    const comment = item.comments;
     const [view_Comment, setView_Comment] = useState(false);
     return (
         <View style={styles.container}>
             <Text style={styles.title}>Description</Text>
-            <Text style={styles.description}>{item.description}</Text>
+            <Text style={styles.description}>{job.description}</Text>
             {view_Comment 
             ?   <View>
                     <View style={{borderTopWidth: 1, borderColor: 'rgba(238, 238, 238, 0.5)', marginTop: 8, marginBottom: 16}}/>
@@ -37,7 +24,7 @@ const Description = ({item}) => {
                         </TouchableOpacity>
                     </View>
                     
-                    <CommentList list={TWEETS} type="job"/>
+                    <CommentList list={comment} type="job" job={job}/>
                 </View>
             :   <TouchableOpacity style={{alignItems: 'center', marginVertical:24}} 
                     onPress={() => setView_Comment(!view_Comment)}>

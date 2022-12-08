@@ -7,19 +7,34 @@ export const getTopCompanys = async (dispatch) => {
     dispatch(getCompanysStart());
     try{
         const res = await apiJob.get('/companies/companies/top_company');
-        dispatch(getCompanysSuccess(res.data));
+        console.log("res",res);
+        dispatch(getCompanysSuccess());
+        return res.data;
         // console.log(res.data);
     } catch(err){
         dispatch(getCompanysFailed(err));
         console.log(err);
     }
 };
+
+export const getListCompanys = async (dispatch) => {
+    dispatch(getCompanysStart());
+    try{
+        const res = await apiJob.get('/companies/companies');
+        dispatch(getCompanysSuccess(res.data.results));
+        return res.data;
+        
+    } catch(err){
+        dispatch(getCompanysFailed(err));
+        console.log(err);
+    }
+};
+
 export const getCompany = async (dispatch, id) => {
     dispatch(getCompanyStart());
     try{
         const res = await apiJob.get('/companies/companies/' + id);
         dispatch(getCompanySuccess(res.data));
-        // console.log(res.data);
     } catch(err){
         dispatch(getCompanyFailed(err));
         console.log(err);

@@ -4,9 +4,9 @@ import { Octicons } from '@expo/vector-icons';
 
 const AddressCompany = ({address}) => {
   return (
-    <View style={{justifyContent: 'center', alignItems: 'center', flexDirection:'row',}}>
+    <View style={{ alignItems: 'center', flexDirection:'row', width: '70%'}}>
         <Octicons name="location" size={24} color="#7F879E" style={styles.icon} />
-        <Text style={styles.title}>{address}</Text>
+        <Text numberOfLines={1} style={styles.title}>{address}</Text>
     </View>
   )
 }

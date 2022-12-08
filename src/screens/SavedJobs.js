@@ -3,11 +3,22 @@ import {View, Text, StyleSheet, TouchableOpacity, ScrollView, SafeAreaView } fro
 import SearchBar from "../components/Search/SearchBar";
 import Topbar from '../components/topbar/Topbar'
 import JobCard from '../components/JobsCard/JobCard'
-import Modal from 'react-native-modal';
-import RemoveSaved from '../components/Modal/RemoveSaved'
+import { get_SaveJobs } from '../redux/jobRequest';
+import { useFocusEffect } from '@react-navigation/native';
+import useDecodeTokens from '../hooks/useDecodeToken'
+import { useDispatch, useSelector } from 'react-redux';
+
+
 const SavedJobs = ({navigation}) => {
+  const user = useSelector((state) => state.auth.login.currentUser);
+  const id = useDecodeTokens(user?.tokens.access)?.user_id;
+  const dispatch = useDispatch();
   const [term, setTerm] = useState('');
-  const [modalVisible, setModalVisible] = useState(false);
+  const [savejob, setSaveJob] = useState();
+  const getSaveJobAPI = async () => {
+    const result = await get_SaveJobs(dispatch, id);
+    setSaveJob(result);
+  };
     useLayoutEffect(() => { 
         navigation.setOptions({ 
           // headerTitle: 'Applications',
@@ -18,7 +29,24 @@ const SavedJobs = ({navigation}) => {
             </View> 
           ),
         }) 
-      }, [])
+      }, []);
+      useEffect(() => {
+        const unsubscribe = navigation.addListener('focus', () => {
+          // do something
+          getSaveJobAPI();
+        });
+        // console.log(profile);
+        return unsubscribe;
+      },[navigation]);
+      useFocusEffect(
+        React.useCallback(() => {
+          getSaveJobAPI();
+          return () => {
+            
+          };
+        }, [])
+      );
+      console.log("save job",savejob)
   return (      
         <ScrollView style={{flex: 1, backgroundColor: '#fff',}}>
             <View style={styles.container}>
@@ -28,33 +56,22 @@ const SavedJobs = ({navigation}) => {
                 // onTermSubmit = {() => searchApi(term)}
                 />
                 <View style={{height: 8}} />
-                <JobCard onPress={() => setModalVisible(!modalVisible)} favorite={true}/>
-                <JobCard onPress={() => setModalVisible(!modalVisible)} favorite={true}/>
                 {/* <JobCard onPress={() => setModalVisible(!modalVisible)} favorite={true}/>
                 <JobCard onPress={() => setModalVisible(!modalVisible)} favorite={true}/>
                 <JobCard onPress={() => setModalVisible(!modalVisible)} favorite={true}/>
+                <JobCard onPress={() => setModalVisible(!modalVisible)} favorite={true}/>
+                <JobCard onPress={() => setModalVisible(!modalVisible)} favorite={true}/>
                 <JobCard onPress={() => setModalVisible(!modalVisible)} favorite={true}/> */}
-            </View>
-            <Modal
-                testID={'modal'}
-                isVisible={modalVisible}
-                onSwipeComplete={() => setModalVisible(false)}
-                onRequestClose={() => {
-                    Alert.alert("Modal has been closed.");
-                    setModalVisible(!modalVisible);
-                }}
-                swipeDirection={['up', 'left', 'right', 'down']}
-                style={styles.view}>
-                <RemoveSaved fun={() => 
-                {
-                    setModalVisible(false);
-                    // navigation.navigate('Application', { 
-                    // screen: 'ApplicationsScreen',
-                    // initial: false,
-                    // });
+                {/* {savejob?.map((item) => {
+                   return (<View key={item.id}><JobCard job={item.job} favorite={true} setSaveJob={setSaveJob}/></View>);
                 }
-                }/>
-            </Modal>
+                )} */}
+                {savejob?.map( (item, index) =>{
+                    return (
+                      <View key={index}><JobCard item={item} favorite={true} setSaveJob={setSaveJob}/></View>
+                    );
+                })}
+            </View>
         </ScrollView>
   );
 };

@@ -15,7 +15,6 @@ const CompanyScreen = ({route}) => {
   const dispatch = useDispatch();
   const id = item.id;
   const getcompany = useSelector((state) => state.company.company.company);
-  const company_isFetching = useSelector((state) => state.company.company.isFetching);
   useEffect(() => { 
     getCompany(dispatch,id);
   }, [id]);
@@ -25,12 +24,11 @@ const CompanyScreen = ({route}) => {
         <DynamicPageCompany company={item}>
           <CommentList list={item.reviews} type="company" company={item}/>
         </DynamicPageCompany>
-        : 
+        :
         <DynamicPageCompany company={getcompany}>
           <CommentList list={getcompany.reviews} type="company" company={getcompany}/>
         </DynamicPageCompany>
       }
-      {company_isFetching ? <AppLoader /> : null}
     </>
   );
 };

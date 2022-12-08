@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import axios from "axios";
 // Import core components
 import {
   StyleSheet,
@@ -21,12 +22,25 @@ import ChooseFileCV from '../components/FileUpload/ChooseFileCV';
 import FileCV from '../components/FileCV'
 import HeaderCompanyDescription from '../components/HeaderCompanyDescription'
 import ApplyJobSuccessModal from '../components/Modal/ApplyjobSuccessModal'
+import ApplyJobFailedModal from '../components/Modal/ApplyJobFailedModal'
 import ButtomApply from '../components/Button/ButtonApply';
+import { useSelector } from 'react-redux';
+import useDecodeTokens from '../hooks/useDecodeToken'
+import { useNavigation } from '@react-navigation/native';
 
-const ApplyFormScreen = ({navigation}) => {
+const ApplyFormScreen = ({route}) => {
+  const item = route.params.item;
+  const job =item.job;
+  const comment = item.comment;
+  const navigation = useNavigation();
   const [singleFile, setSingleFile] = useState(null);
   const [letter, setLetter] = useState('');
-  const [modalVisible, setModalVisible] = useState(false);
+  const [modalSuccessVisible, setModalSuccessVisible] = useState(false);
+  const [modalFailedVisible, setModalFailedVisible] = useState(false);
+
+  const user = useSelector((state) => state.auth.login.currentUser);
+  const id = useDecodeTokens(user.tokens.access).user_id;
+  const [err, setErr] = useState('');
   const removeFile = () => {
     setSingleFile(null);
   }
@@ -35,26 +49,60 @@ const ApplyFormScreen = ({navigation}) => {
     // Check if any file is selected or not
     console.log('Uploading file...');
     if (singleFile != null) {
+      
+      singleFile.type = singleFile.mimeType;
       // If file selected then create FormData
       const fileToUpload = singleFile;
+      // console.log(singleFile);
       const data = new FormData();
-      data.append('name', 'Image Upload');
-      data.append('file_attachment', fileToUpload);
+      data.append('status', 'apply');
+      // data.append('status_do_test_date', null);
+      // data.append('status_interview_date', null);
+      // data.append('interview_date_official', null);
+      data.append('cv', fileToUpload);
+      data.append('information_added', letter);
+      data.append('candidate', id);
+      data.append('job', job.id);
+      // console.log(data);
       // Please change file upload URL
-    //   let res = await fetch(
-    //     'http://localhost/upload.php',
-    //     {
-    //       method: 'post',
-    //       body: data,
-    //       headers: {
-    //         'Content-Type': 'multipart/form-data; ',
-    //       },
-    //     }
-    //   );
-    //   let responseJson = await res.json();
-    //   if (responseJson.status == 1) {
-    //     alert('Upload Successful');
-    //   }
+      // let res = await fetch(
+      //   'https://api.quangdinh.me/applicants/applicant',
+      //   {
+      //     method: 'post',
+      //     body: data,
+      //     headers: {
+      //       'Content-Type': 'multipart/form-data',
+      //     },
+      //   }
+      // );
+      // let responseJson = await res.json();
+      // console.log('responseJson',responseJson);
+      axios({
+        method: "post",
+        url: "https://api.quangdinh.me/applicants/applicant",
+        data: data,
+        headers: { "Content-Type": "multipart/form-data" },
+      })
+        .then(function (response) {
+          //handle success
+          if(response.data.msg === 'Applicant is existed') {
+            setErr(response.data.msg);
+            console.log(response.data.msg)
+            setModalFailedVisible(!modalFailedVisible);
+          }
+          else{
+            setModalSuccessVisible(!modalSuccessVisible);
+          }
+        })
+        .catch(function (response) {
+          //handle error
+          console.log(response);
+          setModalFailedVisible(!modalFailedVisible);
+        });
+      // if (responseJson.status == 1) {
+      //   alert('Upload Successful');
+      // }
+      // console.log(data);
     } else {
       // If no file selected the show alert
       alert('Please Select File first');
@@ -73,7 +121,7 @@ const ApplyFormScreen = ({navigation}) => {
     // console.log(result);
   return (
     <View style={styles.container}>
-      <HeaderCompanyDescription />
+      <HeaderCompanyDescription item={job}/>
       <ScrollView style={styles.container}>
       <View style={styles.mainBody}>
         <View style={styles.space}/>
@@ -97,7 +145,7 @@ const ApplyFormScreen = ({navigation}) => {
                 style={styles.RN_TEXT_INPUT_STYLE}
                 placeholder="Motivation letter..."
                 placeholderTextColor="grey"
-                onChangeText={(text) => setLetter({text})}
+                onChangeText={(text) => setLetter(text)}
                 value={letter}
               />
             )}
@@ -108,11 +156,11 @@ const ApplyFormScreen = ({navigation}) => {
       
       <Modal 
           testID={'modal'}
-          isVisible={modalVisible}
+          isVisible={modalSuccessVisible}
           // onSwipeComplete={this.close}
           onRequestClose={() => {
             Alert.alert("Modal has been closed.");
-            setModalVisible(!modalVisible);
+            setModalSuccessVisible(!modalSuccessVisible);
           }}
           useNativeDriverForBackdrop
           swipeDirection={['down']}
@@ -120,7 +168,29 @@ const ApplyFormScreen = ({navigation}) => {
       >
         <ApplyJobSuccessModal fun={() => 
           {
-            setModalVisible(false);
+            setModalSuccessVisible(false);
+            navigation.navigate('Application', { 
+              screen: 'ApplicationsScreen',
+              initial: false,
+            });
+          }
+        }/>
+      </Modal>
+      <Modal 
+          testID={'modal'}
+          isVisible={modalFailedVisible}
+          // onSwipeComplete={this.close}
+          onRequestClose={() => {
+            Alert.alert("Modal has been closed.");
+            setModalVisible(!modalFailedVisible);
+          }}
+          useNativeDriverForBackdrop
+          swipeDirection={['down']}
+          // styles={}
+      >
+        <ApplyJobFailedModal err={err} fun={() => 
+          {
+            setModalFailedVisible(false);
             navigation.navigate('Application', { 
               screen: 'ApplicationsScreen',
               initial: false,
@@ -133,7 +203,12 @@ const ApplyFormScreen = ({navigation}) => {
         {/* <TouchableOpacity style={styles.boxButton_apply} onPress={() => setModalVisible(!modalVisible)} >
             <Text style={styles.buttonText_apply}>APPLY NOW</Text>
         </TouchableOpacity> */}
-        <ButtomApply onPress={() => setModalVisible(!modalVisible)} text="APPLY NOW"/>
+        <ButtomApply 
+          onPress={() => {
+            uploadImage();
+          }
+          } text="APPLY NOW"
+        />
       </View>
     </View>
   );

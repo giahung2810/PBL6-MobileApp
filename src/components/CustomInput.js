@@ -9,10 +9,9 @@ import { AntDesign } from '@expo/vector-icons';
 import { SelectGender } from './SelectPicker/SelectGender';
 
 const CustomInput = function ({
-  control, name, rules = {}, placeholder, secureTextEntry = false, setValue, editable = true, register
+  control, name, rules = {}, placeholder, secureTextEntry = false, setValue, editable = true, register, description = false
 }) {
   const [isFocus, setIsFocus] = useState(false);
-
   return (
     <Controller
       control={control}
@@ -39,17 +38,31 @@ const CustomInput = function ({
             {/* {console.log(valueparams)} */}
             {/* {valueparams ? () => onChange(valueparams) : null} */}
             {/* {console.log(value)} */}
-            {name !== 'gender' ? <TextInput
-              {...register?.email}
-              value={value}
-              onChangeText={onChange}
-              onBlur={() => { setIsFocus(false); } }
-              placeholder={placeholder}
-              style={styles.input}
-              secureTextEntry={secureTextEntry}
-              onFocus={() => { setIsFocus(true); } } 
-              editable={editable}
-            /> : <View style={styles.input}><SelectGender setValue={setValue} /></View>}
+            {name !== 'gender' ? 
+            register ?
+              <TextInput
+                {...register[`${name}`]}
+                value={value}
+                onChangeText={onChange}
+                onBlur={() => { setIsFocus(false); } }
+                placeholder={placeholder}
+                style={styles.input}
+                secureTextEntry={secureTextEntry}
+                onFocus={() => { setIsFocus(true); } } 
+                editable={editable}
+              /> 
+            : 
+              <TextInput
+                value={value}
+                onChangeText={onChange}
+                onBlur={() => { setIsFocus(false); } }
+                placeholder={placeholder}
+                style={styles.input}
+                secureTextEntry={secureTextEntry}
+                onFocus={() => { setIsFocus(true); } } 
+                editable={editable}
+              />
+            : <View style={styles.input}><SelectGender setValue={setValue} /></View>}
           </View>
           {error && (
             <Text style={{ color: 'red', alignSelf: 'stretch' }}>{error.message || 'Error'}</Text>

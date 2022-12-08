@@ -3,20 +3,23 @@ import React from 'react'
 import { Avatar } from 'react-native-paper'
 import { AntDesign } from '@expo/vector-icons'; 
 import { useNavigation } from '@react-navigation/native';
+import { useSelector } from 'react-redux';
 
-const Profile = () => {
+const Profile = ({profile}) => {
     const navigation = useNavigation();
+    const user = useSelector((state) => state.auth.login.currentUser);
   return (
     <TouchableOpacity style={styles.container}  onPress={() => {
         navigation.navigate('Profile', { 
             screen: 'InformationProfile',
-            initial: false,
-        })
+            params: { profile },
+        });
     }}>
       <Avatar.Image style={styles.Image} size={60} source={require('../../../assets/dat.jpg')} />
       <View style={styles.container_child1}>
-            <Text style={styles.name}>Ngo Le Gia Hung</Text>
-            <Text style={styles.position}>React native Developer</Text>
+            <Text style={styles.name}>{profile?.first_name} {profile?.last_name}</Text>
+            
+            <Text style={styles.position}>{user?.email}</Text>
       </View>
       <View>
         <AntDesign name="edit" size={20} color="blue" />

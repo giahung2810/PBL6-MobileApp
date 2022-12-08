@@ -9,15 +9,16 @@ import {
 } from 'react-native';
 import Company from '../../assets/company.jpg'
 import { Avatar } from 'react-native-paper'
-const HeaderCompanyDescription = () => {
+import {api} from '../api/apiJob'
+const HeaderCompanyDescription = ({item}) => {
     return (
     <>
         <Image style={styles.image} source={Company}  resizeMode='cover'/>
             <View style={styles.boxContainer}>
-          <Avatar.Image style={styles.Image} size={90} source={require('../../assets/logo.png')} />
-          <Text style={styles.title}>Product Designer</Text>
-          <Text style={styles.address}>California, USA</Text>
-        </View>
+              <Image style={styles.Image} size={100} source={{uri: api + item.company.image}} resizeMode='contain'/>
+              <Text style={styles.title}>{item.name}</Text>
+              <Text style={styles.address}>{item.locations[0].location_name}</Text>
+            </View>
     </>
 )
 }
@@ -54,8 +55,15 @@ const styles = StyleSheet.create({
       },
       Image : {
         position: 'absolute',
-        bottom: 70,
-        zIndex: 3
+        height: 90,
+        width: 90,
+        bottom: 60,
+        zIndex: 3,
+        backgroundColor: "#fff",
+        marginBottom: 10,
+        borderRadius: 20,
+        borderWidth: 1,
+        borderColor: '#E0E0E0'
       },
       boxAvatar: {
         justifyContent: 'center', 

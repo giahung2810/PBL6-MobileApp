@@ -1,5 +1,5 @@
 // import * as React from 'react';
-import React, {useState, useRef, useLayoutEffect} from 'react';
+import React, {useState, useRef, useLayoutEffect, useEffect} from 'react';
 import { View, Text, StyleSheet, TouchableOpacity, Image,ScrollView, Animated } from 'react-native';
 import DescriptionScreen from '../components/DescriptionScreen/DescriptionScreen';
 import { MaterialIcons } from '@expo/vector-icons'; 
@@ -14,16 +14,25 @@ import { Feather } from '@expo/vector-icons';
 import { useNavigation } from '@react-navigation/native';
 import {KeyboardAvoidingView , Platform, TouchableWithoutFeedback, Keyboard  } from 'react-native';
 import TextComment from '../components/Comment/TextComment';
+import { useDispatch, useSelector } from 'react-redux';
+import { getJob } from '../redux/jobRequest';
 
 // import { navigate } from '../../navigationRef';
 
 const JobDescription = ({route}) => {
   const item = route.params.item;
+  const job =item.job;
+  const comment = item.comment;
+  const getjob = useSelector((state) => state.job.job.job);
   const navigation = useNavigation();
+  const dispatch = useDispatch();
   const [favorite, setFavorite] = useState(false);
   const agregarFavoritos = () => {
       setFavorite(!favorite);
     };
+  useEffect(() => { 
+    getJob(dispatch,job.id);
+  }, [job.id]);
   useLayoutEffect(() => { 
     navigation.setOptions({ 
       headerTitle: '',
@@ -32,12 +41,12 @@ const JobDescription = ({route}) => {
             <TouchableOpacity onPress={() => navigation.goBack()}>
                 <AntDesign name="arrowleft" size={24} color="black" />
             </TouchableOpacity>
-            <Topbar headerTitle='' icon = {false}/>
+            <Topbar headerTitle={job.company.company_name} icon = {false}/>
         </View> 
       ), 
       headerRight: () => (
         <View style={{flexDirection: 'row' , alignItems: 'center'}}>
-          <TouchableOpacity onPress={() => agregarFavoritos()} style={{ paddingVertical:4, paddingHorizontal:8  }}>
+          <TouchableOpacity onPress={() => agregarFavoritos()} style={{ paddingVertical:4, paddingHorizontal:8 }}>
               {   favorite ? 
                   <TouchableOpacity onPress={() => { agregarFavoritos()}} >
                       <FontAwesome name="bookmark" size={28} color="blue" />
@@ -57,16 +66,17 @@ const JobDescription = ({route}) => {
         <KeyboardAvoidingView
           behavior={Platform.OS === "ios" ? "padding" : "height"}
           style={{flex: 1, paddingBottom: 10}}
+          keyboardVerticalOffset={Platform.OS === 'ios' ? 16 : null}
         >
         <ScrollView style={styles.detail} >
-        <View style={{marginVertical:8}}>
-          <JobDetailsCard item = {item}/>
-        </View>
-          <DescriptionScreen item = {item}/>
+          <View style={{marginVertical:8}}>
+            <JobDetailsCard item = {getjob || item}/>
+          </View>
+          <DescriptionScreen item = {getjob || item}/>
         </ScrollView>
         <View style={styles.buttonbottom}>
           <View style={styles.boxButton_apply}>
-            <ButtomApply onPress={() => navigation.navigate('Apply')} text='Apply'/>
+            <ButtomApply onPress={() => navigation.navigate('Apply', {item})} text='Apply'/>
           </View>
         </View>
         </KeyboardAvoidingView>

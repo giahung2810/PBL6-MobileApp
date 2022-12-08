@@ -2,6 +2,8 @@ import axios from "axios";
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import jwt_decode from "jwt-decode";
 
+export const api = 'https://api.quangdinh.me'
+
 const refreshToken = async (refreshToken) => {
     try{
         const res = await instance.post('/auth/token/refresh', {

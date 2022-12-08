@@ -6,25 +6,42 @@ import { AntDesign } from '@expo/vector-icons';
 import { navigate } from '../../navigationRef';
 import Space from '../Space';
 import { FontAwesome } from '@expo/vector-icons'; 
+import {api} from '../../api/apiJob'
+import { delete_SaveJobs, get_SaveJobs } from '../../redux/jobRequest';
+import { useDispatch, useSelector } from 'react-redux';
+import useDecodeTokens from '../../hooks/useDecodeToken'
+import Modal from 'react-native-modal';
+import RemoveSaved from '../../components/Modal/RemoveSaved'
 
-
-const JobCard = ({onPress, favorite = false}) => {
-    const [favorites, setFavorite] = useState(favorite);
+const JobCard = ({onPress, favorite = false, item, setSaveJob}) => {
+    // console.log(job)
+    const job = item.job;
+    const user = useSelector((state) => state.auth.login.currentUser);
+    const id = useDecodeTokens(user?.tokens.access)?.user_id;
+    const dispatch = useDispatch();
+    // const [favorites, setFavorite] = useState(favorite);
     const agregarFavoritos = () => {
-        setFavorite(!favorites);
+        delete_SaveJobs(job.id_favorite);
+        // setFavorite(!favorites);
       };
-    console.log(favorites)
+    // console.log(favorites)
+    const [modalVisible, setModalVisible] = useState(false);
+    const getSaveJobAPI = async () => {
+        const result = await get_SaveJobs(dispatch, id);
+        setSaveJob(result);
+    };
     return (
-        <TouchableOpacity style={styles.container} onPress={() => navigate('JobDetails')}>
+        <>
+        <TouchableOpacity style={styles.container} onPress={() => navigate('JobDetails',{item : item})}>
             <View style={styles.container_child1}>
-                <Image style={styles.image} source={Logo}  resizeMode='contain'/>
+                <Image style={styles.image} source={{uri: api + job.company.image}}  resizeMode='contain'/>
                 <View style={styles.boxDetail}>
-                    <Text style={styles.title}>BackEnd Senior</Text> 
-                    <Text style={styles.company}>Pessi LLC</Text>   
+                    <Text numberOfLines={1} style={styles.title}>{job.name}</Text> 
+                    <Text style={styles.company}>{job.company.company_name}</Text>   
                 </View>
                 <TouchableOpacity onPress={() => agregarFavoritos()}>
-                    {   favorites ? 
-                        <TouchableOpacity onPress={() => {onPress? onPress(): null; agregarFavoritos()}} >
+                    {   job.isFavorite ? 
+                        <TouchableOpacity onPress={() => {setModalVisible(!modalVisible); agregarFavoritos()}} >
                             <FontAwesome name="bookmark" size={28} color="blue" />
                         </TouchableOpacity>
                             : <FontAwesome name="bookmark-o" size={28} color="black" />
@@ -33,29 +50,51 @@ const JobCard = ({onPress, favorite = false}) => {
             </View> 
             <Space />
             <View style={styles.container_child2}>
-                <Text style={styles.address}>City, Country</Text>
-                <Text style={styles.salary}>$5000 - $10,000 / month</Text>
-                <View style={styles.tag}>
+                <Text style={styles.address}>{job.locations[0].location_name}</Text>
+                <Text style={styles.salary}>${job.salary} / month</Text>
+                {job.skills.map((skill, index) => (
+                    <View style={styles.tag} key={skill.id}>
                     <Tag tag = {{
-                        text: 'Employment Type', 
+                        text: skill.name, 
                         color:'#757575', 
                         borderColor:'#757575', 
                         borderWidth:1, 
                         fontSize:10}} 
                     />
                     <Tag tag = {{
-                        text: 'Work Type', 
+                        text: skill.level_name, 
                         color:'#757575', 
                         borderColor:'#757575', 
-                        borderWidth:1 , 
-                        fontSize:10 }} 
+                        borderWidth:1, 
+                        fontSize:10}} 
                     />
-                </View>
+                    </View>
+                ))}
             </View>
             {/* <View style={styles.container_child3}>
 
             </View> */}
         </TouchableOpacity>
+        <Modal
+            testID={'modal'}
+            isVisible={modalVisible}
+            onSwipeComplete={() => setModalVisible(false)}
+            onRequestClose={() => {
+                Alert.alert("Modal has been closed.");
+                setModalVisible(!modalVisible);
+            }}
+            swipeDirection={['up', 'left', 'right', 'down']}
+            style={styles.view}>
+            <RemoveSaved funout={() => 
+                {
+                    setModalVisible(false);
+                }}
+                item={item}
+                fun={getSaveJobAPI}
+                setSaveJob={setSaveJob}
+            />
+        </Modal>
+        </>
         )
 }
 const styles = StyleSheet.create({

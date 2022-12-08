@@ -1,16 +1,22 @@
 import React from 'react';
 import {View, Text, StyleSheet, TouchableOpacity} from 'react-native';
 
-const ButtomApply = ({onPress, text}) => {
+const ButtomApply = ({onPress, text, backgroundColor = '#246BFD', color = '#fff',}) => {
   return (
     <TouchableOpacity
       onPress={onPress}
       style={[
         styles.container,
+        {
+          backgroundColor : backgroundColor,
+        }
       ]}>
       <Text
         style={[
           styles.text,
+          {
+            color : color
+          }
         ]}>
         {text}
       </Text>
@@ -20,7 +26,6 @@ const ButtomApply = ({onPress, text}) => {
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: '#246BFD', 
     // marginHorizontal: 18,
     width: '100%',
     // height: '100%',
@@ -33,7 +38,6 @@ const styles = StyleSheet.create({
 
   text: {
     // width: '100%',
-    color: '#fff',
     fontFamily: 'Urbanist-Bold',
     fontSize: 16
   },

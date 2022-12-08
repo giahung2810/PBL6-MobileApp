@@ -7,16 +7,35 @@ import CustomInput from '../components/CustomInput'
 import {useForm } from 'react-hook-form'
 import { useSelector } from 'react-redux';
 import ButtomApply from '../components/Button/ButtonApply';
+import { useNavigation } from '@react-navigation/native';
+import useDecodeTokens from '../hooks/useDecodeToken'
+import { post_Profile, put_Profile } from '../redux/apiRequest';
 
-
-const InformationProfile = ({navigation}) => {
+const InformationProfile = ({route }) => {
+  const navigation = useNavigation();
   const user = useSelector((state) => state.auth.login.currentUser);
+  const id = useDecodeTokens(user.tokens.access).user_id;
   const { register, control, handleSubmit, watch } = useForm({defaultValues: {
-    email: user.email
+    email: user.email,
+    first_name: route.params.profile.first_name,
+    last_name: route.params.profile.last_name,
   }});
   
   const onSave = (data) => {
-    console.log(data)
+    // console.log(data)
+    const post_data = {
+      ...data,
+      user: id
+    } 
+    if (route.params.profile.id) {
+      console.log('PUT');
+      put_Profile(route.params.profile.id, data = post_data);
+      navigation.goBack();
+    } else {
+      console.log('POST')
+      post_Profile(post_data);
+      navigation.goBack();
+    }
   }
     useLayoutEffect(() => { 
         navigation.setOptions({ 
@@ -48,18 +67,29 @@ const InformationProfile = ({navigation}) => {
             }}
             editable = {false}
         />
-        <Text style={styles.title}>Full Name</Text>
+        <Text style={styles.title}>First Name</Text>
        <CustomInput 
-            name='fullname'
+            name='first_name'
             control={control}
             // register = {register}
-            placeholder = "Full Name" 
+            placeholder = "First Name" 
             rules= {{
                 // required: 'Email is required',
                 // pattern: {value: EMAIL_REGEX, message: 'Email is invalid'}
             }}
         />
-        <Text style={styles.title}>Current Position</Text>
+        <Text style={styles.title}>Last Name</Text>
+       <CustomInput 
+            name='last_name'
+            control={control}
+            // register = {register}
+            placeholder = "Last Name" 
+            rules= {{
+                // required: 'Email is required',
+                // pattern: {value: EMAIL_REGEX, message: 'Email is invalid'}
+            }}
+        />
+        {/* <Text style={styles.title}>Current Position</Text>
         <CustomInput 
             name='position'
             control={control}
@@ -69,9 +99,9 @@ const InformationProfile = ({navigation}) => {
                 // required: 'Email is required',
                 // pattern: {value: EMAIL_REGEX, message: 'Email is invalid'}
             }}
-        />
+        /> */}
     </ScrollView>
-    <ButtomApply text="Save" onPress={handleSubmit(onSave)}/> 
+      <ButtomApply text="Save" onPress={handleSubmit(onSave)}/> 
     </>
   )
 }

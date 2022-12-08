@@ -4,7 +4,6 @@ const companySlice = createSlice({
     name: 'company',
     initialState: {
         companys: {
-            allCompanys: null,
             isFetching: false,
             error: false,
             message:null,
@@ -25,9 +24,9 @@ const companySlice = createSlice({
         getCompanysStart: (state) => {
             state.companys.isFetching = true;
         },
-        getCompanysSuccess: (state, action) => {
+        getCompanysSuccess: (state) => {
             state.companys.isFetching = false;
-            state.companys.allCompanys = action.payload;
+            // state.companys.allCompanys = action.payload;
             state.companys.message = null;
             state.companys.error = false;
         },

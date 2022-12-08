@@ -4,19 +4,40 @@ import { AntDesign } from '@expo/vector-icons';
 import Space from '../Space';
 import AddressCompany from '../Address/AddressCompany';
 import { useNavigation } from '@react-navigation/native';
-
+import {api} from '../../api/apiJob'
 const TopCompany = ({item}) => {
     const navigation = useNavigation();
+    const image = item.image;
+    
+    typeof(image) === "string" ? console.log(typeof(image)) : null;
   return (
     <TouchableOpacity style={styles.container}  onPress={() => navigation.navigate('Company',{item})}>
         <View style={styles.container_child1}>
             <View style={styles.companyBox}>
+            {   typeof(image) === "string" ? 
+                    image.includes(api) ?
+                        <Image style={styles.image} 
+                            source={{
+                                uri: item.image,
+                            }}
+                            resizeMode='contain'
+                        /> 
+                    : 
+                        <Image style={styles.image} 
+                            source={{
+                                uri: api + item.image,
+                            }}
+                            resizeMode='contain'
+                        />
+                        
+            :
             <Image style={styles.image} 
                 source={{
-                    uri: item.image,
+                    uri: api + item.image,
                 }}
                 resizeMode='contain'
             />
+            }
                 <Text numberOfLines={2} style={styles.company}>{item.company_name}</Text>   
             </View>
             <View style={{flexDirection: 'row' , alignItems: 'center',marginHorizontal: 8, marginBottom: 12}}>

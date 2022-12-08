@@ -5,6 +5,7 @@ import { Text, View ,StyleSheet} from 'react-native';
 import SegmentedControl from '@react-native-segmented-control/segmented-control';
 
 export default function DescriptionScreen({item}) {
+
   const [customStyleIndex, setCustomStyleIndex] = useState(0);
   const handleCustomIndexSelect = (index) => {
     //handle tab selection for custom Tab Selection SegmentedControlTab

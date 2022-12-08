@@ -9,12 +9,29 @@ import AddressCompany from '../Address/AddressCompany'
 import SalaryJob from '../Salary/SalaryJob'
 import { useNavigation } from '@react-navigation/native';
 import moment from 'moment';
+import {api} from '../../api/apiJob'
+import Modal from 'react-native-modal';
+import RemoveSaved from '../Modal/RemoveSaved'
+import SaveJob from '../Modal/AddSaved';
+import { useDispatch, useSelector } from 'react-redux';
+import useDecodeTokens from '../../hooks/useDecodeToken'
+import { delete_SaveJobs, get_Jobs_Favorites, post_SaveJobs } from '../../redux/jobRequest';
 
-const RecentJob = ({item}) => {
+
+const RecentJob = ({item, setList_jobs}) => {
+    const job = item.job;
     const navigation = useNavigation();
-    const [favorite, setFavorite] = useState(false);
+    const [favorite, setFavorite] = useState(job.isFavorite);
     const agregarFavoritos = () => {
-        setFavorite(!favorite);
+        if(job.isFavorite)
+        {
+            setModalVisible_remove(true);
+            setModalVisible_save(false);
+        } else {
+            setModalVisible_remove(false);
+            setModalVisible_save(true);
+        }
+        // setFavorite(!favorite);
       };
     const formatDate = (data) => {
         var m = moment(); // Initial moment object
@@ -25,27 +42,32 @@ const RecentJob = ({item}) => {
         m.set(newDate.toObject());
         return m.fromNow();
     };
+    const [modalVisible_remove, setModalVisible_remove] = useState(false);
+    const [modalVisible_save, setModalVisible_save] = useState(false);
+    const user = useSelector((state) => state.auth.login.currentUser);
+    const id = useDecodeTokens(user.tokens.access).user_id;
+
     return (
         <TouchableOpacity style={styles.container}  onPress={() => navigation.navigate('JobDetails',{item})}>
             <View style={styles.container_child1}>
                 {/* company image */}
-                <Image style={styles.image} source={{uri: item.company.image}}  resizeMode='contain'/> 
+                <Image style={styles.image} source={{uri: api + job.company.image}}  resizeMode='contain'/> 
                 
                 <TouchableOpacity onPress={() => agregarFavoritos()} style={{ borderWidth:1, borderColor: '#F3F3F3', alignItems: 'center' , justifyContent: 'center', borderRadius: 60/2, height: 38, width: 38}}>
-                    {   favorite ? 
+                    {   job.isFavorite ? 
                             <FontAwesome name="bookmark" size={24} color="blue" style={styles.icon}/>
                             : <FontAwesome name="bookmark-o" size={24} color="#7F879E" style={styles.icon}/>
                     }
                 </TouchableOpacity>
             </View> 
                 <View style={styles.boxDetail}>
-                    <Text style={styles.title}>{item.name}</Text>    
+                    <Text style={styles.title}>{job.name}</Text>    
                 </View>
                 <View style={styles.boxDetail}>
-                    <Text style={styles.text}>{item.description}</Text>    
+                    <Text style={styles.text}>{job.description}</Text>    
                 </View>
                 
-                    {item.skills.map((skill, index) => (
+                    {job.skills.map((skill, index) => (
                         <View style={styles.tag} key={skill.id}>
                         <Tag tag = {{
                             text: skill.name, 
@@ -65,12 +87,50 @@ const RecentJob = ({item}) => {
                     ))}
                 
                 <View style={styles.detaiInfor}>
-                    <AddressCompany address={item.company.company_location}/>
-                    <SalaryJob salary={item.salary}/>
+                    <AddressCompany address={job.company.company_location}/>
+                    <SalaryJob salary={job.salary}/>
                 </View>
             <View style={styles.container_child2}>
-                <Text style={styles.timePost}>{formatDate(item.updated_at)}</Text>
+                <Text style={styles.timePost}>{formatDate(job.updated_at)}</Text>
             </View>
+            <Modal
+                testID={'modal'}
+                isVisible={modalVisible_remove}
+                onSwipeComplete={() => setModalVisible_remove(false)}
+                swipeDirection={['up', 'left', 'right', 'down']}
+                style={styles.view}>
+                <RemoveSaved funout={() => {
+                        // delete_SaveJobs(job.id_favorite);
+                        setModalVisible_remove(false);
+                    }}
+                    fun={() => {
+                        delete_SaveJobs(job.id_favorite);
+                    }}
+                    item = {item}
+                    setList_jobs={setList_jobs}
+                />
+            </Modal>
+            <Modal
+                testID={'modal'}
+                isVisible={modalVisible_save}
+                onSwipeComplete={() => setModalVisible_save(false)}
+                swipeDirection={['up', 'left', 'right', 'down']}
+                style={styles.view}>
+                <SaveJob 
+                    funout={() => {
+                        setModalVisible_save(false);
+                    }}
+                    fun={() => {
+                        const data = {
+                            user: id,
+                            job: job.id
+                        }
+                        post_SaveJobs(data);
+                    }}
+                    item = {item}
+                    setList_jobs={setList_jobs}
+                />
+            </Modal>
         </TouchableOpacity>
     );
 };
@@ -150,7 +210,7 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         marginLeft:20,
         marginVertical: 8,
-        justifyContent: 'space-between',
+        // justifyContent: 'space-between',
         marginRight:12
     }
 });

@@ -1,15 +1,17 @@
-import { View, Text, Button,StatusBar, SafeAreaView } from 'react-native';
+import { View, Text, Button,StatusBar, SafeAreaView, Platform } from 'react-native';
 import React,{useContext}  from 'react';
 import HomeScreen from '../screens/HomeScreen';
 import ApplyFormScreen from '../screens/ApplyFormScreen';
 import JobDescription from '../screens/JobDescription';
 import ApplicationStatus from '../navigation/ApplicationStatus';
+import Home from '../navigation/Home';
 import SaveJobs from '../navigation/SaveJob'
 import Notification from '../navigation/Notification';
 import Login from '../navigation/Login'
 import SearchScreen from '../screens/SearchScreen';
 import Profile from '../navigation/Profile'
 import CompanyScreen from '../screens/CompanyScreen'
+import TestMultipleChoice from '../screens/TestMultipleChoice';
 
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
@@ -38,7 +40,7 @@ const Tab = createBottomTabNavigator();
 const MainNavigator = () => {
     return (
         <Tab.Navigator screenOptions={{ tabBarShowLabel: false}}>
-            <Tab.Screen name="Home" component={HomeScreen} 
+            <Tab.Screen name="Home" component={Home} 
                     options={{
                       tabBarIcon: ({color}) => {
                         return <AntDesign name="home" size={24} color={color} />
@@ -91,6 +93,7 @@ const Navigator = () => {
           <Stack.Screen name="Login" component={Login} options={{headerShown: false}}/>
           <Stack.Screen name="Search" component={SearchScreen} options={{headerShown: false}}/>
           <Stack.Screen name="Company" component={CompanyScreen} options={{headerShown: false}}/>
+          <Stack.Screen name="Test" component={TestMultipleChoice} options={{headerShown: false, gestureEnabled: false,}}/>
         </Stack.Navigator>
     );
 }

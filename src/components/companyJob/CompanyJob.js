@@ -8,8 +8,10 @@ import { useNavigation } from '@react-navigation/native';
 import InforCompany from '../InforMainCompany/InforCompany';
 
 const Company = ({item}) => {
+    const job =item.job;
+    const comment = item.comment;
     const navigation= useNavigation();
-    const company = item.company;
+    const company = job.company;
     return (
         <View style={styles.container}>
             <InforCompany company = {company}/>

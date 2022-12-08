@@ -4,7 +4,7 @@ import { Foundation } from '@expo/vector-icons';
 
 const SalaryJob = ({salary}) => {
   return (
-    <View style={{justifyContent: 'center', alignItems: 'center', flexDirection:'row'}}>
+    <View style={{ alignItems: 'center', flexDirection:'row',}}>
         <Foundation name="dollar" size={24} color="#7F879E" style={styles.icon} />
         <Text style={styles.salary_Month}><Text style={styles.salary_Price}>{salary}</Text>/Month</Text>
     </View>

@@ -4,8 +4,10 @@ import Logo from '../../../assets/logo.png'
 import Tag from '../Tag/Tag'
 import Space from '../Space'
 import moment from 'moment';
-
+import {api} from '../../api/apiJob'
 const JobDetailsCard = ({item}) => {
+    const job =item.job;
+    const comment = item.comment;
     const formatDate = (data) => {
         var m = moment(); // Initial moment object
         // Create the new date
@@ -18,17 +20,17 @@ const JobDetailsCard = ({item}) => {
     return (
         <View style={[styles.container ]}>
             <View style={styles.container_child1}>
-                <Image style={styles.image} source={item.company.image}  resizeMode='contain'/>
-            </View> 
+                <Image style={styles.image} source={{uri: api + job.company.image}}  resizeMode='contain'/>
+            </View>
             <View style={styles.container_child2}>
-                <Text style={styles.jobpost}>{item.name}</Text>
-                <Text style={styles.company}>{item.company.company_name}</Text>
+                <Text numberOfLines={1} style={styles.jobpost}>{job.name}</Text>
+                <Text style={styles.company}>{job.company.company_name}</Text>
             </View> 
             <Space />
             <View style={styles.container_child3}>
-                <Text style={styles.address}>{item.company.company_location}</Text>
-                <Text style={styles.salary}>{item.salary}$ / month</Text>
-                {item.skills.map((skill, index) => (
+                <Text style={styles.address}>{job.company.company_location}</Text>
+                <Text style={styles.salary}>{job.salary}$ / month</Text>
+                {job.skills.map((skill, index) => (
                     <View style={styles.tag} key={skill.id}>
                     <Tag tag = {{
                         text: skill.name, 
@@ -46,7 +48,7 @@ const JobDetailsCard = ({item}) => {
                     />
                     </View>
                 ))}
-                <Text style={styles.updated_at}>{formatDate(item.updated_at)}</Text>
+                <Text style={styles.updated_at}>{formatDate(job.updated_at)}</Text>
             </View>
         </View>
     );
