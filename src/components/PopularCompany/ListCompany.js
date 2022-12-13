@@ -13,7 +13,6 @@ const ListCompany = ({list}) => {
     return (
         <View style={styles.container}>
             <Title title='Popular Company' onPress={() => {
-                const list_company = getListCompanys(dispatch);
                 navigation.navigate('Home', { 
                     screen: 'ListCompany',
                     initial: false,

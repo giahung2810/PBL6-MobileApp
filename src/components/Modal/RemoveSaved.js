@@ -17,7 +17,7 @@ const ApplyJobSuccessModal = ({funout, item, fun,setList_jobs, setSaveJob}) => {
         // const result = await getJobs(dispatch);
         if(setSaveJob)
         {
-            console.log('setSaveJob')
+            // console.log('setSaveJob')
             const result = await get_SaveJobs(dispatch ,id);
             setSaveJob(result);
         } else {

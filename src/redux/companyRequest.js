@@ -7,7 +7,7 @@ export const getTopCompanys = async (dispatch) => {
     dispatch(getCompanysStart());
     try{
         const res = await apiJob.get('/companies/companies/top_company');
-        console.log("res",res);
+        // console.log("res",res);
         dispatch(getCompanysSuccess());
         return res.data;
         // console.log(res.data);

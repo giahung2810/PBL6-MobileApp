@@ -28,7 +28,7 @@ const ExprirenceModal = ({onPressOut, modalData, profile}) => {
         seeker: modalData?.item.seeker,
     }});
     const onSave = (data) => {
-        console.log(data)
+        // console.log(data)
         const put_data = {
             ...data,
             start_date : start_date,

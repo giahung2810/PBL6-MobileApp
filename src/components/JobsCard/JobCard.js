@@ -13,7 +13,7 @@ import useDecodeTokens from '../../hooks/useDecodeToken'
 import Modal from 'react-native-modal';
 import RemoveSaved from '../../components/Modal/RemoveSaved'
 
-const JobCard = ({onPress, favorite = false, item, setSaveJob}) => {
+const JobCard = ({ item, setSaveJob}) => {
     // console.log(job)
     const job = item.job;
     const user = useSelector((state) => state.auth.login.currentUser);

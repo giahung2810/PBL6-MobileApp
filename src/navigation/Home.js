@@ -3,6 +3,7 @@ import {getStatusBarHeight} from 'react-native-status-bar-height';
 
 import HomeScreen from '../screens/HomeScreen';
 import ListCompanyScreen from '../screens/ListCompanyScreen';
+import ListJobScreen from '../screens/ListJobScreen';
 
 const Stack = createNativeStackNavigator();
 const Home = () => {
@@ -11,6 +12,7 @@ const Home = () => {
         <Stack.Navigator screenOptions={{}}>
             <Stack.Screen name="HomeScreen" component={HomeScreen} options={{headerShown: false}}/>
             <Stack.Screen name="ListCompany" component={ListCompanyScreen} />
+            <Stack.Screen name="ListJob" component={ListJobScreen} />
         </Stack.Navigator>
     );
 }

@@ -12,6 +12,7 @@ const Profile = ({profile}) => {
     <TouchableOpacity style={styles.container}  onPress={() => {
         navigation.navigate('Profile', { 
             screen: 'InformationProfile',
+            initial: false,
             params: { profile },
         });
     }}>

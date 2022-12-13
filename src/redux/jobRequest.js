@@ -103,7 +103,7 @@ export const get_SaveJobs = async (dispatch,id) => {
         };
         const children = newArray_isF;
         dispatch(getJobsSuccess());
-        console.log('API',children);
+        // console.log('API',children);
         return children;
     } catch(err){
         dispatch(getJobsFailed(err));
@@ -167,8 +167,94 @@ export const get_Jobs_Favorites = async (dispatch, id) => {
         })
         const children = newArray_isF.concat(newArray_noF);
         dispatch(getJobsSuccess());
-        console.log('API',children);
+        // console.log('API',children);
         return children;
+    } catch(err){
+        dispatch(getJobsFailed(err));
+        console.log(err);
+    }
+};
+
+export const get_Jobs_Search = async (dispatch, id) => {
+    dispatch(getJobsStart());
+    try{
+        const res_j = await apiJob.get('/jobs/user/get_jobs');
+        if (res_j.status === 200) {
+            var jobs = res_j.data;
+        }
+        const res_f = await apiJob.get(`/favorites/favorites/${id}`);
+        if (res_f.status === 200) {
+            var favorites = res_f.data;
+        }
+        let newArray_isF = jobs?.filter(
+            (job) => favorites?.some((favorite) => favorite.job.id === job.job.id)
+        );
+        newArray_isF.map((array) => {
+            array.job.isFavorite = true
+        })
+        for(var k in newArray_isF) {
+            for(var j in favorites)
+                // newArray_isF[k].job.id_favorite = favorites[k].id
+            {
+                if(newArray_isF[k].job.id == favorites[j].job.id)
+                {
+                    newArray_isF[k].job.id_favorite = favorites[j].id
+                }
+            }
+        };
+        let newArray_noF = jobs?.filter(
+            (job) => !favorites?.some((favorite) => favorite.job.id === job.job.id)
+        );
+        newArray_noF.map((array) => {
+            array.job.isFavorite = false
+        })
+        const children = newArray_isF.concat(newArray_noF);
+
+        children.map((job) => {
+            job.job.company_name = job.job.company.company_name,
+            job.job.company_location = job.job.company.company_location
+        })
+        dispatch(getJobsSuccess());
+        // console.log('API',children);
+        return children;
+    } catch(err){
+        dispatch(getJobsFailed(err));
+        console.log(err);
+    }
+};
+
+export const get_Jobs_Application = async (dispatch, id) => {
+    dispatch(getJobsStart());
+    try{
+        const res_j = await apiJob.get('/jobs/user/get_jobs');
+        if (res_j.status === 200) {
+            var jobs = res_j.data;
+        }
+        const res_f = await apiJob.get(`/applicants/candidate/get_applicant?id_candidate=${id}`);
+        if (res_f.status === 200) {
+            var applicants = res_f.data;
+        }
+        let newArray_isA = jobs?.filter(
+            (job) => applicants?.some((applicant) => applicant.job === job.job.id)
+        );
+        newArray_isA.map((job) => {
+            job.job.company_name = job.job.company.company_name,
+            job.job.company_location = job.job.company.company_location
+        });
+        for(var k in newArray_isA) {
+            for(var j in applicants)
+                // newArray_isF[k].job.id_favorite = favorites[k].id
+            {
+                if(newArray_isA[k].job.id == applicants[j].id)
+                {
+                    newArray_isA[k].application = applicants[j];
+                    newArray_isA[k].job.applicant_status = applicants[j].status;
+                }
+            }
+        };
+        dispatch(getJobsSuccess());
+        // console.log('API',children);
+        return newArray_isA;
     } catch(err){
         dispatch(getJobsFailed(err));
         console.log(err);

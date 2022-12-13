@@ -10,7 +10,7 @@ export default function DateOfBirth({setDate_of_birth, date}) {
   const time = date?.split('-');
 
   // const datePass = new Date(time[0], time[1], time[2]);
-  console.log("date", date);
+  // console.log("date", date);
  
   function onDateSelected(event, value) {
     setDate_of_birth(`${value.getFullYear()}-${value.getMonth()+ 1}-${value.getDate()}`);

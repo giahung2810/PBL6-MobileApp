@@ -1,6 +1,7 @@
 import { StyleSheet, Text, TouchableOpacity, View } from 'react-native'
-import React from 'react'
+import React, {} from 'react'
 import Space from '../Space'
+import { useState } from 'react'
 const data = [
     {
         day : '2022-12-06',
@@ -38,6 +39,24 @@ const data = [
     },
 ]
 const TimeInterview = () => {
+    const [choose, setChoose] = useState(false);
+    const [location,setLocation] = useState({
+        row: -1, 
+        column: -1,
+    });
+    const ChoseTime = (row, index) => {
+        if(choose) {
+            if(location.row === row && location.column === index)
+            {
+                setChoose(false);
+                setLocation({row: -1, column: -1,});
+            }
+        } else {
+            setChoose(true);
+            setLocation({row: row, column: index});
+        }
+    }
+    // console.log(location)
   return (
     <View style={styles.container}>
         <View style={{justifyContent: 'center', alignItems: 'center', marginBottom: 12}}>
@@ -45,14 +64,20 @@ const TimeInterview = () => {
         </View>
         <Space/>
         {data.map( (item, index) => {
+            const row = index;
             return (
                 <View key={index} >
                     <Text style={styles.date}>{item.day}</Text>
                     <View style={{flexDirection: 'row' , alignItems: 'center', marginVertical: 8, width: '100%', flexWrap: "wrap",}}>
                     {item.available.map( (available, index) =>{
                         return (
-                            <TouchableOpacity style={styles.boxAvailable} key={index}>
-                                <Text style={styles.available}>{available.start} - {available.end}</Text>
+                            <TouchableOpacity style={[styles.boxAvailable, {
+                                borderColor: choose  ? location.row === row && location.column === index ? 'rgb(255,69,0)' : 'rgba(0,0,0, 0.1)' : 'rgb(255,69,0)'
+                            }]} key={index} onPress={() =>{ChoseTime(row, index);}}
+                            >
+                                <Text style={[styles.available, {color: choose  ? location.row === row && location.column === index ? 'rgb(255,69,0)' : 'rgba(0,0,0, 0.1)' : 'rgb(255,69,0)'}]}>
+                                    {available.start} - {available.end}
+                                </Text>
                             </TouchableOpacity>
                         );
                     })}

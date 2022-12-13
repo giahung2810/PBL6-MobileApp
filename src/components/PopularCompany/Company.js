@@ -8,9 +8,7 @@ import {api} from '../../api/apiJob'
 const TopCompany = ({item}) => {
     const navigation = useNavigation();
     const image = item.image;
-    
-    typeof(image) === "string" ? console.log(typeof(image)) : null;
-  return (
+    return (
     <TouchableOpacity style={styles.container}  onPress={() => navigation.navigate('Company',{item})}>
         <View style={styles.container_child1}>
             <View style={styles.companyBox}>

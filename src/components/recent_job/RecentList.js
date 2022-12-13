@@ -3,11 +3,20 @@ import React, {useState} from 'react';
 import { View, Image, Text , StyleSheet, TouchableOpacity, FlatList } from 'react-native';
 import Title from '../Title'
 import RecentJob from './RecentJob';
+import { useNavigation } from '@react-navigation/native';
 
 const RecentList = ({list, setList_jobs}) => {
+    const navigation = useNavigation();
+
     return (
         <View style={styles.container}>
-            <Title title='Rencent Job List' />
+            <Title title='Rencent Job List' onPress={() => {
+                // const list_company = getListCompanys(dispatch);
+                navigation.navigate('Home', { 
+                    screen: 'ListJob',
+                    initial: false,
+                  },)
+            }}/>
             {list.map((item, index) => (
                 <RecentJob 
                     item={item} 

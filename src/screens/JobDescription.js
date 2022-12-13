@@ -26,7 +26,7 @@ const JobDescription = ({route}) => {
   const getjob = useSelector((state) => state.job.job.job);
   const navigation = useNavigation();
   const dispatch = useDispatch();
-  const [favorite, setFavorite] = useState(false);
+  const [favorite, setFavorite] = useState(job.isFavorite);
   const agregarFavoritos = () => {
       setFavorite(!favorite);
     };

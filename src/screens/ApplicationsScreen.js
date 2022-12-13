@@ -40,8 +40,8 @@ const ApplicationsScreen = () => {
   },[navigation]);
   return (                    
     
-          <View style={styles.container}>
-        <ScrollView style={{flex: 1, backgroundColor: '#fff',marginHorizontal: 24,}}>
+        <View style={styles.container}>
+        <ScrollView style={{flex: 1, backgroundColor: '#fff',paddingHorizontal: 24,}}>
             <View style={{height:12}}/>
             <SearchBar 
               term= {term} 
@@ -51,6 +51,7 @@ const ApplicationsScreen = () => {
             {/* <View style={{height: 8}} /> */}
             {/* <ApplicationCard item = {item}/>
             <ApplicationCard item = {item2}/> */}
+            <View style={{height:10}}/>
             {list_Application?.map((item, index) => (
                 <ApplicationCard item = {item} key={item.id}/>
             ))}

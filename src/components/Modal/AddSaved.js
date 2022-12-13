@@ -22,7 +22,7 @@ const SaveJob = ({funout, item, fun,setList_jobs}) => {
         React.useCallback(() => {
             
             return () => {
-                console.log("Close", job);
+                // console.log("Close", job);
                 fun();
                 getJobsAPi();
             };

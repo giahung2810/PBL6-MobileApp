@@ -29,10 +29,10 @@ export const createAxios = (user, dispatch, loginUpdate) => {
             const decodedToken = jwt_decode(user?.tokens.access);
             if (decodedToken.exp < date.getTime() / 1000) {
                 const data = await refreshToken(user?.tokens.refresh);
-                console.log('data', data);
+                // console.log('data', data);
                 const refreshUser = data.access;
                 dispatch(loginUpdate(refreshUser));
-                console.log('refreshUser',refreshUser);
+                // console.log('refreshUser',refreshUser);
                 config.headers['Authorization'] = 'Bearer ' + data.access;
             }
             return config;
