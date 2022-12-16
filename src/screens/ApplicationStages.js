@@ -15,6 +15,7 @@ const ApplicationStages = ({route}) => {
   const navigation = useNavigation();
   const item = route.params.item;
   const job = route.params.job;
+
   const [modalVisible, setModalVisible] = useState(false);
     useLayoutEffect(() => {  
         navigation.setOptions({ 
@@ -53,7 +54,7 @@ const ApplicationStages = ({route}) => {
             </View>
             </View>
             {item.status === "interview_pending" ?
-              <TimeInterview/>
+              <TimeInterview id_applicant={item.id}/>
             : null
             }
             

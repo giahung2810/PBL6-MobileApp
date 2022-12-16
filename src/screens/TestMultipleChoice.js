@@ -60,8 +60,8 @@ const TestMultipleChoice = ({route}) => {
     const post_data = {
       user_id: id,
       questions : result_exam,
-      time_done : time_done,
       time_start: time_start.current,
+      time_done : time_done,
     }
     console.log(post_data);
     postExam(dispatch, id_test, post_data, navigation);

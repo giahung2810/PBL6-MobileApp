@@ -1,5 +1,5 @@
 import React, { useRef } from 'react';
-import {Animated,Image,ImageBackground,ScrollView,StatusBar,StyleSheet,Text,View, TouchableOpacity} from 'react-native';
+import {Animated,Image,ImageBackground,ScrollView,StatusBar,StyleSheet,Text,View, TouchableOpacity, RefreshControl} from 'react-native';
 import { Feather } from '@expo/vector-icons';
 import {SafeAreaProvider,useSafeAreaInsets,} from 'react-native-safe-area-context';
 import { BlurView } from 'expo-blur';
@@ -12,25 +12,33 @@ import {api} from '../../api/apiJob'
 const HEADER_HEIGHT_EXPANDED = 90;
 const HEADER_HEIGHT_NARROWED = 100;
 
+const wait = (timeout) => {
+  return new Promise(resolve => setTimeout(resolve, timeout));
+}
+
 const AnimatedImageBackground = Animated.createAnimatedComponent(
   ImageBackground
 );
 
 const AnimatedBlurView = Animated.createAnimatedComponent(BlurView);
 
-export default function DynamicPageCompany({children, company}) {
+export default function DynamicPageCompany({children, company, refreshing, setRefreshing}) {
   // Keeps notches away
   return (
     <SafeAreaProvider>
-      <App company={company}>{children}</App>
+      <App company={company} refreshing={refreshing} setRefreshing={setRefreshing}>{children}</App>
     </SafeAreaProvider>
   );
 }
 
-function App({children, company}) {
+function App({children, company, refreshing, setRefreshing}) {
   const insets = useSafeAreaInsets();
   const scrollY = useRef(new Animated.Value(0)).current;
   const navigation = useNavigation();
+  const onRefresh = React.useCallback(() => {
+    setRefreshing(true);
+    wait(1000).then(() => setRefreshing(false));
+  }, []);
   return (
     <View style={styles.container}>
       {/* <StatusBar barStyle="light-content" /> */}
@@ -164,6 +172,12 @@ function App({children, company}) {
           marginTop: HEADER_HEIGHT_NARROWED,
           paddingTop: HEADER_HEIGHT_EXPANDED,
         }}
+        refreshControl={
+          <RefreshControl
+            refreshing={refreshing}
+            onRefresh={onRefresh}
+          />
+        }
       >
         <View
           style={[styles.container, { backgroundColor: '#fff' }]}

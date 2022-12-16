@@ -260,3 +260,15 @@ export const get_Jobs_Application = async (dispatch, id) => {
         console.log(err);
     }
 };
+
+export const getListTime_Interview = async (id_applicant) => {
+    // console.log(id_applicant.id_applicant);
+    try{
+        const res = await apiJob.get(`/applicants/candidate/get_times_interview?id_applicant=${id_applicant.id_applicant}`);
+        if(res.status === 200) {
+            return res.data;    
+        }
+    } catch(err){
+        console.log(err);
+    }
+}

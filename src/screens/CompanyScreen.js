@@ -15,17 +15,21 @@ const CompanyScreen = ({route}) => {
   const dispatch = useDispatch();
   const id = item.id;
   const getcompany = useSelector((state) => state.company.company.company);
+  const [refreshing, setRefreshing] = React.useState(false);
   useEffect(() => { 
     getCompany(dispatch,id);
   }, [id]);
+  useEffect(() => { 
+    getCompany(dispatch,id);
+  }, [refreshing]);
   return (
     <>
       {getcompany === null ? 
-        <DynamicPageCompany company={item}>
+        <DynamicPageCompany company={item} refreshing={refreshing} setRefreshing={setRefreshing}>
           <CommentList list={item.reviews} type="company" company={item}/>
         </DynamicPageCompany>
         :
-        <DynamicPageCompany company={getcompany}>
+        <DynamicPageCompany company={getcompany} refreshing={refreshing} setRefreshing={setRefreshing}>
           <CommentList list={getcompany.reviews} type="company" company={getcompany}/>
         </DynamicPageCompany>
       }

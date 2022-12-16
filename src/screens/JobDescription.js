@@ -12,13 +12,15 @@ import { FontAwesome } from '@expo/vector-icons';
 import JobDetailsCard from '../components/JobDetailHeaderCard/JobDetailsCard'
 import { Feather } from '@expo/vector-icons'; 
 import { useNavigation } from '@react-navigation/native';
-import {KeyboardAvoidingView , Platform, TouchableWithoutFeedback, Keyboard  } from 'react-native';
+import {KeyboardAvoidingView , Platform, TouchableWithoutFeedback, Keyboard,RefreshControl  } from 'react-native';
 import TextComment from '../components/Comment/TextComment';
 import { useDispatch, useSelector } from 'react-redux';
 import { getJob } from '../redux/jobRequest';
 
 // import { navigate } from '../../navigationRef';
-
+const wait = (timeout) => {
+  return new Promise(resolve => setTimeout(resolve, timeout));
+}
 const JobDescription = ({route}) => {
   const item = route.params.item;
   const job =item.job;
@@ -27,6 +29,11 @@ const JobDescription = ({route}) => {
   const navigation = useNavigation();
   const dispatch = useDispatch();
   const [favorite, setFavorite] = useState(job.isFavorite);
+  const [refreshing, setRefreshing] = React.useState(false);
+  const onRefresh = React.useCallback(() => {
+    setRefreshing(true);
+    wait(1000).then(() => setRefreshing(false));
+  }, []);
   const agregarFavoritos = () => {
       setFavorite(!favorite);
     };
@@ -68,7 +75,14 @@ const JobDescription = ({route}) => {
           style={{flex: 1, paddingBottom: 10}}
           keyboardVerticalOffset={Platform.OS === 'ios' ? 16 : null}
         >
-        <ScrollView style={styles.detail} >
+        <ScrollView style={styles.detail} 
+          refreshControl={
+            <RefreshControl
+              refreshing={refreshing}
+              onRefresh={onRefresh}
+            />
+          }
+        >
           <View style={{marginVertical:8}}>
             <JobDetailsCard item = {getjob || item}/>
           </View>

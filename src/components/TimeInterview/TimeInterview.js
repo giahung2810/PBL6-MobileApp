@@ -2,43 +2,20 @@ import { StyleSheet, Text, TouchableOpacity, View } from 'react-native'
 import React, {} from 'react'
 import Space from '../Space'
 import { useState } from 'react'
-const data = [
-    {
-        day : '2022-12-06',
-        available : [
-            {
-                start : "09:30",
-                end : "09:45"
-            }
-        ]
-    },
-    {
-        day : '2022-12-07',
-        available : [
-            {
-                start : "09:30",
-                end : "09:45"
-            },
-            {
-                start : "09:50",
-                end : "10:05"
-            },
-            {
-                start : "09:50",
-                end : "10:05"
-            },
-            {
-                start : "09:50",
-                end : "10:05"
-            },
-            {
-                start : "09:50",
-                end : "10:05"
-            },
-        ]
-    },
-]
-const TimeInterview = () => {
+import { getListTime_Interview } from '../../redux/jobRequest'
+import { useEffect } from 'react'
+
+const TimeInterview = (id_applicant) => {
+    const [data, setData] = useState();
+    const getListTime = async () => {
+        const result = await getListTime_Interview(id_applicant);
+        setData(result);
+    };
+    useEffect(() => {
+            // do something
+            getListTime();
+            // console.log(data)
+    },[]);
     const [choose, setChoose] = useState(false);
     const [location,setLocation] = useState({
         row: -1, 
@@ -63,7 +40,7 @@ const TimeInterview = () => {
             <Text style={styles.title}>Please choose 1 time that suits you</Text>
         </View>
         <Space/>
-        {data.map( (item, index) => {
+        {data?.map( (item, index) => {
             const row = index;
             return (
                 <View key={index} >

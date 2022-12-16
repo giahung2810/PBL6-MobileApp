@@ -18,51 +18,7 @@ const Question = ({item,result_exam,setResult_exam}) => {
     <View style={styles.container}>
       <Text style={styles.titleQuestion}>Question {item.id}:<Text style={styles.question}>{item.content}</Text> </Text>
       <Space />
-      {item.is_multiple_choice ? 
-        item.answers.map((amc) => {
-           return (
-            <View key={amc.id} style={{flexDirection: 'row' , alignItems: 'center', marginVertical: 3}}>
-              {/* <BouncyCheckbox
-                size={25}
-                fillColor="#2196f3"
-                iconStyle={{ borderColor: "#2196f3", borderWidth: 3 }}
-                innerIconStyle={{ borderWidth: 2 }}
-              /> */}
-              <BouncyCheckbox
-                iconStyle={{borderColor: '#2196f3', borderRadius: 10}}
-                // textStyle={{fontFamily: 'JosefinSans-Regular'}}
-                unfillColor="white"
-                fillColor="#2196f3"
-                onPress={(value) => {
-                  setResult_exam(prev => {
-                    const even = (element) => element.id == item.id;
-                    if(!prev.some(even)) {
-                      return [...prev,{ "id": item.id,"answers": [amc.id]}]
-                    } else {
-                      // const new_prev = prev.filter((element) => element.id != item.id)
-                      // console.log(new_prev)
-                      // return [...new_prev,{ "id": item.id,"answers": [value]}]
-                      
-                        const new_prev = prev.filter((element) => element.id == item.id);
-                        
-                        new_prev[0].answers.map((item) =>
-                          item == amc.id ? 0 : 1
-                        );
-                        // console.log(new_prev)
-                        const new_prev_1 = prev.filter((element) => element.id != item.id) 
-                        // console.log(result_exam)
-                        return new_prev_1.concat(new_prev);
-                    }
-                  });
-                 
-                }}
-              />
-              <Text style={{fontFamily: 'Urbanist-Regular', fontSize: 15}}>{amc.content}</Text>
-          </View>
-          )
-        })
-        
-      :
+
       <RadioForm
           radio_props={radio_props}
         //   labelColor={'#50C900'}
@@ -88,7 +44,6 @@ const Question = ({item,result_exam,setResult_exam}) => {
             })
           }}
       />
-      }
     </View>
   )
 }
