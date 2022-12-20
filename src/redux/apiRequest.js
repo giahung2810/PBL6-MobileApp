@@ -40,6 +40,7 @@ export const registerUser = async (user, dispatch, navigation) => {
             initial: false,
           });
     } catch (error) {
+        console.log(error);
         dispatch(registerFailed(error.response.data));
     }
 };
@@ -60,6 +61,7 @@ export const checkToken = async ( dispatch, navigation, refresh) => {
     }
     try {
         const res = await apiJob.post('/auth/token/refresh', token);
+        navigation.navigate('MainNavigator');
     } catch (error) {
         console.log(error.response.data);
         navigation.navigate('Login');

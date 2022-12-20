@@ -87,10 +87,10 @@ const Navigator = () => {
     return (
       //
         <Stack.Navigator screenOptions={{}}>
-          <Stack.Screen name="MainNavigator" component={MainNavigator} options={{headerShown: false}}/>
+          <Stack.Screen name="MainNavigator" component={MainNavigator} options={{headerShown: false,}}/>
+          <Stack.Screen name="Login" component={Login} options={{headerShown: false}}/>
           <Stack.Screen name="JobDetails" component={JobDescription} />
           <Stack.Screen name="Apply" component={ApplyFormScreen} options={{headerShown: false}}/>
-          <Stack.Screen name="Login" component={Login} options={{headerShown: false}}/>
           <Stack.Screen name="Search" component={SearchScreen} options={{headerShown: false}}/>
           <Stack.Screen name="Company" component={CompanyScreen} options={{headerShown: false}}/>
           <Stack.Screen name="Test" component={TestMultipleChoice} options={{headerShown: false, gestureEnabled: false,}}/>

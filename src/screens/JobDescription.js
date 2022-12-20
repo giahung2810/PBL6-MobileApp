@@ -39,7 +39,7 @@ const JobDescription = ({route}) => {
     };
   useEffect(() => { 
     getJob(dispatch,job.id);
-  }, [job.id]);
+  }, [job.id, refreshing]);
   useLayoutEffect(() => { 
     navigation.setOptions({ 
       headerTitle: '',

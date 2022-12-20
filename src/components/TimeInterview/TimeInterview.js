@@ -2,10 +2,13 @@ import { StyleSheet, Text, TouchableOpacity, View } from 'react-native'
 import React, {} from 'react'
 import Space from '../Space'
 import { useState } from 'react'
-import { getListTime_Interview } from '../../redux/jobRequest'
+import { getListTime_Interview, post_Time_Interview } from '../../redux/jobRequest'
 import { useEffect } from 'react'
+import ButtomApply from '../Button/ButtonApply'
+import { useNavigation } from '@react-navigation/native'
 
 const TimeInterview = (id_applicant) => {
+    const navigation = useNavigation();
     const [data, setData] = useState();
     const getListTime = async () => {
         const result = await getListTime_Interview(id_applicant);
@@ -21,7 +24,7 @@ const TimeInterview = (id_applicant) => {
         row: -1, 
         column: -1,
     });
-    const ChoseTime = (row, index) => {
+    const ChoseTime = (row, index, available, day) => {
         if(choose) {
             if(location.row === row && location.column === index)
             {
@@ -31,8 +34,27 @@ const TimeInterview = (id_applicant) => {
         } else {
             setChoose(true);
             setLocation({row: row, column: index});
+            setPost_data({
+                start_time : available.start,
+                end_time : available.end,
+                day : day
+            });
         }
+        
     }
+    const [post_data,setPost_data] = useState({
+        start_time : "",
+        end_time : "",
+        day : ""
+    });
+    const Ok_time = (post_data, id_applicant) => {
+        if(choose) {
+            post_Time_Interview(post_data, id_applicant);
+            navigation.goBack();
+        }
+        else alert('Please Select Time first');
+    }
+    // console.log(post_data);
     // console.log(location)
   return (
     <View style={styles.container}>
@@ -50,7 +72,7 @@ const TimeInterview = (id_applicant) => {
                         return (
                             <TouchableOpacity style={[styles.boxAvailable, {
                                 borderColor: choose  ? location.row === row && location.column === index ? 'rgb(255,69,0)' : 'rgba(0,0,0, 0.1)' : 'rgb(255,69,0)'
-                            }]} key={index} onPress={() =>{ChoseTime(row, index);}}
+                            }]} key={index} onPress={() =>{ChoseTime(row, index, available, item.day);}}
                             >
                                 <Text style={[styles.available, {color: choose  ? location.row === row && location.column === index ? 'rgb(255,69,0)' : 'rgba(0,0,0, 0.1)' : 'rgb(255,69,0)'}]}>
                                     {available.start} - {available.end}
@@ -62,6 +84,7 @@ const TimeInterview = (id_applicant) => {
                 </View>
             );
         })}
+        <ButtomApply onPress={() => {Ok_time(post_data, id_applicant)}} text="OK with my time" backgroundColor='rgba(255,140,0,0.3)' color='rgb(255,69,0)'/>
     </View>
   )
 }

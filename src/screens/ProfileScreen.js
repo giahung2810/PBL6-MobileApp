@@ -1,5 +1,5 @@
 import React, {useState, useEffect, useLayoutEffect, useCallback} from 'react';
-import {View, Text, StyleSheet, TouchableOpacity, ScrollView, SafeAreaView, Button } from 'react-native';
+import {View, Text, StyleSheet, TouchableOpacity, ScrollView, SafeAreaView, Button, RefreshControl } from 'react-native';
 import SearchBar from "../components/Search/SearchBar";
 import Topbar from '../components/topbar/Topbar'
 import ApplicationCard from '../components/ApplicationCard/ApplicationCard'
@@ -18,10 +18,18 @@ import { FontAwesome5 } from '@expo/vector-icons';
 
 import { useFocusEffect } from '@react-navigation/native';
 
+const wait = (timeout) => {
+  return new Promise(resolve => setTimeout(resolve, timeout));
+}
 const ProfileScreen = () => {
     const dispatch = useDispatch();
     const navigation = useNavigation();
     const isFetching = useSelector((state) => state.auth.logout.isFetching);
+    const [refreshing, setRefreshing] = React.useState(false);
+    const onRefresh = React.useCallback(() => {
+      setRefreshing(true);
+      wait(1000).then(() => setRefreshing(false));
+    }, []);
     const handleLogout = () => {
         logoutUser(dispatch, navigation);
     }
@@ -32,6 +40,7 @@ const ProfileScreen = () => {
       const result = await getProfile(dispatch, id);
       setProfile(result);
     };
+    
     useLayoutEffect(() => { 
         navigation.setOptions({ 
           headerTitle: '',
@@ -60,9 +69,21 @@ const ProfileScreen = () => {
     );
     // getProfileAPI();
   return (    
-    <>
-        <Profile profile={profile}/>
-        <ScrollView style={{flex: 1, backgroundColor: '#fff', paddingHorizontal: 18}}>
+
+      <> 
+      <ScrollView 
+        style={{flex: 1, backgroundColor: '#fff'}}
+        refreshControl={
+          <RefreshControl
+            refreshing={refreshing}
+            onRefresh={onRefresh}
+          />
+        }
+      >
+        <View style={{}}>
+          <Profile profile={profile}/>
+        </View>
+        <ScrollView style={{flex: 1, backgroundColor: '#fff', paddingHorizontal: 18, }}>
           <TouchableOpacity onPress={() =>{navigation.navigate('Education', {profile})}} 
             style={{paddingVertical:18, flexDirection: 'row', alignItems: 'center',borderBottomWidth:1,borderColor: 'rgba(238, 238, 238, 0.5)'}}
           >
@@ -81,11 +102,21 @@ const ProfileScreen = () => {
               <FontAwesome5 name="brain" size={24} color="pink" style={styles.icon}/>
               <Text style={{fontFamily: 'Urbanist-SemiBold', fontSize: 18}}>Skill</Text>
           </TouchableOpacity>
+          <TouchableOpacity onPress={() =>{navigation.navigate('Skill' , {profile})}} 
+            style={{paddingVertical:18, flexDirection: 'row', alignItems: 'center',borderBottomWidth:1,borderColor: 'rgba(238, 238, 238, 0.5)'}}
+          >
+              <Ionicons name="settings" size={26} color="#246BFD" style={styles.icon}/>
+              <Text style={{fontFamily: 'Urbanist-SemiBold', fontSize: 18}}>Change your password</Text>
+          </TouchableOpacity>
         </ScrollView>
         {/* <Button title="Logout" onPress = {handleLogout} /> */}
-        <ButtonNavigate title="Logout" color="#F75555" onPress = {handleLogout}/>
-        
-    </>  
+        </ScrollView>  
+        <View style={{  }}>
+          <ButtonNavigate title="Logout" color="#F75555" onPress = {handleLogout}/>
+        </View>
+      
+      </>
+    
   );
 }; 
 export default ProfileScreen;

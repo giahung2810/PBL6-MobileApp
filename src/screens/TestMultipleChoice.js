@@ -8,7 +8,7 @@ import DynamicPageExam from '../components/Animation/DynamicPageExam';
 import ButtomApply from '../components/Button/ButtonApply';
 import { useNavigation } from '@react-navigation/native';
 import AppLoader from '../components/Loading/AppLoader';
-import { getExam, postExam } from '../redux/apiExam';
+import { getExam, postExam, postResult } from '../redux/apiExam';
 import { useDispatch, useSelector } from 'react-redux';
 import { useState, useRef } from 'react';
 import useDecodeTokens from '../hooks/useDecodeToken'
@@ -22,6 +22,8 @@ LogBox.ignoreLogs(["EventEmitter.removeListener"]);
 
 const TestMultipleChoice = ({route}) => {
   const id_test = route.params.id_test;
+  const id_job = route.params.id_job;
+  // console.log(id_job)
   const navigation = useNavigation();
   const dispatch = useDispatch();
   const user = useSelector((state) => state.auth.login.currentUser);
@@ -52,6 +54,8 @@ const TestMultipleChoice = ({route}) => {
   },[navigation]);
   // console.log("exam", exam);
   const [result_exam, setResult_exam] = useState([]);
+  const [result, setResult] = useState();
+  const [msg, setMsg] = useState();
   const time_start = useRef(moment.utc(new Date()).format());
   // console.log(time_start.current.toISOString());
   const submit = () => {
@@ -59,13 +63,20 @@ const TestMultipleChoice = ({route}) => {
     // console.log(result_exam);
     const post_data = {
       user_id: id,
+      job_id : id_job,
       questions : result_exam,
       time_start: time_start.current,
       time_done : time_done,
     }
     console.log(post_data);
-    postExam(dispatch, id_test, post_data, navigation);
+    const fun = async () => { 
+      const [result, msg] = await postExam(dispatch, id_test, post_data, navigation);
+      setResult(result);
+      setMsg(msg);
+    }
+    // setResult(result);
     // navigation.goBack();
+    fun();
   }
 
   return (
@@ -102,7 +113,21 @@ const TestMultipleChoice = ({route}) => {
               setModalVisible(!modalVisible);
             }}
           >
-            <SubmitExam onPress={() => {submit() ; setModalVisible(!modalVisible)}} onPressOut={() =>setModalVisible(!modalVisible) } />
+            <SubmitExam onPress_submit={() => {submit();}} 
+              onPressOut_submit={() => setModalVisible(!modalVisible) } 
+              onPress_result={() => {
+                const data = {
+                  job: id_job,
+                  user : id,
+                  result: result.result
+                }
+                // postResult(dispatch , data ,navigation);
+                navigation.goBack();
+              }}
+              onPressOut_result={() => {setModalVisible(!modalVisible) ;navigation.goBack();}}
+              result={result} 
+              msg={msg}
+            />
           </Modal>
         </View> 
       </DynamicPageExam>

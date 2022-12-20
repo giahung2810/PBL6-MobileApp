@@ -12,21 +12,31 @@ import {Context as AuthContext} from '../context/AuthContext';
 import { useDispatch } from 'react-redux'
 // import { NavigationEvents } from "react-navigation";
 import { useNavigation } from '@react-navigation/native';
-import { loginUser } from '../redux/apiRequest'
+import { checkToken, loginUser } from '../redux/apiRequest'
 import { store } from '../redux/store'
 import { useSelector } from 'react-redux';
 import AppLoader from '../components/Loading/AppLoader'
+import { useEffect } from 'react'
 
 
 const SigninScreen = () => {
+    const user = useSelector((state) => state.auth.login.currentUser);
+    const message = useSelector((state) => state.auth.login.message);
+    const dispatch = useDispatch();
+    const navigation = useNavigation();
+    useEffect(() => {
+        if(user){
+            checkToken(dispatch, navigation, user?.tokens.refresh);
+            // navigation.navigate('Home');
+        } else {
+        //   checkToken(dispatch, navigation, user?.tokens.refresh);
+        }
+    }, []);
     const EMAIL_REGEX =
   /^[a-zA-Z0-9.!#$%&’*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/;
     const { control, handleSubmit, formState: {errors}, } = useForm();
     const { state, signin, clearErrorMessage } = useContext(AuthContext);
     const {height} = useWindowDimensions();
-    const dispatch = useDispatch();
-    const navigation = useNavigation();
-    const user = useSelector((state) => state.auth.login.message);
     const isFetching = useSelector((state) => state.auth.login.isFetching);
     const onSignin = (data) => {
         // console.log(data.username);
@@ -79,8 +89,8 @@ const SigninScreen = () => {
             }}
         />
         
-        {user == null ? null
-        : <Text style={styles.error}>{user.detail}</Text> }
+        {message == null ? null
+        : <Text style={styles.error}>{message.detail}</Text> }
         <View style={{height:16}}/>
 
         <CustomButton   
@@ -95,7 +105,7 @@ const SigninScreen = () => {
         />
 
 
-        <SocialSignInButton/>
+        {/* <SocialSignInButton/> */}
 
 
         <CustomButton 

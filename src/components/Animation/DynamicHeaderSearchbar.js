@@ -9,7 +9,8 @@ import {
   StyleSheet,
   Text,
   View,
-  Platform
+  Platform,
+  RefreshControl
 } from 'react-native';
 import { Feather } from '@expo/vector-icons';
 import {
@@ -37,7 +38,9 @@ function generateTweets(limit) {
 const TWEETS = generateTweets(30);
 const HEADER_HEIGHT_EXPANDED = 60;
 const HEADER_HEIGHT_NARROWED = 132;
-
+const wait = (timeout) => {
+  return new Promise(resolve => setTimeout(resolve, timeout));
+}
 const PROFILE_PICTURE_URI =
   'https://pbs.twimg.com/profile_images/975388677642715136/7Hw2MgQ2_400x400.jpg';
 
@@ -50,20 +53,23 @@ const AnimatedImageBackground = Animated.createAnimatedComponent(
 
 const AnimatedBlurView = Animated.createAnimatedComponent(BlurView);
 
-export default function WrappedApp({children, username}) {
+export default function WrappedApp({children, username, refreshing, setRefreshing}) {
   // Keeps notches away
   return (
     <SafeAreaProvider>
-      <App username={username}>{children}</App>
+      <App username={username} refreshing={refreshing} setRefreshing={setRefreshing}>{children}</App>
     </SafeAreaProvider>
   );
 }
 
-function App({children, username}) {
+function App({children, username , refreshing, setRefreshing}) {
   const insets = useSafeAreaInsets();
   const scrollY = useRef(new Animated.Value(0)).current;
   const img = useTransformImg("https://api.quangdinh.me/media/logo_FSOFT_d%E1%BB%8Dc.webp");
-
+  const onRefresh = React.useCallback(() => {
+    setRefreshing(true);
+    wait(2000).then(() => setRefreshing(false));
+  }, []);
   return (
     <View style={styles.container}>
       {Platform.OS === 'ios' ? <StatusBar barStyle="light" />: null}
@@ -207,6 +213,12 @@ function App({children, username}) {
           marginTop: HEADER_HEIGHT_NARROWED,
           paddingTop: HEADER_HEIGHT_EXPANDED,
         }}
+        refreshControl={
+          <RefreshControl
+            refreshing={refreshing}
+            onRefresh={onRefresh}
+          />
+        }
       >
         {children}
       </Animated.ScrollView>

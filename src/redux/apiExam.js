@@ -1,5 +1,5 @@
 import {instance as apiExam} from '../api/apiExam'
-
+import {instance as apiJob} from '../api/apiJob'
 import { examFailed, examStart, examSuccess} from './examSlice'
 
 
@@ -23,9 +23,46 @@ export const postExam = async (dispatch , id , data, navigation) => {
     try{
         const res = await apiExam.post(`/api/v1/test/${id}/doing` ,data);
         console.log(res);
+        let result;
+        
+        if(res.status === 200) {
+            // dispatch(examSuccess());
+            // return res.data;
+            if(res.data.hasOwnProperty('meta')){
+                result = res.data.data.result;
+            }
+            else{
+                result = res.data.result;
+            }
+            const data_status = {
+                job: data.job_id,
+                user : data.user_id,
+                result: result
+              }
+            const res_status = await apiJob.patch(`/applicants/candidate/done_test` ,data_status);
+            if(res_status.status === 200) {
+                dispatch(examSuccess());
+                return [res.data , res_status.data];
+            }
+        }
+        // navigation.goBack();
+    } catch(err){
+        dispatch(examFailed(err.response.data));
+        console.log(err);
+    }
+}
 
-        dispatch(examSuccess());
-        navigation.goBack();
+export const postResult = async (dispatch , data, navigation) => {
+    dispatch(examStart());
+    try{
+        const res = await apiJob.patch(`/applicants/candidate/done_test` ,data);
+        console.log('done_test' ,res);
+        
+        if(res.status === 200) {
+            dispatch(examSuccess());
+            return res.data;
+        }
+        // navigation.goBack();
     } catch(err){
         dispatch(examFailed(err.response.data));
         console.log(err);

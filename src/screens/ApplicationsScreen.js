@@ -1,5 +1,5 @@
 import React, {useState, useEffect, useLayoutEffect, useFocusEffect, useCallback} from 'react';
-import {View, Text, StyleSheet, TouchableOpacity, ScrollView, SafeAreaView, Platform, StatusBar } from 'react-native';
+import {View, Text, StyleSheet, TouchableOpacity, ScrollView, SafeAreaView, Platform, StatusBar, RefreshControl } from 'react-native';
 import SearchBar from "../components/Search/SearchBar";
 import Topbar from '../components/topbar/Topbar'
 import ApplicationCard from '../components/ApplicationCard/ApplicationCard'
@@ -7,14 +7,21 @@ import { useNavigation } from '@react-navigation/native';
 import { getListApplication } from '../redux/jobRequest';
 import { useDispatch, useSelector } from 'react-redux';
 import useDecodeTokens from '../hooks/useDecodeToken'
-
+const wait = (timeout) => {
+  return new Promise(resolve => setTimeout(resolve, timeout));
+}
 const ApplicationsScreen = () => {
+  const [refreshing, setRefreshing] = React.useState(false);
+  const onRefresh = React.useCallback(() => {
+    setRefreshing(true);
+    wait(1500).then(() => setRefreshing(false));
+  }, []);
   const [term, setTerm] = useState('');
   const navigation = useNavigation();
   const dispatch = useDispatch();
   const [list_Application, setList_Application] = useState();
   const user = useSelector((state) => state.auth.login.currentUser);
-  const id = useDecodeTokens(user.tokens.access).user_id;
+  const id = user ? useDecodeTokens(user?.tokens.access).user_id : 0;
   useLayoutEffect(() => { 
       navigation.setOptions({ 
         headerTitle: '',
@@ -38,10 +45,21 @@ const ApplicationsScreen = () => {
     });
     return unsubscribe;
   },[navigation]);
+  // console.log('ApplicationsScreen ', list_Application);
+  useEffect(() => {
+    getListApply();
+  }, [refreshing]);
   return (                    
     
         <View style={styles.container}>
-        <ScrollView style={{flex: 1, backgroundColor: '#fff',paddingHorizontal: 24,}}>
+        <ScrollView style={{flex: 1, backgroundColor: '#fff',paddingHorizontal: 24,}}
+          refreshControl={
+            <RefreshControl
+              refreshing={refreshing}
+              onRefresh={onRefresh}
+            />
+          }
+        >
             <View style={{height:12}}/>
             <SearchBar 
               term= {term} 

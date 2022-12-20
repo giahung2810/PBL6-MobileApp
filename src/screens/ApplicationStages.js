@@ -1,21 +1,30 @@
 import React, {useState, useEffect, useLayoutEffect} from 'react';
-import {View, Text, StyleSheet, TouchableOpacity, ScrollView } from 'react-native';
+import {View, Text, StyleSheet, TouchableOpacity, ScrollView, RefreshControl } from 'react-native';
 import Topbar from '../components/topbar/Topbar'
 import { AntDesign } from '@expo/vector-icons'; 
 import JobDetailsCard from '../components/JobDetailHeaderCard/JobDetailsCard'
 import Space from '../components/Space'
 import Tag from '../components/Tag/Tag'
 import ButtomApply from '../components/Button/ButtonApply';
-import { useNavigation } from '@react-navigation/native';
+import { useFocusEffect, useNavigation } from '@react-navigation/native';
 import Modal from 'react-native-modal';
 import AccessToTest from '../components/Modal/AccessToTest';
 import TimeInterview from '../components/TimeInterview/TimeInterview';
-
+import { useDispatch } from 'react-redux';
+import { getApplication } from '../redux/jobRequest';
+const wait = (timeout) => {
+  return new Promise(resolve => setTimeout(resolve, timeout));
+}
 const ApplicationStages = ({route}) => {
+  const [refreshing, setRefreshing] = React.useState(false);
+  const onRefresh = React.useCallback(() => {
+    setRefreshing(true);
+    wait(1500).then(() => setRefreshing(false));
+  }, []);
   const navigation = useNavigation();
   const item = route.params.item;
   const job = route.params.job;
-
+  const dispatch = useDispatch();
   const [modalVisible, setModalVisible] = useState(false);
     useLayoutEffect(() => {  
         navigation.setOptions({ 
@@ -30,10 +39,33 @@ const ApplicationStages = ({route}) => {
             </View>
           ),
         }) 
+      }, []);
+    const [Application, setApplication] = useState();
+    const getApply = async () => {
+      const result = await getApplication(dispatch, item.id);
+      setApplication(result);
+    };
+    useFocusEffect(
+      React.useCallback(() => {
+        getApply();
+        return () => {
+          
+        };
       }, [])
+    );
+    useEffect(() => {
+      getApply();
+    }, [refreshing]);
   return (      
     <View style={{flex: 1, backgroundColor: '#fff'}}>
-        <ScrollView style={{flex: 1, backgroundColor: '#fff'}}>
+        <ScrollView style={{flex: 1, backgroundColor: '#fff'}}
+          refreshControl={
+            <RefreshControl
+              refreshing={refreshing}
+              onRefresh={onRefresh}
+            />
+          }
+        > 
             <View style={styles.container}>
             <JobDetailsCard item={job}/>
             <View style={{marginTop: 24, width: '100%'}}>
@@ -41,34 +73,43 @@ const ApplicationStages = ({route}) => {
             </View>
             <Text style={styles.title}>Your Application Status</Text>
             <View style={{marginTop: 16, width: '100%'}}>
-                {item.status === "apply" ?
+                {Application?.status === "apply" ?
                     <Tag tag={{text: "Just Apply", backgroundColor:'rgba(36, 107, 253, 0.08)', color:'#246BFD', height:54, fontSize:18}}/>
-                : item.status === "test" ?
+                : Application?.status === "test" ?
                     <Tag tag = {{text: "Waiting Test", backgroundColor:'rgba(250, 204, 21, 0.12)', color:'#FACC15', height:54, fontSize:18}} />
-                : item.status === "set_schedule" ?
+                : Application?.status === "set_schedule" ?
                     <Tag tag = {{text: 'Wating company set schedule', backgroundColor:'rgba(255,182,193, 0.4)', color:'rgb(255,20,147)', height:54, fontSize:18}} />
-                : item.status === "interview_pending" ?
+                : Application?.status === "interview_pending" ?
                     <Tag tag = {{text: 'Chose schedule to interview', backgroundColor:'rgba(255,140,0,0.3)', color:'rgb(255,69,0)', height:54, fontSize:18}} />
+                : Application?.status === "schedule_interview" ?
+                    <Tag tag = {{text: 'You have chosen time, please waiting', backgroundColor:'rgb(0, 255, 255)', color:'rgb(0, 0, 255)', height:54, fontSize:18}} />
+                : Application?.status === "incomplete" ?
+                    <Tag tag = {{text: 'You are Faile, Good luck later', backgroundColor:'rgb(252, 88, 88)', color:'rgb(0, 0, 0)', height:54, fontSize:18}} />
                 : null
                 }
             </View>
             </View>
-            {item.status === "interview_pending" ?
-              <TimeInterview id_applicant={item.id}/>
+            {Application?.status === "interview_pending" ?
+              <TimeInterview id_applicant={Application?.id}/>
             : null
             }
             
         </ScrollView>
         <View style={styles.buttonbottom}>
-                {item.status === "apply" ?
+                {Application?.status === "apply" ?
                   <ButtomApply onPress={() => navigation.goBack()} text="Waiting..."/>
-                : item.status === "test" ?
+                : Application?.status === "test" ?
                   <ButtomApply onPress={() => setModalVisible(!modalVisible)} text="Do Test" backgroundColor = 'rgba(250, 204, 21, 0.12)' color = '#FACC15' />
-                : item.status === "set_schedule" ?
+                : Application?.status === "set_schedule" ?
                   <ButtomApply onPress={() => navigation.goBack()} text="Waiting..." backgroundColor = 'rgba(255,182,193, 0.4)' color = 'rgb(255,20,147)' />
-                : item.status === "interview_pending" ?
+                : Application?.status === "interview_pending" ?
                   <ButtomApply onPress={() => navigation.goBack()} text="OK" backgroundColor='rgba(255,140,0,0.3)' color='rgb(255,69,0)'/>
-                : null}
+                : Application?.status === "schedule_interview" ?
+                  <ButtomApply onPress={() => navigation.goBack()} text="Waiting Link Interview" backgroundColor='rgb(0, 255, 255)' color='rgb(0, 0, 255)'/>
+                : Application?.status === "incomplete" ?
+                  <ButtomApply onPress={() => navigation.goBack()} text="Fail Test" backgroundColor='rgb(252, 88, 88)' color='rgb(0, 0, 0)'/>
+                : null
+                }
         </View>
         <Modal 
           testID={'modal'}
@@ -85,7 +126,7 @@ const ApplicationStages = ({route}) => {
           <AccessToTest 
             fun={() => {
                 setModalVisible(false);
-                navigation.navigate('Test', {id_test: job.job.id_test});
+                navigation.navigate('Test', {id_test: job.job.id_test, id_job: job.job.id});
               }
             }
             funout={() => {

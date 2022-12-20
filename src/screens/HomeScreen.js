@@ -19,11 +19,18 @@ import AppLoader from '../components/Loading/AppLoader';
 import useDecodeTokens from '../hooks/useDecodeToken'
 
 const HomeScreen = () => {
+  const [refreshing, setRefreshing] = React.useState(false);
   const [term, setTerm] = useState('');
   const navigation = useNavigation();
   const dispatch = useDispatch();
   const user = useSelector((state) => state.auth.login.currentUser);
-  const id = useDecodeTokens(user.tokens.access).user_id;
+  // console.log(user)
+  const id = user ? useDecodeTokens(user?.tokens.access).user_id : 0;
+  // console.log(id)
+  // const [id, setID] = useState(0);
+  // if(user) {
+  //   setID(useDecodeTokens(user?.tokens.access).user_id);
+  // }
 
   // const list_jobs = useSelector((state) => state.job.job.allJobs);
   const job_isFetching = useSelector((state) => state.job.job.isFetching);
@@ -31,6 +38,7 @@ const HomeScreen = () => {
   // const list_companys = useSelector((state) => state.company.companys.allCompanys);
   const [list_companys, setList_companys] = useState();
   const [list_jobs, setList_jobs] = useState();
+  
   const getCompanysAPi = async () => {
     const result = await getTopCompanys(dispatch);
     setList_companys(result);
@@ -44,30 +52,45 @@ const HomeScreen = () => {
     if(user === null){
       navigation.navigate('Login');
     } else {
-      checkToken(dispatch, navigation, user.tokens.refresh);
+      checkToken(dispatch, navigation, user?.tokens.refresh);
     }
   }, [user]);
   useEffect(() => {
+        getCompanysAPi();
+        // console.log('list_companys useEffect', list_companys);
+        getJobsAPi();
+  }, [id, refreshing]);
+  useEffect(() => {
     const unsubscribe = navigation.addListener('focus', () => {
       // do something
-      getCompanysAPi();
-      // console.log('list_companys useEffect', list_companys);
-      getJobsAPi();
+      if(user) {
+        getCompanysAPi();
+        // console.log('list_companys useEffect', list_companys);
+        getJobsAPi();
+      }
+
     });
     return unsubscribe;
   },[navigation]);
   useFocusEffect(
     React.useCallback(() => {
       getJobsAPi();
+      getCompanysAPi();
         return () => {
 
         };
     }, [])
+    
 );
+// useEffect(() => {
+//   getCompanysAPi();
+//   // console.log('list_companys useEffect', list_companys);
+//   getJobsAPi();
+// }, [refreshing]);
   return (   
     <>
     <View style={{flex: 1, backgroundColor: '#fff'}}>
-      <DynamicHEaderSearch username={user?.username}>
+      <DynamicHEaderSearch username={user?.username} refreshing= {refreshing} setRefreshing={setRefreshing}>
         <View style={{flex: 1, backgroundColor: '#fff'}}>
           <View style={styles.boxContainer}>
             <SearchBar 
@@ -75,7 +98,7 @@ const HomeScreen = () => {
               onTermChange = {setTerm}
               // onTermSubmit = {() => searchApi(term)}
             />
-            <ListCompany list={list_companys}/>
+            <ListCompany list={list_companys ? list_companys : []} />
             <RecentList list={list_jobs ? list_jobs : []} setList_jobs={setList_jobs}/>
           </View>
         </View>

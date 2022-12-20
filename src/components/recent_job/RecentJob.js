@@ -45,7 +45,8 @@ const RecentJob = ({item, setList_jobs}) => {
     const [modalVisible_remove, setModalVisible_remove] = useState(false);
     const [modalVisible_save, setModalVisible_save] = useState(false);
     const user = useSelector((state) => state.auth.login.currentUser);
-    const id = useDecodeTokens(user.tokens.access).user_id;
+    const id = user ? useDecodeTokens(user?.tokens.access).user_id : 0;
+
 
     return (
         <TouchableOpacity style={styles.container}  onPress={() => navigation.navigate('JobDetails',{item})}>
@@ -64,7 +65,7 @@ const RecentJob = ({item, setList_jobs}) => {
                     <Text style={styles.title}>{job.name}</Text>    
                 </View>
                 <View style={styles.boxDetail}>
-                    <Text style={styles.text}>{job.description}</Text>    
+                    <Text numberOfLines={4} style={styles.text}>{job.description}</Text>    
                 </View>
                 
                     {job.skills.map((skill, index) => (

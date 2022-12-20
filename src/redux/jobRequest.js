@@ -35,6 +35,20 @@ export const getJobbyID = async ( id ) => {
         console.log(err);
     }
 };
+export const getApplication = async (dispatch, id ) => {
+    dispatch(getJobsStart());
+    try{
+        const res = await apiJob.get(`/applicants/applicant/${id}`);
+        if (res.status === 200) {
+            dispatch(getJobsSuccess());
+            // console.log('API',res.data);
+            return res.data;
+        }
+    } catch(err){
+        dispatch(getJobsFailed(err));
+        console.log(err);
+    }
+}
 export const getListApplication = async (dispatch, id) => {
     dispatch(getJobsStart());
     try{
@@ -133,6 +147,8 @@ export const delete_SaveJobs = async (jobid) => {
 }
 
 export const get_Jobs_Favorites = async (dispatch, id) => {
+    console.log(id);
+    if(id === 0 ) return [];
     dispatch(getJobsStart());
     try{
         const res_j = await apiJob.get('/jobs/user/get_jobs');
@@ -268,6 +284,16 @@ export const getListTime_Interview = async (id_applicant) => {
         if(res.status === 200) {
             return res.data;    
         }
+    } catch(err){
+        console.log(err);
+    }
+}
+export const post_Time_Interview = async (available,id_applicant) => {
+    try{
+        const res = await apiJob.patch(`/applicants/candidate/confirm_interview?id_applicant=${id_applicant.id_applicant}`, available);
+        // if(res.status === 200) {
+        //     return res.data;    
+        // }
     } catch(err){
         console.log(err);
     }

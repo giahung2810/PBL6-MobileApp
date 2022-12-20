@@ -35,7 +35,11 @@ const ApplicationCard = ({item}) => {
                     <Tag tag = {{text: 'Wating company set schedule', backgroundColor:'rgba(255,182,193, 0.4)', color:'rgb(255,20,147)'}} />
                 : item.status === "interview_pending" ?
                     <Tag tag = {{text: 'Chose schedule to interview', backgroundColor:'rgba(255,140,0,0.3)', color:'rgb(255,69,0)'}} />
-                :null
+                :  item.status === "schedule_interview" ?
+                    <Tag tag = {{text: 'Have chosen time', backgroundColor:'rgb(0, 255, 255)', color:'rgb(0, 0, 255)'}} />
+                : item.status === "incomplete" ?
+                    <Tag tag = {{text: 'You are Faile', backgroundColor:'rgb(252, 88, 88)', color:'rgb(0, 0, 0)'}} />
+                : null
                 }
             </View>
             {/* <View style={styles.container_child3}>

@@ -41,6 +41,8 @@ const InforCompany = ({type = true, company}) => {
                     <AntDesign name="star" size={24} color="yellow"/>
                     <Text style={{color: '#7F879E',marginLeft: 10}}>{company.average_rating.rating__avg}</Text>
                 </View>
+                <Text style={{color: '#7F879E',marginLeft:8, fontFamily: 'Urbanist-Bold', fontSize: 18}}>Description</Text>
+                <Text style={{color: '#7F879E',marginLeft:8, fontFamily: 'Urbanist-Light', fontSize: 14}}>{company.profile_description}</Text>
                 <View style={{borderTopWidth: 1, borderColor: 'rgba(238, 238, 238, 0.5)'}}/>
             </View>
     </View>

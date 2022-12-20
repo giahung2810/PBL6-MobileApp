@@ -20,6 +20,11 @@ const ListCompany = ({list}) => {
                 );
                 // navigation.navigate('ListCompany');
             }}/>
+            {list?.length == 0 ? <View style={{justifyContent: 'center', alignItems: 'center', marginVertical: 12}}>
+                        <Image source={{uri : 'https://cdn-icons-png.flaticon.com/512/847/847613.png'}} style={{height: 60, width: 60}}/>
+                        <Text style={{fontFamily:'Urbanist-SemiBold', fontSize: 18}}>No Results Found</Text>
+            </View> : 
+            null}
             <FlatList
                 showsHorizontalScrollIndicator = {false}
                 showsVerticalScrollIndicator = {false}

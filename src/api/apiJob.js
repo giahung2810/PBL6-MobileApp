@@ -29,7 +29,7 @@ export const createAxios = (user, dispatch, loginUpdate) => {
             const decodedToken = jwt_decode(user?.tokens.access);
             if (decodedToken.exp < date.getTime() / 1000) {
                 const data = await refreshToken(user?.tokens.refresh);
-                // console.log('data', data);
+                console.log('refreshToken', data);
                 const refreshUser = data.access;
                 dispatch(loginUpdate(refreshUser));
                 // console.log('refreshUser',refreshUser);
