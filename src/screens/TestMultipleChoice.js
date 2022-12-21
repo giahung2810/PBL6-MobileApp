@@ -92,7 +92,7 @@ const TestMultipleChoice = ({route}) => {
         <View style={{  alignItems: 'center',marginBottom: 24}}>
 
             <CountDown
-              until={30}
+              until={time}
               size={30}
               onFinish={() => {setModalVisible_1(!modalVisible_1)}}
               digitStyle={{ backgroundColor: '#FFF', borderWidth: 2, borderColor: '#2196f3', borderRadius: 20, }}
