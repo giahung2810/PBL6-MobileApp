@@ -298,3 +298,10 @@ export const post_Time_Interview = async (available,id_applicant) => {
         console.log(err);
     }
 }
+export const cancel_interview = async (id) => {
+    try {
+        const res = await apiJob.patch(`/applicants/candidate/${id}/cancel_interview`);
+    } catch (error) {
+        console.log(err);
+    }
+}

@@ -55,7 +55,7 @@ export const post_Review_Company = async (dispatch, post_Review, api, accessToke
         dispatch(getCompanysSuccess(res2.data));
 
         dispatch(postReviewSuccess());
-        // console.log(res);z
+        console.log(res);
     } catch(err){
         dispatch(postReviewFailed(err));
         console.log(err);

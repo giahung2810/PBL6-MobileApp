@@ -40,7 +40,7 @@ const TopCompany = ({item}) => {
             </View>
             <View style={{flexDirection: 'row' , alignItems: 'center',marginHorizontal: 8, marginBottom: 12}}>
                 <AntDesign name="star" size={24} color="yellow"/>
-                <Text style={{color: '#7F879E',marginLeft: 10}}>{item.average_rating.rating__avg}</Text>
+                <Text style={{color: '#7F879E',marginLeft: 10}}>{item.average_rating}</Text>
             </View>
         </View> 
         <Space/>

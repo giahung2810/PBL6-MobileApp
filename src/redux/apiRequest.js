@@ -48,13 +48,36 @@ export const registerUser = async (user, dispatch, navigation) => {
 export const logoutUser = async ( dispatch, navigation) => {
     dispatch(logoutStart());
     try{
-        // await axiosJWT.post('/logout');
         dispatch(logoutSuccess());
         navigation.navigate('Login')
     } catch (error) {
         dispatch(logoutFailed());
     }
 }
+
+export const change_password = async (dispatch, data, api, accessToken) => {
+    dispatch(loginStart());
+    try{
+        const res = await api.patch('/auth/change-password', data , {
+            headers: {Authorization : `Bearer ${accessToken}`}
+        });
+        // console.log(res);
+        if(res.status === 200){
+            return res.data
+        }
+        
+    } catch(err){
+        console.log(err);
+        if(err.response.status === 400){
+            console.log(err.response.data)
+            return err.response.data
+        }
+        if(err.response.status === 401){
+            console.log(err);
+        }
+    }
+}
+
 export const checkToken = async ( dispatch, navigation, refresh) => {
     dispatch(loginStart());
     const token = {
@@ -216,3 +239,4 @@ export const put_Skill = async ( id, data , onPressOut) => {
         console.log(err);
     }
 }
+

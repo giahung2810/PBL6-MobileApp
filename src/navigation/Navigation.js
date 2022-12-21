@@ -32,10 +32,14 @@ import {Context as AuthContext} from '../context/AuthContext';
 import { Provider } from 'react-redux';
 import {store, persistor} from '../redux/store'
 import { PersistGate } from 'redux-persist/lib/integration/react';
+import { useEffect } from 'react';
+import { useState } from 'react';
 
 
 const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
+
+
 
 const MainNavigator = () => {
     return (
@@ -66,11 +70,15 @@ const MainNavigator = () => {
             <Tab.Screen name="Notification" component={Notification}   
                     options={{
                       tabBarIcon: ({color}) => {
-                        return <Feather name="bell" size={24} color={color} />
+                        return <View>
+                          <Feather name="bell" size={24} color={color} />
+                          {/* <Text>{count}</Text> */}
+                          </View>
                       },
-                      tabBarBadge: 3,
+                      tabBarBadge: 2,
                       headerShown: false
                     }}
+                    // initialParams={{currentCity: {time: 1}}}
             />
             <Tab.Screen name="Profile" component={Profile} 
                     options={{

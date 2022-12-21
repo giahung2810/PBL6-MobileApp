@@ -27,7 +27,7 @@ const NotificationAboutJob = ({navigation}) => {
     <View style={{flex: 1, height: '100%'}}>
         <ScrollView style={{flex: 1, backgroundColor: '#fff', height: '100%'}}>
             <View style={styles.container}>
-            <JobDetailsCard />
+            {/* <JobDetailsCard /> */}
             <View style={{marginTop: 24, width: '100%'}}>
                 <Space />
             </View>

@@ -87,7 +87,7 @@ const EducationScreen = ({route}) => {
 
   const getEducationAPi = async () => {
     const result = await getEducation( profile.id );
-    // console.log(profile.id)
+    // console.log(result)
     reset({
       id: result?.length > 0 ? result[0].id : null,
       certificate_degree_name: result?.length > 0 ?  result[0].certificate_degree_name : null,

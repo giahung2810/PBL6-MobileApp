@@ -1,55 +1,33 @@
 import React from 'react';
 import {Button, StyleSheet, Text, View,TouchableOpacity,Image,TouchableWithoutFeedback} from 'react-native';
-import test from '../../../assets/test.png'
-const SubmitExam = ({onPress_submit , result, onPress_result, onPressOut_result, msg}) => {
+import cancel from '../../../assets/cancel.png'
+const CancelInterview = ({onPress_cancel , onPressOut_cancel}) => {
     // console.log(result)
     return (<TouchableOpacity 
         style={styles.container} 
         // activeOpacity={1} 
-        onPressOut={!result ? null : onPressOut_result }
+        onPressOut={onPressOut_cancel }
     >
         <TouchableWithoutFeedback>
-            {!result ?
                 < View style={styles.content}>
                     
                     <Image style={styles.image} source={test}  resizeMode='contain'/>
-                    <Text style={styles.contentTitle}>Submit Your Exam</Text>
+                    <Text style={styles.contentTitle}>Cancel Schedule Interview</Text>
                     <Text style={styles.contentMessage}>
-                    Your test time has expired, we will automatically submit your test
+                        Do you really want to cancel the interview?
                     </Text>
                     <View style={styles.contentButton}>
-                        <TouchableOpacity style={styles.button}  onPress={onPress_submit} >
+                        <TouchableOpacity style={styles.button}  onPress={onPress_cancel} >
                             <Text style={{color: '#fff', fontWeight: '700', fontSize: 16}}>OK</Text>
+                        </TouchableOpacity>
+                    </View>
+                    <View style={styles.contentButton}>
+                        <TouchableOpacity style={styles.button}  onPress={onPressOut_cancel} >
+                            <Text style={{color: '#fff', fontWeight: '700', fontSize: 16}}>Cancel</Text>
                         </TouchableOpacity>
                     </View>
                     
                 </View>
-            : result.meta? 
-                <View style={styles.content}>
-                    <Text style={[styles.contentTitle, {color:'red'}]}>{result.meta?.message}</Text> 
-                    <View style={styles.contentButton}>
-                        <TouchableOpacity style={styles.button}  onPress={onPressOut_result} >
-                            <Text style={{color: '#fff', fontWeight: '700', fontSize: 16}}>OK</Text>
-                        </TouchableOpacity>
-                    </View>
-                </View>
-            :
-            < View style={styles.content}>
-                <View style={styles.border_point_1}>
-                <View style={styles.border_point}>
-                    <Text style={styles.Point}>{result.result} <Text style={styles.Point_100}>/ 100</Text></Text>
-                </View>
-                </View>
-                <Text style={styles.contentMessage}>
-                    {msg?.msg}
-                </Text>
-                <View style={styles.contentButton}>
-                    <TouchableOpacity style={styles.button}  onPress={onPress_result} >
-                        <Text style={{color: '#fff', fontWeight: '700', fontSize: 16}}>OK</Text>
-                    </TouchableOpacity>
-                </View>
-            </View>
-            }
         </TouchableWithoutFeedback>
     </TouchableOpacity>
     )
@@ -146,4 +124,4 @@ const SubmitExam = ({onPress_submit , result, onPress_result, onPressOut_result,
     }
   });
   
-  export default SubmitExam;
+  export default CancelInterview;

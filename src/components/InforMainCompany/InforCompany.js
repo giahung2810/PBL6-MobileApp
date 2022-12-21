@@ -39,7 +39,7 @@ const InforCompany = ({type = true, company}) => {
                 </View>
                 <View style={{flexDirection: 'row' , alignItems: 'center',marginHorizontal: 8, marginBottom: 12}}>
                     <AntDesign name="star" size={24} color="yellow"/>
-                    <Text style={{color: '#7F879E',marginLeft: 10}}>{company.average_rating.rating__avg}</Text>
+                    <Text style={{color: '#7F879E',marginLeft: 10}}>{company.average_rating}</Text>
                 </View>
                 <Text style={{color: '#7F879E',marginLeft:8, fontFamily: 'Urbanist-Bold', fontSize: 18}}>Description</Text>
                 <Text style={{color: '#7F879E',marginLeft:8, fontFamily: 'Urbanist-Light', fontSize: 14}}>{company.profile_description}</Text>

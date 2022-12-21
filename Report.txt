@@ -1,2 +1,1 @@
-Update UI : ok
-Test lại bộ đếm thời gian:  OK
+Cancel Schedule

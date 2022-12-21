@@ -12,6 +12,7 @@ import AccessToTest from '../components/Modal/AccessToTest';
 import TimeInterview from '../components/TimeInterview/TimeInterview';
 import { useDispatch } from 'react-redux';
 import { getApplication } from '../redux/jobRequest';
+import CancelInterview from '../components/Modal/CancelInterview';
 const wait = (timeout) => {
   return new Promise(resolve => setTimeout(resolve, timeout));
 }
@@ -26,6 +27,7 @@ const ApplicationStages = ({route}) => {
   const job = route.params.job;
   const dispatch = useDispatch();
   const [modalVisible, setModalVisible] = useState(false);
+  const [modalVisible_cancel, setModalVisible_cancel] = useState(false);
     useLayoutEffect(() => {  
         navigation.setOptions({ 
           // headerTitle: 'Applications',
@@ -135,6 +137,29 @@ const ApplicationStages = ({route}) => {
             }
             funout={() => {
               setModalVisible(false);
+            }}
+          />
+        </Modal>
+        <Modal 
+          testID={'modal'}
+          isVisible={modalVisible_cancel}
+          // onSwipeComplete={this.close}
+          onRequestClose={() => {
+            Alert.alert("Modal has been closed.");
+            setModalVisible_cancel(!modalVisible_cancel);
+          }}
+          useNativeDriverForBackdrop
+          swipeDirection={['down']}
+          // styles={}
+        >
+          <CancelInterview
+            onPress_cancel={() => {
+                setModalVisible_cancel(false);
+                // 
+              }
+            }
+            onPressOut_cancel={() => {
+              setModalVisible_cancel(false);
             }}
           />
         </Modal>

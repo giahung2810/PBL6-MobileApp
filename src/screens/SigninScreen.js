@@ -98,11 +98,11 @@ const SigninScreen = () => {
             onPress={handleSubmit(onSignin)} 
             type="PRIMARY"
         />
-        <CustomButton 
+        {/* <CustomButton 
             text= "Forgot password?" 
             onPress={onForgot} 
             type="TERTIARY"
-        />
+        /> */}
 
 
         {/* <SocialSignInButton/> */}

@@ -5,10 +5,6 @@ import DynamicPageCompany from '../components/Animation/DynamicPageCompany'
 import CommentList from '../components/Comment/CommentList'
 import { getCompany } from '../redux/companyRequest'
 import { useDispatch, useSelector } from 'react-redux'
-import { useNavigation } from '@react-navigation/native'
-import { useIsFocused } from '@react-navigation/native';
-import { useState } from 'react'
-import AppLoader from '../components/Loading/AppLoader'
 
 const CompanyScreen = ({route}) => {
   const item = route.params.item;
