@@ -4,6 +4,7 @@ import { Avatar } from 'react-native-paper'
 import { AntDesign } from '@expo/vector-icons'; 
 import { useNavigation } from '@react-navigation/native';
 import { useSelector } from 'react-redux';
+import NullAvatar from '../../../assets/nullavatar.png'
 
 const Profile = ({profile}) => {
     const navigation = useNavigation();
@@ -16,7 +17,7 @@ const Profile = ({profile}) => {
             params: { profile },
         });
     }}>
-      <Avatar.Image style={styles.Image} size={60} source={require('../../../assets/dat.jpg')} />
+      <Avatar.Image style={styles.Image} size={60} source={require('../../../assets/nullavatar.png')} />
       <View style={styles.container_child1}>
             <Text style={styles.name}>{profile?.first_name} {profile?.last_name}</Text>
             

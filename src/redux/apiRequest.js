@@ -1,7 +1,7 @@
 import {createAxios as apiJWT} from '../api/apiJob'
 import {instance as apiJob} from '../api/apiJob'
 
-import { loginFailed, loginStart, loginSuccess, registerFailed, registerStart, registerSuccess, logoutFailed, logoutSuccess, logoutStart} from './authSlice'
+import { loginFailed, loginStart, loginUpdate, loginSuccess, registerFailed, registerStart, registerSuccess, logoutFailed, logoutSuccess, logoutStart} from './authSlice'
 
 export const loginUser = async (user, dispatch, navigation) => {
     dispatch(loginStart());
@@ -56,13 +56,17 @@ export const logoutUser = async ( dispatch, navigation) => {
     }
 }
 export const checkToken = async ( dispatch, navigation, refresh) => {
+    dispatch(loginStart());
     const token = {
         refresh: refresh
     }
     try {
         const res = await apiJob.post('/auth/token/refresh', token);
+        console.log('token/refresh',res);
+        dispatch(loginUpdate(res.data.access));
         navigation.navigate('MainNavigator');
     } catch (error) {
+        dispatch(loginFailed(error.response.data));
         console.log(error.response.data);
         navigation.navigate('Login');
     }

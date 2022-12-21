@@ -1,12 +1,12 @@
 import React from 'react';
 import {Button, StyleSheet, Text, View,TouchableOpacity,Image,TouchableWithoutFeedback} from 'react-native';
 import test from '../../../assets/test.png'
-const SubmitExam = ({onPress_submit, onPressOut_submit , result, onPress_result, onPressOut_result, msg}) => {
+const SubmitExam = ({onPress_submit , result, onPress_result, onPressOut_result, msg}) => {
     // console.log(result)
     return (<TouchableOpacity 
         style={styles.container} 
         // activeOpacity={1} 
-        onPressOut={!result ? onPressOut_submit : onPressOut_result }
+        onPressOut={!result ? null : onPressOut_result }
     >
         <TouchableWithoutFeedback>
             {!result ?
@@ -15,7 +15,7 @@ const SubmitExam = ({onPress_submit, onPressOut_submit , result, onPress_result,
                     <Image style={styles.image} source={test}  resizeMode='contain'/>
                     <Text style={styles.contentTitle}>Submit Your Exam</Text>
                     <Text style={styles.contentMessage}>
-                    You will take a test given by the company, you will have to complete the test within the allotted time. Note don't exit if you don't want to fail the test
+                    Bạn đã hết thời gian làm bài kiểm tra, chúng tôi sẽ tự động nộp bài kiểm tra của bạn
                     </Text>
                     <View style={styles.contentButton}>
                         <TouchableOpacity style={styles.button}  onPress={onPress_submit} >

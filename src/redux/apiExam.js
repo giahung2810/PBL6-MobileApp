@@ -40,6 +40,7 @@ export const postExam = async (dispatch , id , data, navigation) => {
                 result: result
               }
             const res_status = await apiJob.patch(`/applicants/candidate/done_test` ,data_status);
+            console.log(res_status);
             if(res_status.status === 200) {
                 dispatch(examSuccess());
                 return [res.data , res_status.data];

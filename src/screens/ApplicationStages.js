@@ -84,7 +84,9 @@ const ApplicationStages = ({route}) => {
                 : Application?.status === "schedule_interview" ?
                     <Tag tag = {{text: 'You have chosen time, please waiting', backgroundColor:'rgb(0, 255, 255)', color:'rgb(0, 0, 255)', height:54, fontSize:18}} />
                 : Application?.status === "incomplete" ?
-                    <Tag tag = {{text: 'You are Faile, Good luck later', backgroundColor:'rgb(252, 88, 88)', color:'rgb(0, 0, 0)', height:54, fontSize:18}} />
+                    <Tag tag = {{text: 'You are FAILE, Good luck later', backgroundColor:'rgb(252, 88, 88)', color:'rgb(0, 0, 0)', height:54, fontSize:18}} />
+                : Application?.status === "complete" ?
+                    <Tag tag = {{text: 'Congratulation, You are PASS interview', backgroundColor:'rgb(163, 255, 163)', color:'rgb(0, 194, 0)', height:54, fontSize:18}} />
                 : null
                 }
             </View>
@@ -107,7 +109,9 @@ const ApplicationStages = ({route}) => {
                 : Application?.status === "schedule_interview" ?
                   <ButtomApply onPress={() => navigation.goBack()} text="Waiting Link Interview" backgroundColor='rgb(0, 255, 255)' color='rgb(0, 0, 255)'/>
                 : Application?.status === "incomplete" ?
-                  <ButtomApply onPress={() => navigation.goBack()} text="Fail Test" backgroundColor='rgb(252, 88, 88)' color='rgb(0, 0, 0)'/>
+                  <ButtomApply onPress={() => navigation.goBack()} text="Fail Test, Refer to other jobs" backgroundColor='rgb(252, 88, 88)' color='rgb(0, 0, 0)'/>
+                : Application?.status === "complete" ?
+                  <ButtomApply onPress={() => navigation.goBack()} text="Refer to other jobs" backgroundColor='rgb(163, 255, 163)' color='rgb(0, 194, 0)'/>
                 : null
                 }
         </View>

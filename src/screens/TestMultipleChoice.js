@@ -16,11 +16,13 @@ import moment from 'moment';
 
 import { LogBox } from "react-native";
 import SubmitExam from '../components/Modal/SubmitExam';
+import SubmitExam_overtime from '../components/Modal/SubmitExam_overtime';
 import AccessToTest from '../components/Modal/AccessToTest';
 import ButtonSubmit from '../components/Button/ButtonSubmit';
 LogBox.ignoreLogs(["EventEmitter.removeListener"]);
 
 const TestMultipleChoice = ({route}) => {
+  const isFetching = useSelector((state) => state.exam.exam.isFetching);
   const id_test = route.params.id_test;
   const id_job = route.params.id_job;
   // console.log(id_job)
@@ -32,7 +34,10 @@ const TestMultipleChoice = ({route}) => {
   const [exam, setExam] = useState();
   const [questions, setQuestions] = useState();
   const [time, setTime] = useState();
+  const [time_pause, setTime_pause] = useState(true);
   const [modalVisible, setModalVisible] = useState(false);
+  const [modalVisible_1, setModalVisible_1] = useState(false);
+
   const getExamAPi = async () => {
     const result = await getExam(dispatch, id_test);
     setQuestions(result[0]?.questions);
@@ -87,15 +92,16 @@ const TestMultipleChoice = ({route}) => {
         <View style={{  alignItems: 'center',marginBottom: 24}}>
 
             <CountDown
-              until={time}
+              until={30}
               size={30}
-              onFinish={() => alert('Finished')}
+              onFinish={() => {setModalVisible_1(!modalVisible_1)}}
               digitStyle={{ backgroundColor: '#FFF', borderWidth: 2, borderColor: '#2196f3', borderRadius: 20, }}
               digitTxtStyle={{color: '#2196f3'}}
               timeToShow={['M', 'S']}
               timeLabels={{m: null, s: null}}
               showSeparator
               separatorStyle={{color: '#2196f3'}}
+              running={time_pause}
             /> 
 
         </View>
@@ -113,8 +119,33 @@ const TestMultipleChoice = ({route}) => {
               setModalVisible(!modalVisible);
             }}
           >
-            <SubmitExam onPress_submit={() => {submit();}} 
-              onPressOut_submit={() => setModalVisible(!modalVisible) } 
+            <SubmitExam onPress_submit={() => {submit(); setTime_pause(false);}} 
+              onPressOut_submit={() => setModalVisible(!modalVisible)} 
+              onPress_result={() => {
+                const data = {
+                  job: id_job,
+                  user : id,
+                  result: result.result
+                }
+                // postResult(dispatch , data ,navigation);
+                navigation.goBack();
+              }}
+              onPressOut_result={() => {setModalVisible(!modalVisible) ;navigation.goBack();}}
+              result={result} 
+              msg={msg}
+            />
+          </Modal>
+          <Modal
+            animationType="slide"
+            transparent={true}
+            visible={modalVisible_1}
+            onRequestClose={() => {
+              Alert.alert("Modal has been closed.");
+              setModalVisible_1(!modalVisible_1);
+            }}
+          >
+            <SubmitExam_overtime onPress_submit={() => {submit();setTime_pause(false);}} 
+              // onPressOut_submit={() => setModalVisible_1(!modalVisible)} 
               onPress_result={() => {
                 const data = {
                   job: id_job,
@@ -132,6 +163,7 @@ const TestMultipleChoice = ({route}) => {
         </View> 
       </DynamicPageExam>
       : null}
+      {isFetching ? <AppLoader /> : null}
       </>    
   )
 }

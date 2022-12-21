@@ -10,6 +10,7 @@ import { useNavigation } from '@react-navigation/native';
 import { getProfile, logoutUser } from '../redux/apiRequest';
 import ButtonNavigate from '../components/Button/ButtonNavigate';
 import useDecodeTokens from '../hooks/useDecodeToken'
+import Modal from 'react-native-modal';
 
 import { Ionicons } from '@expo/vector-icons'; 
 import { MaterialIcons } from '@expo/vector-icons'; 
@@ -17,11 +18,13 @@ import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { FontAwesome5 } from '@expo/vector-icons'; 
 
 import { useFocusEffect } from '@react-navigation/native';
+import ChangePassword from '../components/Modal/ChangePassword';
 
 const wait = (timeout) => {
   return new Promise(resolve => setTimeout(resolve, timeout));
 }
 const ProfileScreen = () => {
+  const [modalVisible, setModalVisible] = useState(false);
     const dispatch = useDispatch();
     const navigation = useNavigation();
     const isFetching = useSelector((state) => state.auth.logout.isFetching);
@@ -102,7 +105,7 @@ const ProfileScreen = () => {
               <FontAwesome5 name="brain" size={24} color="pink" style={styles.icon}/>
               <Text style={{fontFamily: 'Urbanist-SemiBold', fontSize: 18}}>Skill</Text>
           </TouchableOpacity>
-          <TouchableOpacity onPress={() =>{navigation.navigate('Skill' , {profile})}} 
+          <TouchableOpacity onPress={() =>{setModalVisible(!modalVisible)}} 
             style={{paddingVertical:18, flexDirection: 'row', alignItems: 'center',borderBottomWidth:1,borderColor: 'rgba(238, 238, 238, 0.5)'}}
           >
               <Ionicons name="settings" size={26} color="#246BFD" style={styles.icon}/>
@@ -114,7 +117,28 @@ const ProfileScreen = () => {
         <View style={{  }}>
           <ButtonNavigate title="Logout" color="#F75555" onPress = {handleLogout}/>
         </View>
-      
+        <Modal
+          testID={'modal'}
+          isVisible={modalVisible}
+          // onSwipeComplete={this.close}
+          onRequestClose={() => {
+            Alert.alert("Modal has been closed.");
+            setModalVisible(!modalVisible);
+          }}
+          useNativeDriverForBackdrop
+          swipeDirection={['down']}
+          // styles={}
+          // modalData={modalData}
+        >
+        <ChangePassword
+            // modalData={modalData} 
+            // profile={profile}
+            onPressOut={() => {
+                setModalVisible(!modalVisible);
+                // getSkillAPi();
+            }}
+        />
+        </Modal>
       </>
     
   );

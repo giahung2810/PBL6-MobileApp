@@ -1,9 +1,9 @@
-import React, {useState, useEffect, useLayoutEffect, useFocusEffect, useCallback} from 'react';
+import React, {useState, useEffect, useLayoutEffect, useCallback} from 'react';
 import {View, Text, StyleSheet, TouchableOpacity, ScrollView, SafeAreaView, Platform, StatusBar, RefreshControl } from 'react-native';
 import SearchBar from "../components/Search/SearchBar";
 import Topbar from '../components/topbar/Topbar'
 import ApplicationCard from '../components/ApplicationCard/ApplicationCard'
-import { useNavigation } from '@react-navigation/native';
+import { useFocusEffect, useNavigation } from '@react-navigation/native';
 import { getListApplication } from '../redux/jobRequest';
 import { useDispatch, useSelector } from 'react-redux';
 import useDecodeTokens from '../hooks/useDecodeToken'
@@ -45,6 +45,14 @@ const ApplicationsScreen = () => {
     });
     return unsubscribe;
   },[navigation]);
+  useFocusEffect(
+    React.useCallback(() => {
+      getListApply();
+      return () => {
+        
+      };
+    }, [])
+  );
   // console.log('ApplicationsScreen ', list_Application);
   useEffect(() => {
     getListApply();

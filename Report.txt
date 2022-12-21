@@ -1,1 +1,2 @@
-Done quy trình
+Update UI : ok
+Test lại bộ đếm thời gian:  OK

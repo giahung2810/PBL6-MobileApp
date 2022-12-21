@@ -54,7 +54,7 @@ const HomeScreen = () => {
     } else {
       checkToken(dispatch, navigation, user?.tokens.refresh);
     }
-  }, [user]);
+  }, []);
   useEffect(() => {
         getCompanysAPi();
         // console.log('list_companys useEffect', list_companys);
@@ -68,7 +68,6 @@ const HomeScreen = () => {
         // console.log('list_companys useEffect', list_companys);
         getJobsAPi();
       }
-
     });
     return unsubscribe;
   },[navigation]);

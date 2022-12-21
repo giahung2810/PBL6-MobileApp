@@ -21,6 +21,7 @@ import { BlurView } from 'expo-blur';
 import { Avatar } from 'react-native-paper'
 import SearchBar from '../Search/SearchBar';
 import {useTransformImg} from '../../hooks/useTransformIMG'
+import NullAvatar from '../../../assets/nullavatar.png'
 
 function generateTweets(limit) {
   return new Array(limit).fill(0).map((_, index) => {
@@ -190,7 +191,7 @@ function App({children, username , refreshing, setRefreshing}) {
             <Text style={styles.helloText}>Hello,</Text>
             <Text style={styles.nameText}>{username}</Text>
           </View>
-          <Avatar.Image style={styles.Image} size={60} source={require('../../../assets/dat.jpg')} />
+          <Avatar.Image style={styles.Image} size={60} source={require('../../../assets/nullavatar.png')} />
         </Animated.View>
       </AnimatedImageBackground>
 

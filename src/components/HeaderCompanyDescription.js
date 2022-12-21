@@ -13,7 +13,7 @@ import {api} from '../api/apiJob'
 const HeaderCompanyDescription = ({item}) => {
     return (
     <>
-        <Image style={styles.image} source={Company}  resizeMode='cover'/>
+        <Image style={styles.image} source={{uri: api + item.company.image}}  resizeMode='cover'/>
             <View style={styles.boxContainer}>
               <Image style={styles.Image} size={100} source={{uri: api + item.company.image}} resizeMode='contain'/>
               <Text style={styles.title}>{item.name}</Text>

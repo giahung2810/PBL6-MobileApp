@@ -39,6 +39,8 @@ const ApplicationCard = ({item}) => {
                     <Tag tag = {{text: 'Have chosen time', backgroundColor:'rgb(0, 255, 255)', color:'rgb(0, 0, 255)'}} />
                 : item.status === "incomplete" ?
                     <Tag tag = {{text: 'You are Faile', backgroundColor:'rgb(252, 88, 88)', color:'rgb(0, 0, 0)'}} />
+                : item.status === "complete" ?
+                    <Tag tag = {{text: 'Congratulation', backgroundColor:'rgb(163, 255, 163)', color:'rgb(0, 194, 0)'}} />
                 : null
                 }
             </View>
