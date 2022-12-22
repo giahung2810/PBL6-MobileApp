@@ -7,7 +7,7 @@ import { useEffect } from 'react'
 import ButtomApply from '../Button/ButtonApply'
 import { useNavigation } from '@react-navigation/native'
 
-const TimeInterview = (id_applicant) => {
+const TimeInterview = ({id_applicant, getApply}) => {
     const navigation = useNavigation();
     const [data, setData] = useState();
     const getListTime = async () => {
@@ -49,8 +49,11 @@ const TimeInterview = (id_applicant) => {
     });
     const Ok_time = (post_data, id_applicant) => {
         if(choose) {
+            // setRefreshing(true);
             post_Time_Interview(post_data, id_applicant);
             navigation.goBack();
+            // setRefreshing(false);
+            // getApply();
         }
         else alert('Please Select Time first');
     }
@@ -71,10 +74,10 @@ const TimeInterview = (id_applicant) => {
                     {item.available.map( (available, index) =>{
                         return (
                             <TouchableOpacity style={[styles.boxAvailable, {
-                                borderColor: choose  ? location.row === row && location.column === index ? 'rgb(255,69,0)' : 'rgba(0,0,0, 0.1)' : 'rgb(255,69,0)'
+                                borderColor: choose  ? location.row === row && location.column === index ? 'rgb(128, 0, 255)' : 'rgba(0,0,0, 0.1)' : 'rgb(128, 0, 255)'
                             }]} key={index} onPress={() =>{ChoseTime(row, index, available, item.day);}}
                             >
-                                <Text style={[styles.available, {color: choose  ? location.row === row && location.column === index ? 'rgb(255,69,0)' : 'rgba(0,0,0, 0.1)' : 'rgb(255,69,0)'}]}>
+                                <Text style={[styles.available, {color: choose  ? location.row === row && location.column === index ? 'rgb(128, 0, 255)' : 'rgba(0,0,0, 0.1)' : 'rgb(128, 0, 255)'}]}>
                                     {available.start} - {available.end}
                                 </Text>
                             </TouchableOpacity>
@@ -84,7 +87,7 @@ const TimeInterview = (id_applicant) => {
                 </View>
             );
         })}
-        <ButtomApply onPress={() => {Ok_time(post_data, id_applicant)}} text="OK with my time" backgroundColor='rgba(255,140,0,0.3)' color='rgb(255,69,0)'/>
+        <ButtomApply onPress={() => {Ok_time(post_data, id_applicant)}} text="OK with my time" backgroundColor='rgba(209, 163, 255,0.3)' color='rgb(128, 0, 255)'/>
     </View>
   )
 }
@@ -106,15 +109,15 @@ const styles = StyleSheet.create({
     title: {
         fontFamily:  'Urbanist-Bold',
         fontSize: 16,
-        color: 'rgb(255,69,0)'
+        color: 'rgb(128, 0, 255)'
     },
     date: {
-        color: 'rgb(255,69,0)',
+        color: 'rgb(128, 0, 255)',
         fontFamily:  'Urbanist-ExtraBold',
         marginLeft:8
     },
     boxAvailable:{
-        borderColor: 'rgb(255,69,0)',
+        borderColor: 'rgb(128, 0, 255)',
         borderWidth: 2,
         borderRadius: 10,
         paddingHorizontal: 6,

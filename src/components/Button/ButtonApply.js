@@ -1,7 +1,7 @@
 import React from 'react';
 import {View, Text, StyleSheet, TouchableOpacity} from 'react-native';
 
-const ButtomApply = ({onPress, text, backgroundColor = '#246BFD', color = '#fff',}) => {
+const ButtomApply = ({onPress, text, backgroundColor = '#246BFD', color = '#fff', borderColor = null}) => {
   return (
     <TouchableOpacity
       onPress={onPress}
@@ -9,6 +9,8 @@ const ButtomApply = ({onPress, text, backgroundColor = '#246BFD', color = '#fff'
         styles.container,
         {
           backgroundColor : backgroundColor,
+          borderColor : borderColor ? borderColor: null,
+          borderWidth : borderColor ? 1 : 0
         }
       ]}>
       <Text

@@ -34,13 +34,15 @@ const ApplicationCard = ({item}) => {
                 : item.status === "set_schedule" ?
                     <Tag tag = {{text: 'Wating company set schedule', backgroundColor:'rgba(255,182,193, 0.4)', color:'rgb(255,20,147)'}} />
                 : item.status === "interview_pending" ?
-                    <Tag tag = {{text: 'Chose schedule to interview', backgroundColor:'rgba(255,140,0,0.3)', color:'rgb(255,69,0)'}} />
+                    <Tag tag = {{text: 'Chose schedule to interview', backgroundColor:'rgba(209, 163, 255,0.3)', color:'rgb(128, 0, 255)'}} />
                 :  item.status === "schedule_interview" ?
-                    <Tag tag = {{text: 'Have chosen time', backgroundColor:'rgb(0, 255, 255)', color:'rgb(0, 0, 255)'}} />
+                    <Tag tag = {{text: 'Have chosen time', backgroundColor:'rgb(143, 206, 255)', color:'rgb(0, 0, 255)'}} />
                 : item.status === "incomplete" ?
                     <Tag tag = {{text: 'You are Faile', backgroundColor:'rgb(252, 88, 88)', color:'rgb(0, 0, 0)'}} />
                 : item.status === "complete" ?
                     <Tag tag = {{text: 'Congratulation', backgroundColor:'rgb(163, 255, 163)', color:'rgb(0, 194, 0)'}} />
+                : item.status === "cancel_interview" ?
+                    <Tag tag = {{text: 'You are cancelled', backgroundColor:'rgb(252, 88, 88)', color:'rgb(0, 0, 0)'}} />
                 : null
                 }
             </View>

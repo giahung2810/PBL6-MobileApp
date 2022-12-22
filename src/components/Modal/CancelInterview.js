@@ -11,19 +11,19 @@ const CancelInterview = ({onPress_cancel , onPressOut_cancel}) => {
         <TouchableWithoutFeedback>
                 < View style={styles.content}>
                     
-                    <Image style={styles.image} source={test}  resizeMode='contain'/>
+                    <Image style={styles.image} source={cancel}  resizeMode='contain'/>
                     <Text style={styles.contentTitle}>Cancel Schedule Interview</Text>
                     <Text style={styles.contentMessage}>
                         Do you really want to cancel the interview?
                     </Text>
                     <View style={styles.contentButton}>
                         <TouchableOpacity style={styles.button}  onPress={onPress_cancel} >
-                            <Text style={{color: '#fff', fontWeight: '700', fontSize: 16}}>OK</Text>
+                            <Text style={{color: '#fff', fontWeight: '700', fontSize: 16, fontFamily: 'Urbanist-Bold',}}>OK</Text>
                         </TouchableOpacity>
                     </View>
                     <View style={styles.contentButton}>
-                        <TouchableOpacity style={styles.button}  onPress={onPressOut_cancel} >
-                            <Text style={{color: '#fff', fontWeight: '700', fontSize: 16}}>Cancel</Text>
+                        <TouchableOpacity style={[styles.button, {backgroundColor: '#fff',paddingVertical: 2,}]}  onPress={onPressOut_cancel} >
+                            <Text style={{color: '#246BFD', fontWeight: '700', fontSize: 16, fontFamily: 'Urbanist-Light',}}>Cancel</Text>
                         </TouchableOpacity>
                     </View>
                     
@@ -39,7 +39,7 @@ const CancelInterview = ({onPress_cancel , onPressOut_cancel}) => {
         justifyContent: 'center',
         // alignItems: 'center',
         width: '100%',
-        backgroundColor: 'rgba(0, 0, 0, 0.6)'
+        // backgroundColor: 'rgba(0, 0, 0, 0.6)'
     },
     scrollModal:{
         justifyContent: 'center',
@@ -56,11 +56,13 @@ const CancelInterview = ({onPress_cancel , onPressOut_cancel}) => {
     contentTitle: {
       fontSize: 24,
       marginBottom: 12,
+      fontFamily: 'Urbanist-Bold',
       fontWeight: '700',
       color: '#246BFD',
     },
     contentMessage: {
         fontSize: 16,
+        fontFamily: 'Urbanist-Light',
         fontWeight: '400',
         color: '#212121',
         textAlign: 'center',
