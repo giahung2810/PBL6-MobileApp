@@ -279,7 +279,7 @@ export const get_Jobs_Application = async (dispatch, id) => {
 
 export const getListTime_Interview = async (id_applicant) => {
     // console.log(id_applicant.id_applicant);
-    try{
+    try {
         const res = await apiJob.get(`/applicants/candidate/get_times_interview?id_applicant=${id_applicant}`);
         if(res.status === 200) {
             return res.data;    
@@ -291,9 +291,6 @@ export const getListTime_Interview = async (id_applicant) => {
 export const post_Time_Interview = async (available,id_applicant) => {
     try{
         const res = await apiJob.patch(`/applicants/candidate/confirm_interview?id_applicant=${id_applicant}`, available);
-        // if(res.status === 200) {
-        //     return res.data;    
-        // }
     } catch(err){
         console.log(err);
     }

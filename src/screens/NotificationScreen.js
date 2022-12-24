@@ -12,20 +12,20 @@ const wait = (timeout) => {
 }
 
 const NotificationScreen = () => {
-  axios({
-    method: "get",
-    url: "https://api.quangdinh.me/reviews/reviews",
-    headers: { "Content-Type": "multipart/form-data" },
-  })
-    .then(function (response) {
-      //handle success
-      // console.log(response.data)
-      setReportesNot(response.data.count)
-    })
-    .catch(function (response) {
-      //handle error
-      console.log(response);
-    });
+  // axios({
+  //   method: "get",
+  //   url: "https://api.quangdinh.me/reviews/reviews",
+  //   headers: { "Content-Type": "multipart/form-data" },
+  // })
+  //   .then(function (response) {
+  //     //handle success
+  //     // console.log(response.data)
+  //     setReportesNot(response.data.count)
+  //   })
+  //   .catch(function (response) {
+  //     //handle error
+  //     console.log(response);
+  //   });
 
   const [refreshing, setRefreshing] = React.useState(false);
     const onRefresh = React.useCallback(() => {
@@ -46,12 +46,12 @@ const NotificationScreen = () => {
         }) 
       }, [])
 
-  const [reportesNot, setReportesNot] = useState(6);
-  useLayoutEffect(() => {
-    navigation.getParent().setOptions({
-      tabBarBadge: reportesNot,
-    });
-  }, [reportesNot])
+  // const [reportesNot, setReportesNot] = useState(null);
+  // useLayoutEffect(() => {
+  //   navigation.getParent().setOptions({
+  //     tabBarBadge: reportesNot,
+  //   });
+  // }, [reportesNot])
   return (      
         <ScrollView style={{ flex: 1 , backgroundColor: '#fff'}} 
           contentContainerStyle={{ flexGrow: 1 }}

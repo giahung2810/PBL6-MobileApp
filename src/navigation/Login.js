@@ -11,7 +11,7 @@ const Login = () => {
     return (
       //
         <Stack.Navigator screenOptions={{headerShown: false}}>
-            <Stack.Screen name="SignIn" component={SigninScreen} />
+            <Stack.Screen name="SignIn" component={SigninScreen} options={{ gestureEnabled: false,}}/>
             <Stack.Screen name="SignUp" component={SignupScreen} />
             <Stack.Screen name="ConfirmEmail" component={ConfirmEmailScreen} />
             <Stack.Screen name="ForgotPassword" component={ForgotPasswordScreen} />

@@ -1,5 +1,5 @@
 import { View, Text, Button,StatusBar, SafeAreaView, Platform } from 'react-native';
-import React,{useContext}  from 'react';
+import React,{useContext, useLayoutEffect}  from 'react';
 import HomeScreen from '../screens/HomeScreen';
 import ApplyFormScreen from '../screens/ApplyFormScreen';
 import JobDescription from '../screens/JobDescription';
@@ -34,7 +34,7 @@ import {store, persistor} from '../redux/store'
 import { PersistGate } from 'redux-persist/lib/integration/react';
 import { useEffect } from 'react';
 import { useState } from 'react';
-
+import axios from 'axios';
 
 const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -42,6 +42,30 @@ const Tab = createBottomTabNavigator();
 
 
 const MainNavigator = () => {
+  // const [reportesNot, setReportesNot] = useState(null);
+  // useLayoutEffect(() => {
+  //   try {
+  //     setInterval(async () => {
+  //       axios({
+  //         method: "get",
+  //         url: "https://api.quangdinh.me/reviews/reviews",
+  //         headers: { "Content-Type": "multipart/form-data" },
+  //       })
+  //         .then(function (response) {
+  //           //handle success
+  //           // console.log(response.data)
+  //           setReportesNot(response.data.count)
+  //         })
+  //         .catch(function (response) {
+  //           //handle error
+  //           console.log(response);
+  //         }); 
+  //       console.log("call notify")
+  //     }, 5000);
+  //   } catch(e) {
+  //     console.log(e);
+  //   }
+  // }, [reportesNot])
     return (
         <Tab.Navigator screenOptions={{ tabBarShowLabel: false}}>
             <Tab.Screen name="Home" component={Home} 
@@ -67,19 +91,19 @@ const MainNavigator = () => {
                       headerShown: false
                     }}
             />
-            <Tab.Screen name="Notification" component={Notification}   
+            {/* <Tab.Screen name="Notification" component={Notification}   
                     options={{
                       tabBarIcon: ({color}) => {
                         return <View>
                           <Feather name="bell" size={24} color={color} />
-                          {/* <Text>{count}</Text> */}
+                          <Text>{count}</Text>
                           </View>
                       },
-                      tabBarBadge: 2,
+                      tabBarBadge: reportesNot,
                       headerShown: false
                     }}
                     // initialParams={{currentCity: {time: 1}}}
-            />
+            /> */}
             <Tab.Screen name="Profile" component={Profile} 
                     options={{
                       tabBarIcon: ({color}) => {
@@ -96,7 +120,7 @@ const Navigator = () => {
       //
         <Stack.Navigator screenOptions={{}}>
           <Stack.Screen name="MainNavigator" component={MainNavigator} options={{headerShown: false,}}/>
-          <Stack.Screen name="Login" component={Login} options={{headerShown: false}}/>
+          <Stack.Screen name="Login" component={Login} options={{headerShown: false, gestureEnabled: false,}}/>
           <Stack.Screen name="JobDetails" component={JobDescription} />
           <Stack.Screen name="Apply" component={ApplyFormScreen} options={{headerShown: false}}/>
           <Stack.Screen name="Search" component={SearchScreen} options={{headerShown: false}}/>

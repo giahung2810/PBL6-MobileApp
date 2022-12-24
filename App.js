@@ -22,7 +22,7 @@
 import Navigation from './src/navigation/Navigation'
 import React, { useState, useEffect, useCallback } from 'react';
 import * as SplashScreen from 'expo-splash-screen';
-import { View} from 'react-native'
+import { SafeAreaView, View} from 'react-native'
 
 
 import useFonts from './src/hooks/useFonts';
@@ -55,5 +55,11 @@ export default function App() {
     return null;
   }
 
-  return (<View style={{flex: 1}} onLayout={onLayoutRootView}><Navigation /></View>);
+  return (
+    <View style={{flex: 1}} onLayout={onLayoutRootView}>
+      {/* <SafeAreaView > */}
+      <Navigation />
+      {/* </SafeAreaView> */}
+    </View>
+  );
 }
