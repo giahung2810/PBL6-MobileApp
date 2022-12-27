@@ -10,11 +10,13 @@ import { useFocusEffect, useNavigation } from '@react-navigation/native';
 import Modal from 'react-native-modal';
 import AccessToTest from '../components/Modal/AccessToTest';
 import TimeInterview from '../components/TimeInterview/TimeInterview';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { cancel_interview, getApplication } from '../redux/jobRequest';
 import CancelInterview from '../components/Modal/CancelInterview';
 import Change from '../../assets/change.png'
 import moment from 'moment';
+import { createAxios } from '../api/apiJob';
+import { loginUpdate } from '../redux/authSlice';
 
 const wait = (timeout) => {
   return new Promise(resolve => setTimeout(resolve, timeout));
@@ -46,9 +48,11 @@ const ApplicationStages = ({route}) => {
           ),
         }) 
       }, []);
+      const user = useSelector((state) => state.auth.login.currentUser);
     const [Application, setApplication] = useState();
     const getApply = async () => {
-      const result = await getApplication(dispatch, item.id);
+      const api = createAxios(user, dispatch , loginUpdate);
+      const result = await getApplication(dispatch, item.id,api,user.tokens.access);
       setApplication(result);
     };
     useFocusEffect(
@@ -69,7 +73,7 @@ const ApplicationStages = ({route}) => {
     const year  = new  Date(Application?.interview_date_official).getUTCFullYear();
     const hours = new  Date(Application?.interview_date_official).getUTCHours();
     const minutes  = new  Date(Application?.interview_date_official).getUTCMinutes() === 0 ? '00' : new  Date(Application?.interview_date_official).getUTCMinutes();
-    const Time  = `${hours}:${minutes}, ${date}/${month}/${year}`
+    const Time  = `${hours}:${minutes}, ${date}/${month + 1}/${year}`
   return (      
     <View style={{flex: 1, backgroundColor: '#fff'}}>
         <ScrollView style={{flex: 1, backgroundColor: '#fff'}}
@@ -161,7 +165,7 @@ const ApplicationStages = ({route}) => {
                 : Application?.status === "schedule_interview" ?
                   <ButtomApply onPress={() => navigation.goBack()} text="Waiting Link Interview" backgroundColor='rgb(143, 206, 255)' color='rgb(0, 0, 255)'/>
                 : Application?.status === "incomplete" ?
-                  <ButtomApply onPress={() => navigation.goBack()} text="Fail Test, Refer to other jobs" backgroundColor='rgb(252, 88, 88)' color='rgb(0, 0, 0)'/>
+                  <ButtomApply onPress={() => navigation.goBack()} text="Refer to other jobs" backgroundColor='rgb(252, 88, 88)' color='rgb(0, 0, 0)'/>
                 : Application?.status === "complete" ?
                   <ButtomApply onPress={() => navigation.goBack()} text="We will connect with you soon" backgroundColor='rgb(163, 255, 163)' color='rgb(0, 194, 0)'/>
                 : null
@@ -203,8 +207,10 @@ const ApplicationStages = ({route}) => {
           // styles={}
         >
           <CancelInterview
-            onPress_cancel={() => {
-                cancel_interview(Application?.id);
+            onPress_cancel={ () => {
+                const api = createAxios(user, dispatch , loginUpdate);
+                console.log(api)
+                cancel_interview(Application?.id, api, user.tokens.access);
                 setModalVisible_cancel(false);
               }
             }

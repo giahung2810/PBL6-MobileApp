@@ -23,7 +23,7 @@ const TopCompany = ({item}) => {
                     : 
                         <Image style={styles.image} 
                             source={{
-                                uri: api + item.image,
+                                uri: api +   item.image,
                             }}
                             resizeMode='contain'
                         />
@@ -31,7 +31,7 @@ const TopCompany = ({item}) => {
             :
             <Image style={styles.image} 
                 source={{
-                    uri: api + item.image,
+                    uri: item.image,
                 }}
                 resizeMode='contain'
             />

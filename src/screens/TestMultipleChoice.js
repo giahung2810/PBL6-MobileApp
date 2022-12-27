@@ -19,6 +19,8 @@ import SubmitExam from '../components/Modal/SubmitExam';
 import SubmitExam_overtime from '../components/Modal/SubmitExam_overtime';
 import AccessToTest from '../components/Modal/AccessToTest';
 import ButtonSubmit from '../components/Button/ButtonSubmit';
+import { createAxios } from '../api//apiJob';
+import { loginUpdate } from '../redux/authSlice';
 LogBox.ignoreLogs(["EventEmitter.removeListener"]);
 
 const TestMultipleChoice = ({route}) => {
@@ -61,10 +63,14 @@ const TestMultipleChoice = ({route}) => {
   const [result_exam, setResult_exam] = useState([]);
   const [result, setResult] = useState();
   const [msg, setMsg] = useState();
-  const time_start = useRef(moment.utc(new Date()).format());
+  const time_start_F = moment(new Date()).format();
+  // console.log(time_start_F);
+  const time_start = useRef(moment.parseZone(time_start_F).utc(true).format());
   // console.log(time_start.current.toISOString());
   const submit = () => {
-    const time_done = moment.utc(new Date()).format();
+    const time_done_F = moment(new Date()).format();
+    // console.log(time_done_F);
+    const time_done = moment.parseZone(time_done_F).utc(true).format();
     // console.log(result_exam);
     const post_data = {
       user_id: id,
@@ -75,7 +81,8 @@ const TestMultipleChoice = ({route}) => {
     }
     console.log(post_data);
     const fun = async () => { 
-      const [result, msg] = await postExam(dispatch, id_test, post_data, navigation);
+      const api = createAxios(user, dispatch , loginUpdate);
+      const [result, msg] = await postExam(dispatch, id_test, post_data, navigation, api, user.tokens.access);
       setResult(result);
       setMsg(msg);
     }

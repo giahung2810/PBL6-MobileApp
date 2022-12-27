@@ -34,7 +34,7 @@ const JobCard = ({ item, setSaveJob}) => {
         <>
         <TouchableOpacity style={styles.container} onPress={() => navigate('JobDetails',{item : item})}>
             <View style={styles.container_child1}>
-                <Image style={styles.image} source={{uri: api + job.company.image}}  resizeMode='contain'/>
+                <Image style={styles.image} source={{uri: job.company.image}}  resizeMode='contain'/>
                 <View style={styles.boxDetail}>
                     <Text numberOfLines={1} style={styles.title}>{job.name}</Text> 
                     <Text style={styles.company}>{job.company.company_name}</Text>   

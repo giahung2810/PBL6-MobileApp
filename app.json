@@ -3,7 +3,7 @@
     "name": "FindJob",
     "slug": "FindJob",
     "description": "This is a app support ITer Find Job",
-    "version": "1.0.3",
+    "version": "1.2.0",
     "orientation": "portrait",
     "icon" : "./assets/LogoApp.png",
     "assetBundlePatterns": [

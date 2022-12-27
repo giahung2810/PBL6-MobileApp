@@ -52,7 +52,7 @@ const RecentJob = ({item, setList_jobs}) => {
         <TouchableOpacity style={styles.container}  onPress={() => navigation.navigate('JobDetails',{item})}>
             <View style={styles.container_child1}>
                 {/* company image */}
-                <Image style={styles.image} source={{uri: api + job.company.image}}  resizeMode='contain'/> 
+                <Image style={styles.image} source={{uri: job.company.image}}  resizeMode='contain'/> 
                 
                 <TouchableOpacity onPress={() => agregarFavoritos()} style={{ borderWidth:1, borderColor: '#F3F3F3', alignItems: 'center' , justifyContent: 'center', borderRadius: 60/2, height: 38, width: 38}}>
                     {   job.isFavorite ? 

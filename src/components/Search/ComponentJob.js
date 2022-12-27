@@ -7,6 +7,7 @@ import { useNavigation } from '@react-navigation/native';
 const ComponentJob = ({item, title}) => {
     const navigation = useNavigation();
     const image = item.job.company.image;
+    // console.log(item);
   return (
     <TouchableOpacity style={styles.container} 
         onPress={() => { 

@@ -20,7 +20,7 @@ const JobDetailsCard = ({item}) => {
     return (
         <View style={[styles.container ]}>
             <View style={styles.container_child1}>
-                <Image style={styles.image} source={{uri: api + job.company.image}}  resizeMode='contain'/>
+                <Image style={styles.image} source={{uri: job.company.image}}  resizeMode='contain'/>
             </View>
             <View style={styles.container_child2}>
                 <Text numberOfLines={1} style={styles.jobpost}>{job.name}</Text>

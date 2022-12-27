@@ -10,6 +10,8 @@ import { useDispatch, useSelector } from 'react-redux';
 import useDecodeTokens from '../hooks/useDecodeToken'
 import { useEffect } from 'react';
 import { getListApplication, get_Jobs_Application, get_Jobs_Favorites, get_Jobs_Search } from '../redux/jobRequest';
+import { createAxios } from '../api/apiJob';
+import { loginUpdate } from '../redux/authSlice';
 
 const SearchScreen = ({}) => {
     const navigation = useNavigation();
@@ -23,7 +25,8 @@ const SearchScreen = ({}) => {
     const [list_jobs, setList_jobs] = useState();
     const [list_Application, setList_Application] = useState();
     const getListApply = async () => {
-        const result = await get_Jobs_Application(dispatch, id);
+        const api = createAxios(user, dispatch , loginUpdate);
+        const result = await get_Jobs_Application(dispatch, id, api,user.tokens.access);
         // console.log('result',result);
         setList_Application(result);
       };
@@ -57,7 +60,7 @@ const SearchScreen = ({}) => {
         });
         return unsubscribe;
       },[navigation]);
-    console.log('result',filteredResults_application);
+    // console.log('result',filteredResults_application);
     return (
     // <>
         <SafeAreaView style={[{backgroundColor: '#fff', flex: 1}, styles.container]}>

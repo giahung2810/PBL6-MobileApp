@@ -19,7 +19,7 @@ const ApplicationCard = ({item}) => {
     return (
         <TouchableOpacity style={styles.container} onPress={() => { navigate('ApplicationStages', {item: item, job: job})}}>
             <View style={styles.container_child1}>
-                <Image style={styles.image} source={{uri:api + job?.job.company.image}}  resizeMode='contain'/>
+                <Image style={styles.image} source={{uri:job?.job.company.image}}  resizeMode='contain'/>
                 <View style={styles.boxDetail}>
                     <Text numberOfLines={1} style={styles.title}>{job?.job.name}</Text> 
                     <Text style={styles.company}>{job?.job.company.company_name}</Text>   

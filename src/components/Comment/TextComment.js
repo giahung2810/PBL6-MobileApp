@@ -37,23 +37,26 @@ const TextComment = function ({job}) {
               /> 
               <TouchableOpacity 
                 onPress={() => {
-                  const post_comment= {
-                    job : job.id,
-                    comment_body : comment,
-                    is_sub_comment: false,
-                    parent_id: -1,
-                    user: useDecodeTokens(user.tokens.access).user_id,
+                  if(comment == '')  {alert('Please input a comment')}  else
+                  {
+                    const post_comment= {
+                      job : job.id,
+                      comment_body : comment,
+                      is_sub_comment: false,
+                      parent_id: -1,
+                      user: useDecodeTokens(user.tokens.access).user_id,
+                    }
+                    // console.log(post_comment)
+                    const api = createAxios(user, dispatch , loginUpdate);
+                    post_Comment_Job(
+                      dispatch,
+                      post_comment,
+                      api,
+                      user.tokens.access
+                    );
+                  // fun();
+                    setComment('');
                   }
-                  // console.log(post_comment)
-                  const api = createAxios(user, dispatch , loginUpdate);
-                  post_Comment_Job(
-                    dispatch,
-                    post_comment,
-                    api,
-                    user.tokens.access
-                  );
-                // fun();
-                  setComment('');
               }}>
                 <Ionicons name="md-send" size={24} color={comment ? 'blue' : '#e8e8e8'} />
               </TouchableOpacity>

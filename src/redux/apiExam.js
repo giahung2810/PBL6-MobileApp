@@ -18,7 +18,7 @@ export const getExam = async (dispatch, id ) => {
     }
 }
 
-export const postExam = async (dispatch , id , data, navigation) => {
+export const postExam = async (dispatch , id , data, navigation, api, accessToken) => {
     dispatch(examStart());
     try{
         const res = await apiExam.post(`/api/v1/test/${id}/doing` ,data);
@@ -38,8 +38,12 @@ export const postExam = async (dispatch , id , data, navigation) => {
                 job: data.job_id,
                 user : data.user_id,
                 result: result
-              }
-            const res_status = await apiJob.patch(`/applicants/candidate/done_test` ,data_status);
+            }
+            console.log("data_status",data_status);
+            const res_status = await api.patch(`/applicants/candidate/done_test` ,data_status, 
+            {
+                headers: {Authorization : `Bearer ${accessToken}`}
+            });
             console.log(res_status);
             if(res_status.status === 200) {
                 dispatch(examSuccess());

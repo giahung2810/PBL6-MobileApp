@@ -24,15 +24,18 @@ import HeaderCompanyDescription from '../components/HeaderCompanyDescription'
 import ApplyJobSuccessModal from '../components/Modal/ApplyjobSuccessModal'
 import ApplyJobFailedModal from '../components/Modal/ApplyJobFailedModal'
 import ButtomApply from '../components/Button/ButtonApply';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import useDecodeTokens from '../hooks/useDecodeToken'
 import { useNavigation } from '@react-navigation/native';
+import { createAxios } from '../api/apiJob';
+import { loginUpdate } from '../redux/authSlice';
 
 const ApplyFormScreen = ({route}) => {
   const item = route.params.item;
   const job =item.job;
   const comment = item.comment;
   const navigation = useNavigation();
+  const dispatch = useDispatch();
   const [singleFile, setSingleFile] = useState(null);
   const [letter, setLetter] = useState('');
   const [modalSuccessVisible, setModalSuccessVisible] = useState(false);
@@ -77,11 +80,15 @@ const ApplyFormScreen = ({route}) => {
       // );
       // let responseJson = await res.json();
       // console.log('responseJson',responseJson);
+      const api = createAxios(user, dispatch , loginUpdate);
       axios({
         method: "post",
         url: "https://api.quangdinh.me/applicants/applicant",
         data: data,
-        headers: { "Content-Type": "multipart/form-data" },
+        headers: { 
+          "Content-Type": "multipart/form-data",
+          "Authorization" : `Bearer ${user.tokens.access}`
+       },
       })
         .then(function (response) {
           //handle success

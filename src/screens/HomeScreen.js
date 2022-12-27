@@ -104,7 +104,7 @@ const HomeScreen = () => {
       </DynamicHEaderSearch>
       {/* {job_isFetching || company_isFetching ? <AppLoader2 /> : null} */}
     </View>
-    {job_isFetching || company_isFetching ? <AppLoader /> : null}
+    {/* {job_isFetching || company_isFetching ? <AppLoader /> : null} */}
     </> 
   );
 };

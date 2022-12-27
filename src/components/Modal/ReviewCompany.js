@@ -28,8 +28,9 @@ const ReviewCompany = ({fun, company}) => {
         <Text>Your Review</Text>
         <Rating
             type='custom'
-            // ratingColor='#3498db'
-            // ratingBackgroundColor='#c8c7c8'
+            defaultRating={1}
+            startingValue={rating}
+            // count={1}
             ratingCount={5}
             imageSize={30}
             onFinishRating={ratingCompleted}
@@ -39,6 +40,8 @@ const ReviewCompany = ({fun, company}) => {
         <TouchableOpacity 
             style={styles.button} 
             onPress={() => {
+                if(comment == '') {alert('Please input a comment')}
+                else {
                 const post_Review= {
                     rating : rating,
                     comment : comment,
@@ -53,6 +56,7 @@ const ReviewCompany = ({fun, company}) => {
                     user.tokens.access
                 );
                 fun();
+                }
             }}
         >
             <Text style={{color: 'black', fontWeight: '700', fontSize: 16}}>Comment</Text>

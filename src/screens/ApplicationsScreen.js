@@ -7,6 +7,8 @@ import { useFocusEffect, useNavigation } from '@react-navigation/native';
 import { getListApplication } from '../redux/jobRequest';
 import { useDispatch, useSelector } from 'react-redux';
 import useDecodeTokens from '../hooks/useDecodeToken'
+import { createAxios } from '../api/apiJob';
+import { loginUpdate } from '../redux/authSlice';
 const wait = (timeout) => {
   return new Promise(resolve => setTimeout(resolve, timeout));
 }
@@ -34,7 +36,8 @@ const ApplicationsScreen = () => {
       }) 
   }, []);
   const getListApply = async () => {
-    const result = await getListApplication(dispatch, id);
+    const api = createAxios(user, dispatch , loginUpdate);
+    const result = await getListApplication(dispatch, id, api,user.tokens.access);
     setList_Application(result);
   };
   useEffect(() => {

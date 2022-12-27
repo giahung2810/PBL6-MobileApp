@@ -23,7 +23,7 @@ const InforCompany = ({type = true, company}) => {
             <View style={{paddingHorizontal: type ? 18 : 0}}>
                 {type === true ? 
                     <View style={styles.container_child1}>
-                        <Image style={styles.image} source={{uri: api + company.image}}  resizeMode='contain'/>
+                        <Image style={styles.image} source={{uri: company.image}}  resizeMode='contain'/>
                         <View style={styles.boxDetail}>
                             <Text style={styles.company}>{company.company_name}</Text> 
                         </View>

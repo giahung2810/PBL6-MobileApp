@@ -6,12 +6,18 @@ import { getListTime_Interview, post_Time_Interview } from '../../redux/jobReque
 import { useEffect } from 'react'
 import ButtomApply from '../Button/ButtonApply'
 import { useNavigation } from '@react-navigation/native'
+import { useDispatch, useSelector } from 'react-redux'
+import { loginUpdate } from '../../redux/authSlice'
+import { createAxios } from '../../api/apiJob'
 
 const TimeInterview = ({id_applicant, getApply}) => {
     const navigation = useNavigation();
+    const dispatch = useDispatch();
+    const user = useSelector((state) => state.auth.login.currentUser);
     const [data, setData] = useState();
     const getListTime = async () => {
-        const result = await getListTime_Interview(id_applicant);
+        const api = createAxios(user, dispatch , loginUpdate);
+        const result = await getListTime_Interview(id_applicant, api, user.tokens.access);
         setData(result);
     };
     useEffect(() => {
@@ -50,7 +56,8 @@ const TimeInterview = ({id_applicant, getApply}) => {
     const Ok_time = (post_data, id_applicant) => {
         if(choose) {
             // setRefreshing(true);
-            post_Time_Interview(post_data, id_applicant);
+            const api = createAxios(user, dispatch , loginUpdate);
+            post_Time_Interview(post_data, id_applicant, api, user.tokens.access);
             navigation.goBack();
             // setRefreshing(false);
             // getApply();

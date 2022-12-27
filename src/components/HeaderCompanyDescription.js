@@ -13,9 +13,9 @@ import {api} from '../api/apiJob'
 const HeaderCompanyDescription = ({item}) => {
     return (
     <>
-        <Image style={styles.image} source={{uri: api + item.company.image}}  resizeMode='cover'/>
+        <Image style={styles.image} source={{uri:item.company.image}}  resizeMode='cover'/>
             <View style={styles.boxContainer}>
-              <Image style={styles.Image} size={100} source={{uri: api + item.company.image}} resizeMode='contain'/>
+              <Image style={styles.Image} size={100} source={{uri:item.company.image}} resizeMode='contain'/>
               <Text style={styles.title}>{item.name}</Text>
               <Text style={styles.address}>{item.locations[0].location_name}</Text>
             </View>

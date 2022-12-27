@@ -35,10 +35,14 @@ export const getJobbyID = async ( id ) => {
         console.log(err);
     }
 };
-export const getApplication = async (dispatch, id ) => {
+export const getApplication = async (dispatch, id, api, accessToken) => {
     dispatch(getJobsStart());
     try{
-        const res = await apiJob.get(`/applicants/applicant/${id}`);
+        const res = await api.get(`/applicants/applicant/${id}`,
+        {
+            headers: {Authorization : `Bearer ${accessToken}`}
+        });
+        console.log(res);
         if (res.status === 200) {
             dispatch(getJobsSuccess());
             // console.log('API',res.data);
@@ -49,10 +53,13 @@ export const getApplication = async (dispatch, id ) => {
         console.log(err);
     }
 }
-export const getListApplication = async (dispatch, id) => {
+export const getListApplication = async (dispatch, id, api, accessToken) => {
     dispatch(getJobsStart());
     try{
-        const res = await apiJob.get(`/applicants/candidate/get_applicant?id_candidate=${id}`);
+        const res = await api.get(`/applicants/candidate/get_applicant?id_candidate=${id}`,
+        {
+            headers: {Authorization : `Bearer ${accessToken}`}
+        });
         dispatch(getJobsSuccess());
         // console.log('API',res.data);
         return res.data;
@@ -239,30 +246,36 @@ export const get_Jobs_Search = async (dispatch, id) => {
     }
 };
 
-export const get_Jobs_Application = async (dispatch, id) => {
+export const get_Jobs_Application = async (dispatch, id, api, accessToken) => {
     dispatch(getJobsStart());
     try{
-        const res_j = await apiJob.get('/jobs/user/get_jobs');
+        const res_j = await api.get('/jobs/user/get_jobs');
         if (res_j.status === 200) {
             var jobs = res_j.data;
         }
-        const res_f = await apiJob.get(`/applicants/candidate/get_applicant?id_candidate=${id}`);
+        const res_f = await api.get(`/applicants/candidate/get_applicant?id_candidate=${id}`, {
+            headers: {Authorization : `Bearer ${accessToken}`}
+        });
         if (res_f.status === 200) {
             var applicants = res_f.data;
         }
         let newArray_isA = jobs?.filter(
             (job) => applicants?.some((applicant) => applicant.job === job.job.id)
         );
+        
         newArray_isA.map((job) => {
             job.job.company_name = job.job.company.company_name,
             job.job.company_location = job.job.company.company_location
         });
+        // console.log("newArray_isA",newArray_isA);
+        // console.log("applicants",applicants);
         for(var k in newArray_isA) {
             for(var j in applicants)
                 // newArray_isF[k].job.id_favorite = favorites[k].id
             {
-                if(newArray_isA[k].job.id == applicants[j].id)
+                if(newArray_isA[k].job.id == applicants[j].job)
                 {
+                    console.log("HIIIIIIIII");
                     newArray_isA[k].application = applicants[j];
                     newArray_isA[k].job.applicant_status = applicants[j].status;
                 }
@@ -277,10 +290,13 @@ export const get_Jobs_Application = async (dispatch, id) => {
     }
 };
 
-export const getListTime_Interview = async (id_applicant) => {
+export const getListTime_Interview = async (id_applicant, api, accessToken) => {
     // console.log(id_applicant.id_applicant);
     try {
-        const res = await apiJob.get(`/applicants/candidate/get_times_interview?id_applicant=${id_applicant}`);
+        const res = await api.get(`/applicants/candidate/get_times_interview?id_applicant=${id_applicant}`,
+        {
+            headers: {Authorization : `Bearer ${accessToken}`}
+        });
         if(res.status === 200) {
             return res.data;    
         }
@@ -288,18 +304,25 @@ export const getListTime_Interview = async (id_applicant) => {
         console.log(err);
     }
 }
-export const post_Time_Interview = async (available,id_applicant) => {
+export const post_Time_Interview = async (available,id_applicant, api, accessToken) => {
     try{
-        const res = await apiJob.patch(`/applicants/candidate/confirm_interview?id_applicant=${id_applicant}`, available);
+        const res = await api.patch(`/applicants/candidate/confirm_interview?id_applicant=${id_applicant}`, available,
+        {
+            headers: {Authorization : `Bearer ${accessToken}`}
+        });
     } catch(err){
         console.log(err);
     }
 }
-export const cancel_interview = async (id) => {
+export const cancel_interview = async (id, api, accessToken) => {
+    console.log(id)
     try {
-        const res = await apiJob.patch(`/applicants/candidate/${id}/cancel_interview`);
+        const res = await api.patch(`/applicants/candidate/${id}/cancel_interview`, null,
+        {
+            headers: {Authorization : `Bearer ${accessToken}`}
+        });
         console.log(res);
     } catch (error) {
-        console.log(err);
+        console.log(error);
     }
 }
